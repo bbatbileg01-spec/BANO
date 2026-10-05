@@ -22,9 +22,6 @@ body{
   font-family:Arial,Helvetica,sans-serif;
 }
 
-
-/* HEADER */
-
 header{
   height:72px;
   padding:0 6%;
@@ -61,9 +58,6 @@ nav a{
 nav a:hover{
   color:#fff;
 }
-
-
-/* SEARCH */
 
 .search-box{
   position:relative;
@@ -132,15 +126,11 @@ nav a:hover{
   color:#ffb52e;
 }
 
-
-/* HERO */
-
 .hero{
   min-height:600px;
   display:flex;
   align-items:center;
   padding:80px 6%;
-
   background:
     radial-gradient(
       circle at 75% 35%,
@@ -187,9 +177,6 @@ nav a:hover{
   margin-bottom:30px;
 }
 
-
-/* BUTTONS */
-
 .buttons{
   display:flex;
   gap:12px;
@@ -216,9 +203,6 @@ nav a:hover{
   border:1px solid #30333a;
 }
 
-
-/* SECTIONS */
-
 section{
   padding:42px 6%;
 }
@@ -240,9 +224,6 @@ section{
   text-decoration:none;
 }
 
-
-/* CATEGORIES */
-
 .categories{
   display:flex;
   gap:12px;
@@ -262,9 +243,6 @@ section{
   border:1px solid #24272e;
   color:#aaa;
 }
-
-
-/* MOVIES */
 
 .movies{
   display:grid;
@@ -374,9 +352,6 @@ section{
   margin-top:6px;
 }
 
-
-/* NO RESULTS */
-
 .no-results{
   display:none;
   padding:40px;
@@ -384,9 +359,6 @@ section{
   color:#777;
   grid-column:1/-1;
 }
-
-
-/* FEATURE */
 
 .feature{
   padding:50px 6%;
@@ -415,18 +387,12 @@ section{
   line-height:1.6;
 }
 
-
-/* FOOTER */
-
 footer{
   padding:50px 6%;
   text-align:center;
   border-top:1px solid #1c1e23;
   color:#666;
 }
-
-
-/* TABLET */
 
 @media(max-width:1000px){
 
@@ -439,9 +405,6 @@ footer{
   }
 
 }
-
-
-/* MOBILE */
 
 @media(max-width:700px){
 
@@ -507,9 +470,6 @@ footer{
 
 }
 
-
-/* SMALL PHONE */
-
 @media(max-width:400px){
 
   .search{
@@ -533,18 +493,13 @@ footer{
 </style>
 </head>
 
-
 <body>
-
-
-<!-- HEADER -->
 
 <header>
 
   <div class="logo">
     BAN<span>O</span>
   </div>
-
 
   <nav>
 
@@ -560,12 +515,12 @@ footer{
       Төрөл
     </a>
 
-    <a href="#">
+    <!-- LOGIN ХОЛБОЛТ -->
+    <a href="login.html">
       Нэвтрэх
     </a>
 
   </nav>
-
 
   <div class="search-box">
 
@@ -577,7 +532,6 @@ footer{
       autocomplete="off"
     >
 
-
     <div
       id="searchResults"
       class="search-results"
@@ -587,9 +541,6 @@ footer{
 
 </header>
 
-
-<!-- HERO -->
-
 <div class="hero">
 
   <div class="hero-content">
@@ -598,28 +549,17 @@ footer{
       BANO ORIGINAL
     </div>
 
-
     <h1>
-
       Кино.<br>
-
-      <span>
-        Чиний ертөнц.
-      </span>
-
+      <span>Чиний ертөнц.</span>
     </h1>
 
-
     <p>
-
       Монгол үзэгчдэд зориулсан шинэ үеийн
       кино платформ.
-
       Дуртай кино, цувралаа
       нэг дороос олж үзээрэй.
-
     </p>
-
 
     <div class="buttons">
 
@@ -629,7 +569,6 @@ footer{
       >
         ▶ Кино үзэх
       </a>
-
 
       <a
         class="btn dark"
@@ -644,9 +583,6 @@ footer{
 
 </div>
 
-
-<!-- CATEGORIES -->
-
 <section id="categories">
 
   <div class="section-head">
@@ -654,7 +590,6 @@ footer{
     <div class="title">
       Төрлөөр үзэх
     </div>
-
 
     <a
       class="more"
@@ -664,7 +599,6 @@ footer{
     </a>
 
   </div>
-
 
   <div class="categories">
 
@@ -700,9 +634,6 @@ footer{
 
 </section>
 
-
-<!-- TRENDING -->
-
 <section id="movies">
 
   <div class="section-head">
@@ -710,7 +641,6 @@ footer{
     <div class="title">
       🔥 Тренд болж буй
     </div>
-
 
     <a
       class="more"
@@ -721,14 +651,10 @@ footer{
 
   </div>
 
-
   <div
     class="movies"
     id="movieGrid"
   >
-
-
-    <!-- BANO ONE -->
 
     <a
       href="movie.html"
@@ -742,23 +668,18 @@ footer{
           ▶
         </div>
 
-
         <div class="poster-title">
-
           BANO<br>
           ONE
-
         </div>
 
       </div>
-
 
       <div class="info">
 
         <b>
           BANO ONE
         </b>
-
 
         <small>
           2026 • Action
@@ -767,9 +688,6 @@ footer{
       </div>
 
     </a>
-
-
-    <!-- LAST ROAD -->
 
     <a
       href="#"
@@ -783,23 +701,18 @@ footer{
           ▶
         </div>
 
-
         <div class="poster-title">
-
           THE<br>
           LAST ROAD
-
         </div>
 
       </div>
-
 
       <div class="info">
 
         <b>
           The Last Road
         </b>
-
 
         <small>
           2026 • Drama
@@ -808,9 +721,6 @@ footer{
       </div>
 
     </a>
-
-
-    <!-- DARK NIGHT -->
 
     <a
       href="#"
@@ -824,23 +734,18 @@ footer{
           ▶
         </div>
 
-
         <div class="poster-title">
-
           DARK<br>
           NIGHT
-
         </div>
 
       </div>
-
 
       <div class="info">
 
         <b>
           Dark Night
         </b>
-
 
         <small>
           2025 • Thriller
@@ -849,9 +754,6 @@ footer{
       </div>
 
     </a>
-
-
-    <!-- LOVE STORY -->
 
     <a
       href="#"
@@ -865,23 +767,18 @@ footer{
           ▶
         </div>
 
-
         <div class="poster-title">
-
           LOVE<br>
           STORY
-
         </div>
 
       </div>
-
 
       <div class="info">
 
         <b>
           Love Story
         </b>
-
 
         <small>
           2026 • Romance
@@ -890,9 +787,6 @@ footer{
       </div>
 
     </a>
-
-
-    <!-- FINAL MISSION -->
 
     <a
       href="#"
@@ -906,23 +800,18 @@ footer{
           ▶
         </div>
 
-
         <div class="poster-title">
-
           FINAL<br>
           MISSION
-
         </div>
 
       </div>
-
 
       <div class="info">
 
         <b>
           Final Mission
         </b>
-
 
         <small>
           2025 • Action
@@ -932,23 +821,16 @@ footer{
 
     </a>
 
-
     <div
       id="noResults"
       class="no-results"
     >
-
       😕 Кино олдсонгүй.
-
     </div>
-
 
   </div>
 
 </section>
-
-
-<!-- FEATURE -->
 
 <section class="feature">
 
@@ -958,27 +840,21 @@ footer{
       BANO PLATFORM
     </div>
 
-
     <h2>
       Дуртай киногоо нэг дороос.
     </h2>
 
-
     <p>
-
       Кино, цуврал, шинэ бүтээлүүдийг хайж,
       төрлөөр ангилж, өөрийн жагсаалтдаа хадгалж
       үзэх боломжтой BANO платформ.
-
     </p>
-
 
     <br>
 
-
     <a
       class="btn primary"
-      href="#"
+      href="login.html"
     >
       BANO-д нэвтрэх
     </a>
@@ -987,9 +863,6 @@ footer{
 
 </section>
 
-
-<!-- HIGH RATED -->
-
 <section>
 
   <div class="section-head">
@@ -997,7 +870,6 @@ footer{
     <div class="title">
       ⭐ Өндөр үнэлгээтэй
     </div>
-
 
     <a
       class="more"
@@ -1008,23 +880,18 @@ footer{
 
   </div>
 
-
   <div class="movies">
-
 
     <div class="movie">
 
       <div class="poster blue">
 
         <div class="poster-title">
-
           THE<br>
           BEGINNING
-
         </div>
 
       </div>
-
 
       <div class="info">
 
@@ -1040,7 +907,6 @@ footer{
 
     </div>
 
-
     <div class="movie">
 
       <div class="poster purple">
@@ -1050,7 +916,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="info">
 
@@ -1066,20 +931,16 @@ footer{
 
     </div>
 
-
     <div class="movie">
 
       <div class="poster green">
 
         <div class="poster-title">
-
           THE<br>
           HUNTER
-
         </div>
 
       </div>
-
 
       <div class="info">
 
@@ -1095,7 +956,6 @@ footer{
 
     </div>
 
-
     <div class="movie">
 
       <div class="poster orange">
@@ -1105,7 +965,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="info">
 
@@ -1121,7 +980,6 @@ footer{
 
     </div>
 
-
     <div class="movie">
 
       <div class="poster red">
@@ -1131,7 +989,6 @@ footer{
         </div>
 
       </div>
-
 
       <div class="info">
 
@@ -1151,31 +1008,21 @@ footer{
 
 </section>
 
-
-<!-- FOOTER -->
-
 <footer>
 
   <div class="logo">
     BAN<span>O</span>
   </div>
 
-
   <br>
-
 
   Монгол кино үзвэрийн шинэ үе.
 
-
   <br><br>
-
 
   © 2026 BANO • Бүх эрх хуулиар хамгаалагдсан.
 
 </footer>
-
-
-<!-- SEARCH JAVASCRIPT -->
 
 <script>
 
@@ -1184,7 +1031,6 @@ const searchInput =
 
 const searchResults =
   document.getElementById("searchResults");
-
 
 const searchMovies = [
 
@@ -1235,7 +1081,6 @@ const searchMovies = [
 
 ];
 
-
 searchInput.addEventListener(
   "input",
   function(){
@@ -1245,9 +1090,7 @@ searchInput.addEventListener(
         .toLowerCase()
         .trim();
 
-
     searchResults.innerHTML="";
-
 
     if(text===""){
 
@@ -1257,7 +1100,6 @@ searchInput.addEventListener(
 
     }
 
-
     const results =
       searchMovies.filter(
         movie =>
@@ -1265,7 +1107,6 @@ searchInput.addEventListener(
             .toLowerCase()
             .includes(text)
       );
-
 
     if(results.length===0){
 
@@ -1278,15 +1119,12 @@ searchInput.addEventListener(
           color:#777;
           "
         >
-
           😕 Кино олдсонгүй
-
         </div>
 
       `;
 
     }else{
-
 
       results.forEach(
         movie => {
@@ -1302,13 +1140,11 @@ searchInput.addEventListener(
                 class="result-poster ${movie.poster}"
               ></div>
 
-
               <div class="result-info">
 
                 <b>
                   ${movie.name}
                 </b>
-
 
                 <small>
 
@@ -1333,12 +1169,10 @@ searchInput.addEventListener(
 
     }
 
-
     searchResults.style.display="block";
 
   }
 );
-
 
 document.addEventListener(
   "click",
@@ -1356,7 +1190,6 @@ document.addEventListener(
 );
 
 </script>
-
 
 </body>
 </html>
