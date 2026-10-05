@@ -22,6 +22,9 @@ header{
   justify-content:space-between;
   background:#08090c;
   border-bottom:1px solid #202228;
+  position:sticky;
+  top:0;
+  z-index:100;
 }
 
 .logo{
@@ -51,7 +54,7 @@ nav a:hover{color:#fff}
   padding:10px 16px;
   color:#fff;
   outline:none;
-  width:180px;
+  width:200px;
 }
 
 .hero{
@@ -234,6 +237,14 @@ section{
   margin-top:6px;
 }
 
+.no-results{
+  display:none;
+  padding:40px 10px;
+  text-align:center;
+  color:#777;
+  grid-column:1/-1;
+}
+
 .feature{
   padding:50px 6%;
 }
@@ -273,12 +284,13 @@ footer{
 }
 
 @media(max-width:700px){
+
   nav{
     display:none;
   }
 
   .search{
-    width:130px;
+    width:150px;
   }
 
   .hero{
@@ -305,8 +317,9 @@ footer{
 }
 
 @media(max-width:400px){
+
   .search{
-    display:none;
+    width:130px;
   }
 
   .poster{
@@ -332,6 +345,7 @@ footer{
   </nav>
 
   <input
+    id="searchInput"
     class="search"
     type="text"
     placeholder="🔍 Кино хайх..."
@@ -419,7 +433,8 @@ footer{
   </div>
 
 
-  <div class="movies">
+  <div class="movies" id="movieGrid">
+
 
     <a href="movie.html" class="movie">
 
@@ -459,8 +474,13 @@ footer{
       </div>
 
       <div class="info">
+
         <b>The Last Road</b>
-        <small>2026 • Drama</small>
+
+        <small>
+          2026 • Drama
+        </small>
+
       </div>
 
     </div>
@@ -479,8 +499,13 @@ footer{
       </div>
 
       <div class="info">
+
         <b>Dark Night</b>
-        <small>2025 • Thriller</small>
+
+        <small>
+          2025 • Thriller
+        </small>
+
       </div>
 
     </div>
@@ -499,8 +524,13 @@ footer{
       </div>
 
       <div class="info">
+
         <b>Love Story</b>
-        <small>2026 • Romance</small>
+
+        <small>
+          2026 • Romance
+        </small>
+
       </div>
 
     </div>
@@ -519,10 +549,20 @@ footer{
       </div>
 
       <div class="info">
+
         <b>Final Mission</b>
-        <small>2025 • Action</small>
+
+        <small>
+          2025 • Action
+        </small>
+
       </div>
 
+    </div>
+
+
+    <div class="no-results" id="noResults">
+      😕 Кино олдсонгүй.
     </div>
 
   </div>
@@ -665,6 +705,54 @@ footer{
   © 2026 BANO • Бүх эрх хуулиар хамгаалагдсан.
 
 </footer>
+
+
+<script>
+
+const searchInput = document.getElementById("searchInput");
+const movies = document.querySelectorAll("#movieGrid .movie");
+const noResults = document.getElementById("noResults");
+
+searchInput.addEventListener("input", function(){
+
+  const searchText = this.value.toLowerCase().trim();
+
+  let found = 0;
+
+  movies.forEach(function(movie){
+
+    const movieName = movie
+      .innerText
+      .toLowerCase();
+
+    if(movieName.includes(searchText)){
+
+      movie.style.display = "";
+
+      found++;
+
+    }else{
+
+      movie.style.display = "none";
+
+    }
+
+  });
+
+  if(found === 0 && searchText !== ""){
+
+    noResults.style.display = "block";
+
+  }else{
+
+    noResults.style.display = "none";
+
+  }
+
+});
+
+</script>
+
 
 </body>
 </html>
