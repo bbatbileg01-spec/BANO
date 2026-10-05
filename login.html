@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>BANO — Нэвтрэх</title>
 
-<style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<style>
 *{
   box-sizing:border-box;
   margin:0;
@@ -17,7 +17,7 @@
 body{
   min-height:100vh;
   background:
-    radial-gradient(circle at 50% 20%, #2b1800, #07080b 45%);
+    radial-gradient(circle at 50% 20%,#2b1800,#07080b 45%);
   color:#fff;
   font-family:Arial,Helvetica,sans-serif;
   display:flex;
@@ -144,19 +144,6 @@ label{
 .back:hover{
   color:#fff;
 }
-
-@media(max-width:500px){
-
-  .login-box{
-    padding:28px 22px;
-  }
-
-  .logo{
-    font-size:32px;
-  }
-
-}
-
 </style>
 </head>
 
@@ -172,142 +159,107 @@ label{
     Киноны ертөнцөд тавтай морил
   </div>
 
-
   <div class="tabs">
 
     <button
       class="tab active"
       onclick="showForm('login')"
-      id="loginTab"
-    >
+      id="loginTab">
       Нэвтрэх
     </button>
 
     <button
       class="tab"
       onclick="showForm('register')"
-      id="registerTab"
-    >
+      id="registerTab">
       Бүртгүүлэх
     </button>
 
   </div>
 
 
-  <!-- LOGIN -->
+  <!-- НЭВТРЭХ -->
 
   <div
     class="form active"
-    id="loginForm"
-  >
+    id="loginForm">
 
-    <label>
-      И-мэйл
-    </label>
+    <label>И-мэйл</label>
 
     <input
       class="input"
       type="email"
-      placeholder="example@gmail.com"
       id="loginEmail"
-    >
+      placeholder="example@gmail.com">
 
-
-    <label>
-      Нууц үг
-    </label>
+    <label>Нууц үг</label>
 
     <input
       class="input"
       type="password"
-      placeholder="Нууц үгээ оруулна уу"
       id="loginPassword"
-    >
-
+      placeholder="Нууц үгээ оруулна уу">
 
     <button
       class="button"
-      onclick="login()"
-    >
+      onclick="login()">
       Нэвтрэх
     </button>
 
-
     <div
       class="message"
-      id="loginMessage"
-    >
-      Нэвтрэх хэсэг бэлэн боллоо.
+      id="loginMessage">
     </div>
 
   </div>
 
 
-  <!-- REGISTER -->
+  <!-- БҮРТГҮҮЛЭХ -->
 
   <div
     class="form"
-    id="registerForm"
-  >
+    id="registerForm">
 
-    <label>
-      Нэр
-    </label>
+    <label>Нэр</label>
 
     <input
       class="input"
       type="text"
-      placeholder="Таны нэр"
       id="registerName"
-    >
+      placeholder="Таны нэр">
 
-
-    <label>
-      И-мэйл
-    </label>
+    <label>И-мэйл</label>
 
     <input
       class="input"
       type="email"
-      placeholder="example@gmail.com"
       id="registerEmail"
-    >
+      placeholder="example@gmail.com">
 
-
-    <label>
-      Нууц үг
-    </label>
+    <label>Нууц үг</label>
 
     <input
       class="input"
       type="password"
-      placeholder="Нууц үг үүсгэнэ үү"
       id="registerPassword"
-    >
-
+      placeholder="Нууц үг үүсгэнэ үү">
 
     <button
       class="button"
-      onclick="register()"
-    >
+      onclick="register()">
       Бүртгэл үүсгэх
     </button>
 
-
     <div
       class="message"
-      id="registerMessage"
-    >
-      Бүртгэлийн хэсэг бэлэн боллоо.
+      id="registerMessage">
     </div>
 
   </div>
 
-
   <a
     class="back"
-    href="index.html"
-  >
+    href="index.html">
     ← BANO нүүр хуудас руу буцах
   </a>
 
@@ -315,6 +267,28 @@ label{
 
 
 <script>
+
+/* =====================================
+   SUPABASE ТОХИРГОО
+   ===================================== */
+
+const SUPABASE_URL =
+  "https://idjqvulwffvtqplwmamt.supabase.co/rest/v1/";
+
+const SUPABASE_KEY =
+  "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =====================================
+   FORM СОЛИХ
+   ===================================== */
 
 function showForm(type){
 
@@ -352,28 +326,38 @@ function showForm(type){
 }
 
 
-function register(){
+/* =====================================
+   БҮРТГҮҮЛЭХ
+   ===================================== */
+
+async function register(){
 
   const name =
-    document.getElementById("registerName").value;
+    document.getElementById(
+      "registerName"
+    ).value.trim();
 
   const email =
-    document.getElementById("registerEmail").value;
+    document.getElementById(
+      "registerEmail"
+    ).value.trim();
 
   const password =
-    document.getElementById("registerPassword").value;
+    document.getElementById(
+      "registerPassword"
+    ).value;
 
   const message =
-    document.getElementById("registerMessage");
+    document.getElementById(
+      "registerMessage"
+    );
 
 
-  if(
-    name === "" ||
-    email === "" ||
-    password === ""
-  ){
+  message.style.display="block";
 
-    message.style.display="block";
+
+  if(!name || !email || !password){
+
     message.textContent =
       "⚠️ Бүх талбарыг бөглөнө үү.";
 
@@ -382,32 +366,74 @@ function register(){
   }
 
 
-  message.style.display="block";
+  if(password.length < 6){
+
+    message.textContent =
+      "⚠️ Нууц үг хамгийн багадаа 6 тэмдэгт байна.";
+
+    return;
+
+  }
+
+
+  const { data, error } =
+    await supabaseClient.auth.signUp({
+
+      email:email,
+
+      password:password,
+
+      options:{
+        data:{
+          full_name:name
+        }
+      }
+
+    });
+
+
+  if(error){
+
+    message.textContent =
+      "❌ " + error.message;
+
+    return;
+
+  }
+
 
   message.textContent =
-    "✅ Бүртгэл амжилттай үүсгэгдлээ.";
+    "✅ Бүртгэл амжилттай үүслээ. И-мэйлээ шалгана уу.";
 
 }
 
 
-function login(){
+/* =====================================
+   НЭВТРЭХ
+   ===================================== */
+
+async function login(){
 
   const email =
-    document.getElementById("loginEmail").value;
+    document.getElementById(
+      "loginEmail"
+    ).value.trim();
 
   const password =
-    document.getElementById("loginPassword").value;
+    document.getElementById(
+      "loginPassword"
+    ).value;
 
   const message =
-    document.getElementById("loginMessage");
+    document.getElementById(
+      "loginMessage"
+    );
 
 
-  if(
-    email === "" ||
-    password === ""
-  ){
+  message.style.display="block";
 
-    message.style.display="block";
+
+  if(!email || !password){
 
     message.textContent =
       "⚠️ И-мэйл болон нууц үгээ оруулна уу.";
@@ -417,10 +443,36 @@ function login(){
   }
 
 
-  message.style.display="block";
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+
+      email:email,
+
+      password:password
+
+    });
+
+
+  if(error){
+
+    message.textContent =
+      "❌ " + error.message;
+
+    return;
+
+  }
+
 
   message.textContent =
-    "✅ Нэвтрэх систем бэлэн боллоо.";
+    "✅ Амжилттай нэвтэрлээ!";
+
+
+  setTimeout(function(){
+
+    window.location.href =
+      "index.html";
+
+  },1000);
 
 }
 
