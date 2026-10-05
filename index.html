@@ -3,27 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>BANO — Монгол кино</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
   background:#07080b;
   color:#fff;
   font-family:Arial,Helvetica,sans-serif;
 }
-
-/* HEADER */
 
 header{
   height:72px;
@@ -31,41 +20,29 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(7,8,11,.94);
-  backdrop-filter:blur(12px);
+  background:rgba(7,8,11,.95);
   position:sticky;
   top:0;
   z-index:100;
-  border-bottom:1px solid rgba(255,255,255,.05);
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
 .logo{
   font-size:30px;
   font-weight:900;
   letter-spacing:5px;
-  color:#fff;
 }
-
-.logo span{
-  color:#ff9d00;
-}
+.logo span{color:#ff9d00}
 
 nav{
   display:flex;
-  align-items:center;
   gap:28px;
 }
-
 nav a{
   color:#aaa;
   text-decoration:none;
-  font-size:15px;
-  transition:.2s;
 }
-
-nav a:hover{
-  color:#fff;
-}
+nav a:hover{color:#fff}
 
 .search{
   background:#15171c;
@@ -77,45 +54,17 @@ nav a:hover{
   width:180px;
 }
 
-.search::placeholder{
-  color:#777;
-}
-
-/* HERO */
-
 .hero{
   min-height:610px;
   display:flex;
   align-items:center;
   padding:80px 6%;
-  position:relative;
-  overflow:hidden;
-
   background:
     radial-gradient(circle at 75% 35%,rgba(255,120,0,.28),transparent 30%),
-    radial-gradient(circle at 90% 80%,rgba(255,50,0,.12),transparent 30%),
-    linear-gradient(90deg,#07080b 15%,rgba(7,8,11,.72),rgba(7,8,11,.92));
+    linear-gradient(90deg,#07080b,#111218);
 }
 
-.hero:after{
-  content:"";
-  position:absolute;
-  right:5%;
-  top:70px;
-  width:430px;
-  height:500px;
-  border-radius:20px;
-  background:
-    linear-gradient(145deg,#33200c,#121317 60%,#07080b);
-  opacity:.8;
-  transform:rotate(4deg);
-}
-
-.hero-content{
-  max-width:650px;
-  position:relative;
-  z-index:2;
-}
+.hero-content{max-width:650px}
 
 .badge{
   display:inline-block;
@@ -125,7 +74,6 @@ nav a:hover{
   color:#ffb52e;
   font-size:12px;
   font-weight:bold;
-  letter-spacing:1px;
   margin-bottom:22px;
 }
 
@@ -133,12 +81,8 @@ nav a:hover{
   font-size:68px;
   line-height:.98;
   margin-bottom:22px;
-  letter-spacing:-2px;
 }
-
-.hero h1 span{
-  color:#ff9d00;
-}
+.hero h1 span{color:#ff9d00}
 
 .hero p{
   color:#aaa;
@@ -161,34 +105,25 @@ nav a:hover{
   border-radius:8px;
   text-decoration:none;
   font-weight:bold;
-  transition:.2s;
 }
 
-.btn.primary{
+.primary{
   background:#ff9d00;
   color:#08090c;
 }
 
-.btn.primary:hover{
-  transform:translateY(-2px);
-}
-
-.btn.dark{
+.dark{
   background:#1c1e24;
   color:#fff;
   border:1px solid #30333a;
 }
 
-/* SECTIONS */
-
-section{
-  padding:42px 6%;
-}
+section{padding:42px 6%}
 
 .section-head{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   margin-bottom:22px;
 }
 
@@ -200,20 +135,12 @@ section{
 .more{
   color:#ff9d00;
   text-decoration:none;
-  font-size:14px;
 }
-
-/* CATEGORIES */
 
 .categories{
   display:flex;
   gap:12px;
   overflow-x:auto;
-  padding-bottom:8px;
-}
-
-.categories::-webkit-scrollbar{
-  height:4px;
 }
 
 .category{
@@ -223,15 +150,7 @@ section{
   background:#15171c;
   border:1px solid #24272e;
   color:#aaa;
-  transition:.2s;
 }
-
-.category:hover{
-  color:#fff;
-  border-color:#ff9d00;
-}
-
-/* MOVIES */
 
 .movies{
   display:grid;
@@ -240,6 +159,9 @@ section{
 }
 
 .movie{
+  display:block;
+  text-decoration:none;
+  color:#fff;
   background:#111318;
   border:1px solid #1c1f25;
   border-radius:12px;
@@ -249,8 +171,6 @@ section{
 
 .movie:hover{
   transform:translateY(-7px);
-  border-color:#363a43;
-  box-shadow:0 15px 35px rgba(0,0,0,.5);
 }
 
 .poster{
@@ -259,46 +179,28 @@ section{
   display:flex;
   align-items:flex-end;
   padding:18px;
-  background:
-    linear-gradient(145deg,#333,#17181c 55%,#090a0c);
 }
 
 .poster.orange{
-  background:
-    radial-gradient(circle at 70% 20%,#ff9d00,transparent 25%),
-    linear-gradient(145deg,#4a2700,#151515 65%);
+  background:linear-gradient(145deg,#4a2700,#151515);
 }
-
 .poster.red{
-  background:
-    radial-gradient(circle at 70% 20%,#b51e00,transparent 25%),
-    linear-gradient(145deg,#40100a,#111 65%);
+  background:linear-gradient(145deg,#64180d,#111);
 }
-
 .poster.blue{
-  background:
-    radial-gradient(circle at 70% 20%,#164b91,transparent 25%),
-    linear-gradient(145deg,#0d2342,#101114 65%);
+  background:linear-gradient(145deg,#123c70,#101114);
 }
-
 .poster.purple{
-  background:
-    radial-gradient(circle at 70% 20%,#6b2290,transparent 25%),
-    linear-gradient(145deg,#321143,#111 65%);
+  background:linear-gradient(145deg,#4d1765,#111);
 }
-
 .poster.green{
-  background:
-    radial-gradient(circle at 70% 20%,#217a43,transparent 25%),
-    linear-gradient(145deg,#123c24,#111 65%);
+  background:linear-gradient(145deg,#16552f,#111);
 }
 
 .poster-title{
   font-size:23px;
   font-weight:900;
   line-height:1.05;
-  position:relative;
-  z-index:2;
 }
 
 .play{
@@ -312,41 +214,22 @@ section{
   justify-content:center;
   border-radius:50%;
   background:rgba(0,0,0,.65);
-  border:1px solid rgba(255,255,255,.2);
 }
 
-.info{
-  padding:14px;
-}
-
-.info b{
-  font-size:15px;
-}
-
+.info{padding:14px}
 .info small{
   display:block;
   color:#777;
   margin-top:6px;
 }
 
-/* FEATURE */
-
-.feature{
-  padding:50px 6%;
-}
+.feature{padding:50px 6%}
 
 .feature-box{
-  min-height:270px;
   padding:40px;
   border-radius:18px;
-  background:
-    radial-gradient(circle at 80% 50%,rgba(255,157,0,.18),transparent 30%),
-    linear-gradient(110deg,#16181e,#0d0e12);
+  background:linear-gradient(110deg,#16181e,#0d0e12);
   border:1px solid #252830;
-}
-
-.feature-box .badge{
-  margin-bottom:15px;
 }
 
 .feature-box h2{
@@ -360,103 +243,35 @@ section{
   line-height:1.6;
 }
 
-/* FOOTER */
-
 footer{
-  margin-top:40px;
   padding:50px 6%;
   text-align:center;
   border-top:1px solid #1c1e23;
   color:#666;
 }
 
-footer .logo{
-  margin-bottom:15px;
-}
-
-/* MOBILE */
-
 @media(max-width:1000px){
-
-  .movies{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .hero h1{
-    font-size:55px;
-  }
-
-  .hero:after{
-    opacity:.3;
-  }
+  .movies{grid-template-columns:repeat(3,1fr)}
+  .hero h1{font-size:55px}
 }
 
 @media(max-width:700px){
-
-  header{
-    height:64px;
-  }
-
-  nav a{
-    display:none;
-  }
-
-  .search{
-    width:120px;
-  }
-
-  .hero{
-    min-height:540px;
-    padding:70px 5%;
-  }
-
-  .hero h1{
-    font-size:45px;
-  }
-
-  .hero p{
-    font-size:16px;
-  }
-
-  .buttons{
-    flex-wrap:wrap;
-  }
-
-  section{
-    padding:32px 5%;
-  }
-
-  .movies{
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-  }
-
-  .poster{
-    height:240px;
-  }
-
-  .feature-box{
-    padding:28px;
-  }
+  header{height:64px}
+  nav{display:none}
+  .search{width:130px}
+  .hero{min-height:540px;padding:70px 5%}
+  .hero h1{font-size:45px}
+  .hero p{font-size:16px}
+  .buttons{flex-wrap:wrap}
+  section{padding:32px 5%}
+  .movies{grid-template-columns:repeat(2,1fr);gap:12px}
+  .poster{height:240px}
+  .feature-box{padding:28px}
 }
 
 @media(max-width:400px){
-
-  .movies{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .poster{
-    height:210px;
-  }
-
-  .poster-title{
-    font-size:18px;
-  }
-
-  .search{
-    display:none;
-  }
+  .search{display:none}
+  .poster{height:210px}
 }
 </style>
 </head>
@@ -484,8 +299,6 @@ footer .logo{
 
 </header>
 
-
-<!-- HERO -->
 
 <div class="hero">
 
@@ -522,13 +335,18 @@ footer .logo{
 </div>
 
 
-<!-- CATEGORIES -->
-
 <section id="categories">
 
   <div class="section-head">
-    <div class="title">Төрлөөр үзэх</div>
-    <a class="more" href="#">Бүгд →</a>
+
+    <div class="title">
+      Төрлөөр үзэх
+    </div>
+
+    <a class="more" href="#">
+      Бүгд →
+    </a>
+
   </div>
 
   <div class="categories">
@@ -545,8 +363,6 @@ footer .logo{
 
 </section>
 
-
-<!-- TRENDING -->
 
 <section id="movies">
 
@@ -566,7 +382,7 @@ footer .logo{
   <div class="movies">
 
 
-    <div class="movie">
+    <a href="movie.html" class="movie">
 
       <div class="poster orange">
 
@@ -579,11 +395,16 @@ footer .logo{
       </div>
 
       <div class="info">
+
         <b>BANO ONE</b>
-        <small>2026 • Action</small>
+
+        <small>
+          2026 • Action
+        </small>
+
       </div>
 
-    </div>
+    </a>
 
 
     <div class="movie">
@@ -599,8 +420,13 @@ footer .logo{
       </div>
 
       <div class="info">
+
         <b>The Last Road</b>
-        <small>2026 • Drama</small>
+
+        <small>
+          2026 • Drama
+        </small>
+
       </div>
 
     </div>
@@ -619,8 +445,13 @@ footer .logo{
       </div>
 
       <div class="info">
+
         <b>Dark Night</b>
-        <small>2025 • Thriller</small>
+
+        <small>
+          2025 • Thriller
+        </small>
+
       </div>
 
     </div>
@@ -639,8 +470,13 @@ footer .logo{
       </div>
 
       <div class="info">
+
         <b>Love Story</b>
-        <small>2026 • Romance</small>
+
+        <small>
+          2026 • Romance
+        </small>
+
       </div>
 
     </div>
@@ -659,8 +495,13 @@ footer .logo{
       </div>
 
       <div class="info">
+
         <b>Final Mission</b>
-        <small>2025 • Action</small>
+
+        <small>
+          2025 • Action
+        </small>
+
       </div>
 
     </div>
@@ -670,8 +511,6 @@ footer .logo{
 
 </section>
 
-
-<!-- FEATURE -->
 
 <section class="feature">
 
@@ -687,7 +526,7 @@ footer .logo{
 
     <p>
       Кино, цуврал, шинэ бүтээлүүдийг хайж,
-      төрөлөөр ангилж, өөрийн жагсаалтдаа хадгалж
+      төрлөөр ангилж, өөрийн жагсаалтдаа хадгалж
       үзэх боломжтой BANO платформ.
     </p>
 
@@ -701,8 +540,6 @@ footer .logo{
 
 </section>
 
-
-<!-- RATING -->
 
 <section>
 
@@ -725,9 +562,11 @@ footer .logo{
     <div class="movie">
 
       <div class="poster blue">
+
         <div class="poster-title">
           THE<br>BEGINNING
         </div>
+
       </div>
 
       <div class="info">
@@ -741,9 +580,11 @@ footer .logo{
     <div class="movie">
 
       <div class="poster purple">
+
         <div class="poster-title">
           MEMORY
         </div>
+
       </div>
 
       <div class="info">
@@ -757,9 +598,11 @@ footer .logo{
     <div class="movie">
 
       <div class="poster green">
+
         <div class="poster-title">
           THE<br>HUNTER
         </div>
+
       </div>
 
       <div class="info">
@@ -773,9 +616,11 @@ footer .logo{
     <div class="movie">
 
       <div class="poster orange">
+
         <div class="poster-title">
           ZERO
         </div>
+
       </div>
 
       <div class="info">
@@ -789,9 +634,11 @@ footer .logo{
     <div class="movie">
 
       <div class="poster red">
+
         <div class="poster-title">
           ALONE
         </div>
+
       </div>
 
       <div class="info">
