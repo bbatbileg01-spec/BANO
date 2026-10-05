@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BANO — Монгол кино</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#08090c;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  background:rgba(8,9,12,.95);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.logo{
+  font-size:30px;
+  font-weight:900;
+  letter-spacing:4px;
+}
+nav a{
+  color:#aaa;
+  text-decoration:none;
+  margin-left:25px;
+}
+nav a:hover{color:#fff}
+
+.hero{
+  min-height:560px;
+  padding:100px 6%;
+  display:flex;
+  align-items:center;
+  background:
+    radial-gradient(circle at 75% 40%,#442000 0,transparent 35%),
+    linear-gradient(90deg,#08090c 25%,rgba(8,9,12,.75),#08090c);
+}
+.hero-content{max-width:650px}
+.badge{
+  display:inline-block;
+  padding:7px 14px;
+  border:1px solid #ff9d00;
+  border-radius:20px;
+  color:#ffb52e;
+  font-size:13px;
+  margin-bottom:20px;
+}
+h1{
+  font-size:64px;
+  line-height:1;
+  margin-bottom:20px;
+}
+.hero p{
+  color:#aaa;
+  font-size:18px;
+  line-height:1.6;
+  margin-bottom:30px;
+}
+.btn{
+  display:inline-block;
+  background:#ff9d00;
+  color:#08090c;
+  padding:14px 25px;
+  border-radius:8px;
+  font-weight:bold;
+  text-decoration:none;
+  margin-right:10px;
+}
+.btn.dark{
+  background:#202126;
+  color:#fff;
+}
+
+section{padding:35px 6%}
+.title{
+  font-size:25px;
+  margin-bottom:20px;
+}
+.movies{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:18px;
+}
+.movie{
+  background:#111318;
+  border-radius:12px;
+  overflow:hidden;
+  transition:.25s;
+  cursor:pointer;
+}
+.movie:hover{
+  transform:translateY(-6px);
+  box-shadow:0 10px 30px #000;
+}
+.poster{
+  height:270px;
+  display:flex;
+  align-items:end;
+  padding:15px;
+  background:
+    linear-gradient(135deg,#282828,#111),
+    #222;
+}
+.poster span{
+  font-size:21px;
+  font-weight:bold;
+}
+.info{padding:13px}
+.info small{color:#888}
+
+.categories{
+  display:flex;
+  gap:12px;
+  overflow:auto;
+}
+.category{
+  white-space:nowrap;
+  padding:12px 20px;
+  background:#15171c;
+  border-radius:30px;
+  color:#bbb;
+}
+footer{
+  padding:50px 6%;
+  margin-top:30px;
+  border-top:1px solid #202126;
+  color:#777;
+  text-align:center;
+}
+
+@media(max-width:800px){
+  header{padding:0 5%}
+  nav a{display:none}
+  h1{font-size:44px}
+  .hero{min-height:500px;padding:70px 5%}
+  section{padding:30px 5%}
+  .movies{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .poster{height:230px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">BANO</div>
+  <nav>
+    <a href="#">Нүүр</a>
+    <a href="#">Кино</a>
+    <a href="#">Төрөл</a>
+    <a href="#">Нэвтрэх</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="badge">BANO ORIGINAL</div>
+    <h1>Кино.<br>Чиний ертөнц.</h1>
+    <p>
+      Монгол үзэгчдэд зориулсан шинэ үеийн кино платформ.
+      Дуртай киногоо нэг дороос үзээрэй.
+    </p>
+    <a class="btn" href="#movies">Кино үзэх</a>
+    <a class="btn dark" href="#">Дэлгэрэнгүй</a>
+  </div>
+</div>
+
+<section>
+  <div class="title">Төрлөөр үзэх</div>
+  <div class="categories">
+    <div class="category">🎬 Бүх кино</div>
+    <div class="category">🔥 Адал явдал</div>
+    <div class="category">❤️ Романтик</div>
+    <div class="category">😂 Инээдмийн</div>
+    <div class="category">👻 Аймшиг</div>
+    <div class="category">🚀 Sci-Fi</div>
+  </div>
+</section>
+
+<section id="movies">
+  <div class="title">🔥 Тренд болж буй</div>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">
+        <span>BANO<br>ONE</span>
+      </div>
+      <div class="info">
+        <b>BANO ONE</b><br>
+        <small>2026 • Action</small>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">
+        <span>THE<br>LAST ROAD</span>
+      </div>
+      <div class="info">
+        <b>The Last Road</b><br>
+        <small>2026 • Drama</small>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">
+        <span>DARK<br>NIGHT</span>
+      </div>
+      <div class="info">
+        <b>Dark Night</b><br>
+        <small>2025 • Thriller</small>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">
+        <span>LOVE<br>STORY</span>
+      </div>
+      <div class="info">
+        <b>Love Story</b><br>
+        <small>2026 • Romance</small>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">
+        <span>FINAL<br>MISSION</span>
+      </div>
+      <div class="info">
+        <b>Final Mission</b><br>
+        <small>2025 • Action</small>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="title">⭐ Өндөр үнэлгээтэй</div>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster"><span>THE<br>BEGINNING</span></div>
+      <div class="info"><b>The Beginning</b><br><small>⭐ 9.1</small></div>
+    </div>
+
+    <div class="movie">
+      <div class="poster"><span>MEMORY</span></div>
+      <div class="info"><b>Memory</b><br><small>⭐ 8.9</small></div>
+    </div>
+
+    <div class="movie">
+      <div class="poster"><span>THE<br>HUNTER</span></div>
+      <div class="info"><b>The Hunter</b><br><small>⭐ 8.7</small></div>
+    </div>
+
+    <div class="movie">
+      <div class="poster"><span>ZERO</span></div>
+      <div class="info"><b>Zero</b><br><small>⭐ 8.6</small></div>
+    </div>
+
+    <div class="movie">
+      <div class="poster"><span>ALONE</span></div>
+      <div class="info"><b>Alone</b><br><small>⭐ 8.5</small></div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="logo">BANO</div>
+  <br>
+  Монгол кино үзвэрийн шинэ үе.
+  <br><br>
+  © 2026 BANO
+</footer>
+
+</body>
+</html>
