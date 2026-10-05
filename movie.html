@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BANO — Кино</title>
+<title>BANO — BANO ONE</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -25,8 +26,8 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(7,8,11,.96);
-  border-bottom:1px solid rgba(255,255,255,.06);
+  background:#08090c;
+  border-bottom:1px solid #202228;
 }
 
 .logo{
@@ -42,57 +43,46 @@ header{
 .back{
   color:#aaa;
   text-decoration:none;
-  font-size:15px;
 }
 
 .back:hover{
   color:#fff;
 }
 
-.movie-page{
-  min-height:calc(100vh - 72px);
-  padding:70px 6%;
-  background:
-    radial-gradient(circle at 80% 35%,rgba(255,157,0,.16),transparent 30%),
-    linear-gradient(90deg,#07080b,#0b0c10);
+
+/* VIDEO */
+
+.player-section{
+  padding:40px 6% 20px;
+}
+
+.player{
+  max-width:1100px;
+  margin:auto;
+  background:#000;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid #252830;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+video{
+  width:100%;
+  display:block;
+  background:#000;
+  aspect-ratio:16/9;
+}
+
+
+/* MOVIE INFO */
+
+.movie-section{
+  padding:40px 6% 70px;
 }
 
 .movie-content{
-  max-width:1150px;
+  max-width:1100px;
   margin:auto;
-  display:grid;
-  grid-template-columns:330px 1fr;
-  gap:55px;
-  align-items:center;
-}
-
-.poster{
-  height:470px;
-  border-radius:18px;
-  background:
-    radial-gradient(circle at 70% 20%,#ff9d00,transparent 25%),
-    linear-gradient(145deg,#4a2700,#151515 65%);
-  display:flex;
-  align-items:flex-end;
-  padding:25px;
-  box-shadow:0 25px 60px rgba(0,0,0,.55);
-  position:relative;
-  overflow:hidden;
-}
-
-.poster:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(0deg,rgba(0,0,0,.8),transparent 60%);
-}
-
-.poster-title{
-  position:relative;
-  z-index:2;
-  font-size:42px;
-  line-height:.95;
-  font-weight:900;
 }
 
 .badge{
@@ -103,12 +93,11 @@ header{
   color:#ffb52e;
   font-size:12px;
   font-weight:bold;
-  letter-spacing:1px;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
 h1{
-  font-size:55px;
+  font-size:48px;
   margin-bottom:15px;
 }
 
@@ -116,8 +105,8 @@ h1{
   color:#aaa;
   font-size:17px;
   line-height:1.7;
-  max-width:650px;
-  margin-bottom:25px;
+  max-width:750px;
+  margin-bottom:20px;
 }
 
 .meta{
@@ -125,11 +114,7 @@ h1{
   flex-wrap:wrap;
   gap:18px;
   color:#aaa;
-  margin-bottom:30px;
-}
-
-.meta strong{
-  color:#fff;
+  margin-bottom:25px;
 }
 
 .rating{
@@ -147,7 +132,7 @@ h1{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  padding:14px 25px;
+  padding:13px 22px;
   border-radius:8px;
   text-decoration:none;
   font-weight:bold;
@@ -164,6 +149,23 @@ h1{
   border:1px solid #30333a;
 }
 
+
+/* NOTICE */
+
+.notice{
+  max-width:1100px;
+  margin:0 auto 40px;
+  padding:15px 18px;
+  background:#111318;
+  border:1px solid #252830;
+  border-radius:10px;
+  color:#888;
+  font-size:13px;
+}
+
+
+/* FOOTER */
+
 footer{
   padding:40px 6%;
   text-align:center;
@@ -171,40 +173,48 @@ footer{
   border-top:1px solid #1c1e23;
 }
 
-@media(max-width:750px){
+
+/* MOBILE */
+
+@media(max-width:700px){
 
   header{
     height:64px;
+    padding:0 5%;
   }
 
-  .movie-page{
-    padding:40px 5%;
+  .logo{
+    font-size:25px;
   }
 
-  .movie-content{
-    grid-template-columns:1fr;
-    gap:35px;
+  .player-section{
+    padding:25px 5% 15px;
   }
 
-  .poster{
-    width:100%;
-    max-width:330px;
-    height:450px;
-    margin:auto;
+  .player{
+    border-radius:10px;
+  }
+
+  .movie-section{
+    padding:30px 5% 55px;
   }
 
   h1{
-    font-size:40px;
+    font-size:36px;
   }
 
   .description{
     font-size:15px;
   }
+
 }
+
 </style>
+
 </head>
 
 <body>
+
 
 <header>
 
@@ -213,71 +223,108 @@ footer{
   </div>
 
   <a class="back" href="index.html">
-    ← Нүүр хуудас
+    ← Нүүр
   </a>
 
 </header>
 
 
-<main class="movie-page">
+<!-- VIDEO PLAYER -->
+
+<section class="player-section">
+
+  <div class="player">
+
+    <video
+      controls
+      playsinline
+      preload="metadata"
+    >
+
+      <!--
+      ЭНД ЛИЦЕНЗТЭЙ / ӨӨРИЙН ВИДЕО URL-ЭЭ
+      ДАРАА НЬ ОРУУЛНА.
+      -->
+
+      <source src="" type="video/mp4">
+
+      Таны төхөөрөмж видео тоглуулагчийг дэмжихгүй байна.
+
+    </video>
+
+  </div>
+
+</section>
+
+
+<div class="notice">
+
+  🎬 BANO ONE — Видео тоглуулагч бэлэн.
+  Одоогоор видео файл холбогдоогүй байна.
+
+</div>
+
+
+<!-- MOVIE INFORMATION -->
+
+<section class="movie-section">
 
   <div class="movie-content">
 
-    <div class="poster">
+    <div class="badge">
+      BANO ORIGINAL
+    </div>
 
-      <div class="poster-title">
-        BANO<br>ONE
-      </div>
+    <h1>
+      BANO ONE
+    </h1>
+
+    <p class="description">
+
+      BANO платформын онцлох бүтээл.
+      Тулаан, адал явдал, нууцлаг үйл явдлаар
+      дүүрэн шинэ кино.
+
+    </p>
+
+
+    <div class="meta">
+
+      <span>2026</span>
+
+      <span>Action</span>
+
+      <span>Монгол</span>
+
+      <span class="rating">
+        ⭐ 9.2
+      </span>
 
     </div>
 
 
-    <div>
+    <div class="buttons">
 
-      <div class="badge">
-        BANO ORIGINAL
-      </div>
+      <a
+        class="btn primary"
+        href="#"
+        onclick="document.querySelector('video').play(); return false;"
+      >
+        ▶ Кино үзэх
+      </a>
 
-      <h1>
-        BANO ONE
-      </h1>
-
-      <p class="description">
-        BANO платформын онцлох кино.
-        Тулаан, адал явдал, нууцлаг үйл явдлаар
-        дүүрэн шинэ бүтээл.
-      </p>
-
-      <div class="meta">
-
-        <span><strong>2026</strong></span>
-
-        <span>Action</span>
-
-        <span>Монгол</span>
-
-        <span class="rating">⭐ 9.2</span>
-
-      </div>
-
-
-      <div class="buttons">
-
-        <a class="btn primary" href="#">
-          ▶ Кино үзэх
-        </a>
-
-        <a class="btn secondary" href="index.html">
-          ← Буцах
-        </a>
-
-      </div>
+      <a
+        class="btn secondary"
+        href="index.html"
+      >
+        ← Буцах
+      </a>
 
     </div>
 
   </div>
 
-</main>
+</section>
 
 
 <footer>
@@ -291,6 +338,7 @@ footer{
   © 2026 BANO • Бүх эрх хуулиар хамгаалагдсан.
 
 </footer>
+
 
 </body>
 </html>
