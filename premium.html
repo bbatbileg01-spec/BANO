@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BANO Premium</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#070707;
+  color:#fff;
+}
+
+header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  background:#0d0d0d;
+  border-bottom:1px solid #222;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:900;
+  color:#fff;
+  text-decoration:none;
+  letter-spacing:2px;
+}
+
+.back{
+  color:#fff;
+  text-decoration:none;
+  font-size:15px;
+  padding:10px 16px;
+  border:1px solid #333;
+  border-radius:10px;
+}
+
+.back:hover{
+  background:#1a1a1a;
+}
+
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:70px 20px 100px;
+  text-align:center;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 15px;
+  border-radius:30px;
+  background:#1b1b1b;
+  border:1px solid #333;
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+h1{
+  font-size:42px;
+  margin:10px 0;
+}
+
+.subtitle{
+  color:#aaa;
+  font-size:17px;
+  line-height:1.6;
+  max-width:600px;
+  margin:0 auto 40px;
+}
+
+.card{
+  max-width:430px;
+  margin:auto;
+  padding:35px 30px;
+  background:linear-gradient(145deg,#151515,#0d0d0d);
+  border:1px solid #333;
+  border-radius:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+
+.card h2{
+  font-size:25px;
+  margin:0 0 15px;
+}
+
+.price{
+  font-size:42px;
+  font-weight:900;
+  margin:15px 0 5px;
+}
+
+.period{
+  color:#999;
+  margin-bottom:30px;
+}
+
+.features{
+  text-align:left;
+  margin:25px 0;
+  padding:0;
+  list-style:none;
+}
+
+.features li{
+  padding:12px 0;
+  border-bottom:1px solid #242424;
+  color:#ddd;
+}
+
+.features li:last-child{
+  border-bottom:0;
+}
+
+.buy{
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  background:#fff;
+  color:#000;
+  font-size:17px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.buy:hover{
+  opacity:.9;
+}
+
+.note{
+  color:#777;
+  font-size:12px;
+  line-height:1.6;
+  margin-top:18px;
+}
+
+#userInfo{
+  margin-top:25px;
+  color:#aaa;
+  font-size:14px;
+}
+
+@media(max-width:600px){
+
+  header{
+    padding:0 18px;
+  }
+
+  .logo{
+    font-size:24px;
+  }
+
+  .container{
+    padding-top:50px;
+  }
+
+  h1{
+    font-size:34px;
+  }
+
+  .subtitle{
+    font-size:15px;
+  }
+
+  .card{
+    padding:30px 22px;
+  }
+
+  .price{
+    font-size:36px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <a href="index.html" class="logo">BANO</a>
+
+  <a href="index.html" class="back">
+    ← Буцах
+  </a>
+
+</header>
+
+
+<main class="container">
+
+  <div class="badge">
+    💎 BANO PREMIUM
+  </div>
+
+  <h1>Premium эрх</h1>
+
+  <p class="subtitle">
+    BANO-ийн Premium кинонуудыг өндөр чанартайгаар
+    үзэх боломжтой 30 хоногийн эрх.
+  </p>
+
+
+  <div class="card">
+
+    <h2>BANO Premium</h2>
+
+    <div class="price">
+      15,000₮
+    </div>
+
+    <div class="period">
+      30 хоног
+    </div>
+
+
+    <ul class="features">
+
+      <li>✓ Premium кино үзэх</li>
+
+      <li>✓ Өндөр чанартай видео</li>
+
+      <li>✓ Шинэ кинонуудыг үзэх</li>
+
+      <li>✓ Миний жагсаалт ашиглах</li>
+
+      <li>✓ 30 хоногийн эрх</li>
+
+    </ul>
+
+
+    <button class="buy" onclick="startPayment()">
+      💳 Premium авах
+    </button>
+
+    <div class="note">
+      Төлбөрийн систем дараагийн шатанд холбогдоно.
+    </div>
+
+  </div>
+
+
+  <div id="userInfo"></div>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+"https://idjqvulwffvtqplwmamt.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+async function loadUser(){
+
+  const { data, error } =
+    await supabaseClient.auth.getUser();
+
+  if(error || !data.user){
+    document.getElementById("userInfo").innerHTML =
+      "Premium авахын өмнө эхлээд нэвтэрнэ үү.";
+    return;
+  }
+
+  const user = data.user;
+
+  const name =
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    user.email?.split("@")[0] ||
+    "Хэрэглэгч";
+
+  document.getElementById("userInfo").innerHTML =
+    "Сайн байна уу, " + name + " 👋";
+
+}
+
+
+function startPayment(){
+
+  alert(
+    "💎 BANO Premium\n\n" +
+    "15,000₮ / 30 хоног\n\n" +
+    "Төлбөрийн системийг дараагийн алхамд холбоно."
+  );
+
+}
+
+
+loadUser();
+
+</script>
+
+</body>
+</html>
