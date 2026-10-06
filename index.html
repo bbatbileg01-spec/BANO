@@ -9,6 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -29,6 +30,8 @@ input{
 button{
   cursor:pointer;
 }
+
+/* HEADER */
 
 .header{
   position:sticky;
@@ -88,6 +91,8 @@ button{
   font-size:26px;
 }
 
+/* HERO */
+
 .hero{
   min-height:470px;
   display:flex;
@@ -95,9 +100,19 @@ button{
   padding:70px 7%;
   position:relative;
   overflow:hidden;
+
   background:
-    radial-gradient(circle at 75% 40%,rgba(229,9,20,.28),transparent 35%),
-    linear-gradient(90deg,#080808 35%,rgba(8,8,8,.75),#080808);
+    radial-gradient(
+      circle at 75% 40%,
+      rgba(229,9,20,.28),
+      transparent 35%
+    ),
+    linear-gradient(
+      90deg,
+      #080808 35%,
+      rgba(8,8,8,.75),
+      #080808
+    );
 }
 
 .hero-content{
@@ -155,6 +170,8 @@ button{
   border-radius:8px;
 }
 
+/* SECTION */
+
 .section{
   padding:35px 5%;
 }
@@ -163,13 +180,15 @@ button{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
 .section-title{
   font-size:24px;
   font-weight:bold;
 }
+
+/* SEARCH */
 
 .search{
   display:flex;
@@ -189,12 +208,54 @@ button{
   padding:11px 13px;
 }
 
+.search input::placeholder{
+  color:#777;
+}
+
 .search button{
   border:0;
   background:#222;
   color:#fff;
   padding:0 14px;
 }
+
+/* CATEGORIES */
+
+.categories{
+  display:flex;
+  gap:9px;
+  overflow-x:auto;
+  padding:3px 0 20px;
+  scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+.category-btn{
+  flex-shrink:0;
+  border:1px solid #333;
+  background:#151515;
+  color:#aaa;
+  padding:9px 16px;
+  border-radius:20px;
+  font-size:13px;
+  transition:.2s;
+}
+
+.category-btn:hover{
+  border-color:#e50914;
+  color:#fff;
+}
+
+.category-btn.active{
+  background:#e50914;
+  border-color:#e50914;
+  color:#fff;
+}
+
+/* MOVIE GRID */
 
 .movie-grid{
   display:grid;
@@ -235,7 +296,10 @@ button{
 .poster-overlay{
   position:absolute;
   inset:0;
-  background:linear-gradient(transparent 40%,rgba(0,0,0,.9));
+  background:linear-gradient(
+    transparent 40%,
+    rgba(0,0,0,.9)
+  );
 }
 
 .play{
@@ -288,6 +352,8 @@ button{
   font-size:12px;
 }
 
+/* EMPTY / LOADING */
+
 .empty{
   padding:50px;
   text-align:center;
@@ -302,13 +368,22 @@ button{
   grid-column:1/-1;
 }
 
+/* PREMIUM */
+
 .premium-section{
   margin:20px 5% 50px;
   padding:35px;
   border-radius:14px;
+
   background:
-    linear-gradient(120deg,#171717,#0e0e0e);
+    linear-gradient(
+      120deg,
+      #171717,
+      #0e0e0e
+    );
+
   border:1px solid #292929;
+
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -333,6 +408,8 @@ button{
   font-weight:bold;
 }
 
+/* FOOTER */
+
 .footer{
   border-top:1px solid #222;
   padding:35px 5%;
@@ -340,6 +417,8 @@ button{
   text-align:center;
   font-size:13px;
 }
+
+/* USER */
 
 .user-box{
   display:none;
@@ -365,7 +444,16 @@ button{
   font-size:12px;
 }
 
+/* MOBILE NAV */
+
+.mobile-nav{
+  display:none;
+}
+
+/* TABLET */
+
 @media(max-width:1000px){
+
   .movie-grid{
     grid-template-columns:repeat(4,1fr);
   }
@@ -373,7 +461,10 @@ button{
   .hero h1{
     font-size:46px;
   }
+
 }
+
+/* MOBILE */
 
 @media(max-width:700px){
 
@@ -400,6 +491,7 @@ button{
     top:62px;
     left:0;
     right:0;
+    z-index:999;
     background:#101010;
     padding:18px;
     border-bottom:1px solid #292929;
@@ -458,6 +550,15 @@ button{
     font-size:13px;
   }
 
+  .categories{
+    padding-bottom:15px;
+  }
+
+  .category-btn{
+    padding:8px 14px;
+    font-size:12px;
+  }
+
   .premium-section{
     margin:10px 18px 35px;
     padding:25px 20px;
@@ -471,11 +572,29 @@ button{
   .user-email{
     display:none;
   }
+
 }
+
+/* VERY SMALL PHONE */
+
+@media(max-width:380px){
+
+  .movie-grid{
+    gap:9px;
+  }
+
+  .movie-title{
+    font-size:12px;
+  }
+
+}
+
 </style>
 </head>
 
 <body>
+
+<!-- HEADER -->
 
 <header class="header">
 
@@ -484,84 +603,205 @@ button{
   </div>
 
   <nav class="nav">
-    <a href="index.html">Нүүр</a>
-    <a href="#movies">Кино</a>
-    <a href="premium.html">Premium</a>
-    <a href="admin.html" id="adminLink" style="display:none;">Admin</a>
+
+    <a href="index.html">
+      Нүүр
+    </a>
+
+    <a href="#movies">
+      Кино
+    </a>
+
+    <a href="premium.html">
+      Premium
+    </a>
+
+    <a
+      href="admin.html"
+      id="adminLink"
+      style="display:none;"
+    >
+      Admin
+    </a>
+
   </nav>
 
   <div id="guestBox">
-    <button class="login-btn" onclick="goLogin()">Нэвтрэх</button>
+
+    <button
+      class="login-btn"
+      onclick="goLogin()"
+    >
+      Нэвтрэх
+    </button>
+
   </div>
 
-  <div class="user-box" id="userBox">
-    <span class="user-email" id="userEmail"></span>
-    <button class="logout" onclick="logout()">Гарах</button>
+  <div
+    class="user-box"
+    id="userBox"
+  >
+
+    <span
+      class="user-email"
+      id="userEmail"
+    ></span>
+
+    <button
+      class="logout"
+      onclick="logout()"
+    >
+      Гарах
+    </button>
+
   </div>
 
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <button
+    class="menu-btn"
+    onclick="toggleMenu()"
+  >
+    ☰
+  </button>
 
 </header>
 
-<div class="mobile-nav" id="mobileNav">
-  <a href="index.html">Нүүр</a>
-  <a href="#movies">Кино</a>
-  <a href="premium.html">Premium</a>
-  <a href="login.html">Нэвтрэх</a>
+
+<!-- MOBILE NAV -->
+
+<div
+  class="mobile-nav"
+  id="mobileNav"
+>
+
+  <a href="index.html">
+    Нүүр
+  </a>
+
+  <a href="#movies">
+    Кино
+  </a>
+
+  <a href="premium.html">
+    Premium
+  </a>
+
+  <a href="login.html">
+    Нэвтрэх
+  </a>
+
 </div>
+
+
+<!-- HERO -->
 
 <section class="hero">
 
   <div class="hero-content">
 
-    <div class="badge">BANO PREMIUM</div>
+    <div class="badge">
+      BANO PREMIUM
+    </div>
 
     <h1>
+
       Киноны ертөнцөд<br>
-      <span>тавтай морил</span>
+
+      <span>
+        тавтай морил
+      </span>
+
     </h1>
 
     <p>
+
       Шинэ болон шилдэг кинонуудыг нэг дороос.
       BANO Premium ашиглан илүү олон кино,
       өндөр чанартай контент үзээрэй.
+
     </p>
 
     <div class="hero-buttons">
-      <button class="primary-btn" onclick="scrollMovies()">
+
+      <button
+        class="primary-btn"
+        onclick="scrollMovies()"
+      >
         ▶ Кино үзэх
       </button>
 
-      <button class="secondary-btn" onclick="location.href='premium.html'">
+      <button
+        class="secondary-btn"
+        onclick="location.href='premium.html'"
+      >
         💎 Premium
       </button>
+
     </div>
 
   </div>
 
 </section>
 
-<section class="section" id="movies">
+
+<!-- MOVIES -->
+
+<section
+  class="section"
+  id="movies"
+>
 
   <div class="section-header">
 
-    <h2 class="section-title">
+    <h2
+      class="section-title"
+      id="sectionTitle"
+    >
       🎬 Бүх кино
     </h2>
 
     <div class="search">
+
       <input
         id="searchInput"
         type="text"
         placeholder="Кино хайх..."
         oninput="searchMovies()"
       >
-      <button onclick="searchMovies()">🔍</button>
+
+      <button
+        onclick="searchMovies()"
+      >
+        🔍
+      </button>
+
     </div>
 
   </div>
 
-  <div class="movie-grid" id="movieGrid">
+
+  <!-- CATEGORY BUTTONS -->
+
+  <div
+    class="categories"
+    id="categories"
+  >
+
+    <button
+      class="category-btn active"
+      onclick="filterCategory('all', this)"
+    >
+      Бүгд
+    </button>
+
+  </div>
+
+
+  <!-- MOVIE GRID -->
+
+  <div
+    class="movie-grid"
+    id="movieGrid"
+  >
 
     <div class="loading">
       Кинонуудыг ачаалж байна...
@@ -571,15 +811,22 @@ button{
 
 </section>
 
+
+<!-- PREMIUM -->
+
 <section class="premium-section">
 
   <div>
-    <h2>💎 BANO Premium</h2>
+
+    <h2>
+      💎 BANO Premium
+    </h2>
 
     <p>
       Premium кинонуудыг үзэж, илүү олон контентод
       хандаарай.
     </p>
+
   </div>
 
   <button
@@ -590,6 +837,9 @@ button{
   </button>
 
 </section>
+
+
+<!-- FOOTER -->
 
 <footer class="footer">
 
@@ -618,10 +868,12 @@ const supabaseClient =
 
 
 /* =========================================
-   GLOBAL
+   GLOBAL VARIABLES
 ========================================= */
 
 let allMovies = [];
+
+let selectedCategory = "all";
 
 
 /* =========================================
@@ -630,7 +882,8 @@ let allMovies = [];
 
 function goLogin(){
 
-  window.location.href = "login.html";
+  window.location.href =
+    "login.html";
 
 }
 
@@ -645,7 +898,9 @@ async function loadUser(){
     data:{
       user
     }
-  } = await supabaseClient.auth.getUser();
+  } =
+  await supabaseClient.auth.getUser();
+
 
   const guestBox =
     document.getElementById("guestBox");
@@ -656,11 +911,14 @@ async function loadUser(){
   const userEmail =
     document.getElementById("userEmail");
 
+
   if(user){
 
-    guestBox.style.display = "none";
+    guestBox.style.display =
+      "none";
 
-    userBox.style.display = "flex";
+    userBox.style.display =
+      "flex";
 
     userEmail.textContent =
       user.email || "Хэрэглэгч";
@@ -669,9 +927,11 @@ async function loadUser(){
 
   }else{
 
-    guestBox.style.display = "block";
+    guestBox.style.display =
+      "block";
 
-    userBox.style.display = "none";
+    userBox.style.display =
+      "none";
 
   }
 
@@ -687,15 +947,19 @@ async function checkAdmin(userId){
   const {
     data,
     error
-  } = await supabaseClient
+  } =
+  await supabaseClient
     .from("admin_users")
     .select("user_id")
     .eq("user_id",userId)
     .maybeSingle();
 
+
   if(data && !error){
 
-    document.getElementById("adminLink").style.display =
+    document.getElementById(
+      "adminLink"
+    ).style.display =
       "inline";
 
   }
@@ -723,141 +987,313 @@ async function logout(){
 async function loadMovies(){
 
   const movieGrid =
-    document.getElementById("movieGrid");
+    document.getElementById(
+      "movieGrid"
+    );
+
 
   movieGrid.innerHTML =
-    '<div class="loading">Кинонуудыг ачаалж байна...</div>';
+    `
+    <div class="loading">
+      Кинонуудыг ачаалж байна...
+    </div>
+    `;
+
 
   const {
     data:movies,
     error
-  } = await supabaseClient
+  } =
+  await supabaseClient
     .from("movies")
     .select("*")
-    .order("created_at",{ascending:false});
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
 
   if(error){
 
     console.error(error);
 
     movieGrid.innerHTML =
-      '<div class="empty">Кино ачаалахад алдаа гарлаа.</div>';
+      `
+      <div class="empty">
+        Кино ачаалахад алдаа гарлаа.
+      </div>
+      `;
 
     return;
 
   }
 
-  allMovies = movies || [];
 
-  renderMovies(allMovies);
+  allMovies =
+    movies || [];
+
+
+  createCategories();
+
+
+  renderMovies(
+    getFilteredMovies()
+  );
 
 }
 
 
 /* =========================================
-   RENDER MOVIES
+   CREATE CATEGORIES
 ========================================= */
 
-function renderMovies(movies){
+function createCategories(){
 
-  const movieGrid =
-    document.getElementById("movieGrid");
+  const categories =
+    document.getElementById(
+      "categories"
+    );
 
-  movieGrid.innerHTML = "";
 
-  if(!movies || movies.length === 0){
+  const categorySet =
+    new Set();
 
-    movieGrid.innerHTML =
-      '<div class="empty">Одоогоор кино алга байна.</div>';
 
-    return;
+  allMovies.forEach(movie => {
 
-  }
+    if(movie.category){
 
-  movies.forEach(movie => {
+      const category =
+        String(movie.category)
+          .trim();
 
-    const card =
-      document.createElement("div");
+      if(category){
 
-    card.className = "movie-card";
+        categorySet.add(
+          category
+        );
 
-    card.onclick = function(){
+      }
 
-      window.location.href =
-        "movie.html?id=" + movie.id;
+    }
+
+  });
+
+
+  const sortedCategories =
+    Array.from(categorySet)
+      .sort(
+        (a,b) =>
+          a.localeCompare(
+            b,
+            "mn"
+          )
+      );
+
+
+  categories.innerHTML = "";
+
+
+  const allButton =
+    document.createElement(
+      "button"
+    );
+
+  allButton.className =
+    "category-btn active";
+
+  allButton.textContent =
+    "Бүгд";
+
+  allButton.onclick =
+    function(){
+
+      filterCategory(
+        "all",
+        this
+      );
 
     };
 
 
-    const poster =
-      movie.poster_url
-      ?
-      `
-      <img
-        src="${escapeHtml(movie.poster_url)}"
-        alt="${escapeHtml(movie.title || "Movie")}"
-      >
-      `
-      :
-      `
-      <div style="
-        width:100%;
-        height:100%;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:45px;
-      ">
-        🎬
-      </div>
-      `;
+  categories.appendChild(
+    allButton
+  );
 
 
-    const premiumBadge =
-      movie.is_premium
-      ?
-      `<div class="premium">💎 PREMIUM</div>`
-      :
-      "";
+  sortedCategories.forEach(
+    category => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+      button.className =
+        "category-btn";
+
+      button.textContent =
+        category;
+
+      button.onclick =
+        function(){
+
+          filterCategory(
+            category,
+            this
+          );
+
+        };
 
 
-    card.innerHTML = `
+      categories.appendChild(
+        button
+      );
 
-      <div class="poster">
+    }
+  );
 
-        ${poster}
+}
 
-        <div class="poster-overlay"></div>
 
-        <div class="play">▶</div>
+/* =========================================
+   FILTER CATEGORY
+========================================= */
 
-        ${premiumBadge}
+function filterCategory(
+  category,
+  button
+){
 
-      </div>
+  selectedCategory =
+    category;
 
-      <div class="movie-info">
 
-        <div class="movie-title">
-          ${escapeHtml(movie.title || "Нэргүй кино")}
-        </div>
+  document
+    .querySelectorAll(
+      ".category-btn"
+    )
+    .forEach(btn => {
 
-        <div class="movie-meta">
+      btn.classList.remove(
+        "active"
+      );
 
-          ${movie.year || ""}
+    });
 
-          ${movie.year && movie.category ? " • " : ""}
 
-          ${escapeHtml(movie.category || "")}
+  if(button){
 
-        </div>
+    button.classList.add(
+      "active"
+    );
 
-      </div>
+  }
 
-    `;
 
-    movieGrid.appendChild(card);
+  const title =
+    document.getElementById(
+      "sectionTitle"
+    );
 
-  });
+
+  if(category === "all"){
+
+    title.textContent =
+      "🎬 Бүх кино";
+
+  }else{
+
+    title.textContent =
+      "🎬 " + category;
+
+  }
+
+
+  renderMovies(
+    getFilteredMovies()
+  );
+
+}
+
+
+/* =========================================
+   GET FILTERED MOVIES
+========================================= */
+
+function getFilteredMovies(){
+
+  const keyword =
+    document
+      .getElementById(
+        "searchInput"
+      )
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  return allMovies.filter(
+    movie => {
+
+      const title =
+        (
+          movie.title ||
+          ""
+        )
+        .toLowerCase();
+
+
+      const category =
+        (
+          movie.category ||
+          ""
+        )
+        .toLowerCase();
+
+
+      const description =
+        (
+          movie.description ||
+          ""
+        )
+        .toLowerCase();
+
+
+      const matchesCategory =
+        selectedCategory ===
+        "all"
+        ||
+        category ===
+        selectedCategory
+          .toLowerCase();
+
+
+      const matchesSearch =
+        !keyword
+        ||
+        title.includes(
+          keyword
+        )
+        ||
+        category.includes(
+          keyword
+        )
+        ||
+        description.includes(
+          keyword
+        );
+
+
+      return (
+        matchesCategory &&
+        matchesSearch
+      );
+
+    }
+  );
 
 }
 
@@ -868,43 +1304,185 @@ function renderMovies(movies){
 
 function searchMovies(){
 
-  const input =
-    document.getElementById("searchInput");
+  renderMovies(
+    getFilteredMovies()
+  );
 
-  const keyword =
-    input.value
-      .trim()
-      .toLowerCase();
+}
 
-  if(!keyword){
 
-    renderMovies(allMovies);
+/* =========================================
+   RENDER MOVIES
+========================================= */
+
+function renderMovies(
+  movies
+){
+
+  const movieGrid =
+    document.getElementById(
+      "movieGrid"
+    );
+
+
+  movieGrid.innerHTML =
+    "";
+
+
+  if(
+    !movies ||
+    movies.length === 0
+  ){
+
+    movieGrid.innerHTML =
+      `
+      <div class="empty">
+
+        🎬
+
+        <br><br>
+
+        Кино олдсонгүй.
+
+      </div>
+      `;
 
     return;
 
   }
 
-  const filtered =
-    allMovies.filter(movie => {
 
-      const title =
-        (movie.title || "").toLowerCase();
+  movies.forEach(
+    movie => {
 
-      const category =
-        (movie.category || "").toLowerCase();
+      const card =
+        document.createElement(
+          "div"
+        );
 
-      const description =
-        (movie.description || "").toLowerCase();
 
-      return (
-        title.includes(keyword) ||
-        category.includes(keyword) ||
-        description.includes(keyword)
+      card.className =
+        "movie-card";
+
+
+      card.onclick =
+        function(){
+
+          window.location.href =
+            "movie.html?id=" +
+            movie.id;
+
+        };
+
+
+      const poster =
+        movie.poster_url
+        ?
+        `
+        <img
+          src="${escapeHtml(
+            movie.poster_url
+          )}"
+          alt="${escapeHtml(
+            movie.title ||
+            "Movie"
+          )}"
+          loading="lazy"
+        >
+        `
+        :
+        `
+        <div
+          style="
+            width:100%;
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:45px;
+          "
+        >
+          🎬
+        </div>
+        `;
+
+
+      const premiumBadge =
+        movie.is_premium
+        ?
+        `
+        <div class="premium">
+          💎 PREMIUM
+        </div>
+        `
+        :
+        "";
+
+
+      card.innerHTML =
+        `
+
+        <div class="poster">
+
+          ${poster}
+
+          <div class="poster-overlay"></div>
+
+          <div class="play">
+            ▶
+          </div>
+
+          ${premiumBadge}
+
+        </div>
+
+
+        <div class="movie-info">
+
+          <div class="movie-title">
+
+            ${escapeHtml(
+              movie.title ||
+              "Нэргүй кино"
+            )}
+
+          </div>
+
+
+          <div class="movie-meta">
+
+            ${
+              movie.year ||
+              ""
+            }
+
+            ${
+              movie.year &&
+              movie.category
+              ?
+              " • "
+              :
+              ""
+            }
+
+            ${escapeHtml(
+              movie.category ||
+              ""
+            )}
+
+          </div>
+
+        </div>
+
+        `;
+
+
+      movieGrid.appendChild(
+        card
       );
 
-    });
-
-  renderMovies(filtered);
+    }
+  );
 
 }
 
@@ -913,18 +1491,46 @@ function searchMovies(){
    ESCAPE HTML
 ========================================= */
 
-function escapeHtml(value){
+function escapeHtml(
+  value
+){
 
-  if(value === null || value === undefined){
+  if(
+    value === null ||
+    value === undefined
+  ){
+
     return "";
+
   }
 
+
   return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
@@ -936,8 +1542,12 @@ function escapeHtml(value){
 function toggleMenu(){
 
   document
-    .getElementById("mobileNav")
-    .classList.toggle("show");
+    .getElementById(
+      "mobileNav"
+    )
+    .classList.toggle(
+      "show"
+    );
 
 }
 
@@ -949,7 +1559,9 @@ function toggleMenu(){
 function scrollMovies(){
 
   document
-    .getElementById("movies")
+    .getElementById(
+      "movies"
+    )
     .scrollIntoView({
       behavior:"smooth"
     });
