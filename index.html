@@ -29,12 +29,14 @@ color:#fff;
 font-family:Arial,Helvetica,sans-serif;
 }
 
+/* ================= HEADER ================= */
+
 header{
 height:72px;
 padding:0 6%;
 display:flex;
 align-items:center;
-justify-content:space-between;
+gap:25px;
 background:#08090c;
 border-bottom:1px solid #202228;
 position:sticky;
@@ -46,6 +48,7 @@ z-index:1000;
 font-size:30px;
 font-weight:900;
 letter-spacing:5px;
+flex-shrink:0;
 }
 
 .logo span{
@@ -56,47 +59,116 @@ nav{
 display:flex;
 gap:24px;
 align-items:center;
+flex:1;
 }
 
 nav a{
 color:#aaa;
 text-decoration:none;
+font-size:14px;
 }
 
 nav a:hover{
 color:#fff;
 }
 
+/* ================= ACCOUNT ================= */
+
 .account{
-display:flex;
-align-items:center;
-gap:8px;
+position:relative;
+margin-left:auto;
 }
 
 .account-btn{
 background:#15171c;
 border:1px solid #292c33;
 color:#fff;
-padding:9px 13px;
-border-radius:20px;
+padding:10px 15px;
+border-radius:25px;
 cursor:pointer;
 font-size:13px;
+white-space:nowrap;
 }
 
 .account-btn:hover{
 border-color:#ff9d00;
 }
 
-.logout-btn{
+.account-menu{
+position:absolute;
+right:0;
+top:52px;
+width:260px;
+background:#111318;
+border:1px solid #2a2d34;
+border-radius:16px;
+padding:12px;
 display:none;
-background:#241515;
-border:1px solid #4b2929;
-color:#ff8d8d;
-padding:9px 12px;
-border-radius:20px;
-cursor:pointer;
-font-size:13px;
+box-shadow:0 20px 50px rgba(0,0,0,.75);
 }
+
+.account-menu.show{
+display:block;
+}
+
+.account-user{
+padding:14px;
+border-bottom:1px solid #282b32;
+margin-bottom:8px;
+}
+
+.account-avatar{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#ff9d00;
+color:#111;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.account-name{
+font-weight:bold;
+font-size:15px;
+}
+
+.account-email{
+font-size:12px;
+color:#777;
+margin-top:5px;
+word-break:break-all;
+}
+
+.account-item{
+width:100%;
+padding:12px 13px;
+background:none;
+border:0;
+border-radius:9px;
+color:#ddd;
+text-align:left;
+cursor:pointer;
+font-size:14px;
+}
+
+.account-item:hover{
+background:#1b1d23;
+color:#fff;
+}
+
+.account-item.logout{
+color:#ff8585;
+}
+
+.account-item.logout:hover{
+background:#291414;
+}
+
+/* ================= SEARCH ================= */
 
 .search-box{
 position:relative;
@@ -164,6 +236,8 @@ margin-top:6px;
 .result-rating{
 color:#ffb52e;
 }
+
+/* ================= HERO ================= */
 
 .hero{
 min-height:600px;
@@ -242,6 +316,8 @@ color:#fff;
 border:1px solid #30333a;
 }
 
+/* ================= SECTIONS ================= */
+
 section{
 padding:42px 6%;
 }
@@ -263,6 +339,8 @@ color:#ff9d00;
 text-decoration:none;
 }
 
+/* ================= CATEGORIES ================= */
+
 .categories{
 display:flex;
 gap:12px;
@@ -281,7 +359,15 @@ border-radius:30px;
 background:#15171c;
 border:1px solid #24272e;
 color:#aaa;
+cursor:pointer;
 }
+
+.category:hover{
+border-color:#ff9d00;
+color:#fff;
+}
+
+/* ================= MOVIES ================= */
 
 .movies{
 display:grid;
@@ -299,6 +385,7 @@ border:1px solid #1c1f25;
 border-radius:12px;
 overflow:hidden;
 transition:.25s;
+cursor:pointer;
 }
 
 .movie:hover{
@@ -380,7 +467,7 @@ background:rgba(0,0,0,.65);
 
 .info{
 padding:14px;
-padding-right:48px;
+padding-right:55px;
 }
 
 .info b{
@@ -427,20 +514,13 @@ color:#777;
 grid-column:1/-1;
 }
 
+/* ================= MY LIST ================= */
+
 .my-list-section{
 display:none;
 background:#0b0c10;
 border-top:1px solid #17191e;
 border-bottom:1px solid #17191e;
-}
-
-.my-list-section .empty{
-padding:30px;
-text-align:center;
-color:#777;
-background:#111318;
-border:1px solid #20232a;
-border-radius:12px;
 }
 
 .my-list-movies{
@@ -475,6 +555,17 @@ padding:7px 10px;
 cursor:pointer;
 }
 
+.empty{
+padding:30px;
+text-align:center;
+color:#777;
+background:#111318;
+border:1px solid #20232a;
+border-radius:12px;
+}
+
+/* ================= FEATURE ================= */
+
 .feature{
 padding:50px 6%;
 }
@@ -502,12 +593,16 @@ max-width:600px;
 line-height:1.6;
 }
 
+/* ================= FOOTER ================= */
+
 footer{
 padding:50px 6%;
 text-align:center;
 border-top:1px solid #1c1e23;
 color:#666;
 }
+
+/* ================= TOAST ================= */
 
 .toast{
 position:fixed;
@@ -524,6 +619,8 @@ z-index:9999;
 box-shadow:0 10px 30px rgba(0,0,0,.5);
 }
 
+/* ================= MOBILE ================= */
+
 @media(max-width:1000px){
 
 .movies,
@@ -537,25 +634,37 @@ font-size:55px;
 
 }
 
-@media(max-width:700px){
+@media(max-width:800px){
 
 header{
 height:64px;
-padding:0 5%;
+padding:0 4%;
+gap:10px;
 }
 
 nav{
 display:none;
 }
 
+.logo{
+font-size:24px;
+}
+
 .search{
-width:160px;
+width:150px;
+}
+
+.account-btn{
+padding:9px 11px;
 }
 
 .search-results{
 width:300px;
-right:0;
 }
+
+}
+
+@media(max-width:700px){
 
 .hero{
 min-height:540px;
@@ -604,17 +713,43 @@ font-size:28px;
 height:220px;
 }
 
+.account-menu{
+position:fixed;
+right:12px;
+top:72px;
+width:270px;
 }
 
-@media(max-width:400px){
+}
+
+@media(max-width:450px){
+
+.logo{
+font-size:21px;
+letter-spacing:3px;
+}
 
 .search{
-width:135px;
+width:125px;
+padding:10px 12px;
+}
+
+.account-btn{
+font-size:0;
+width:40px;
+height:40px;
+padding:0;
+border-radius:50%;
+}
+
+.account-btn::before{
+content:"👤";
+font-size:17px;
 }
 
 .search-results{
 width:270px;
-right:-10px;
+right:-5px;
 }
 
 .poster{
@@ -625,12 +760,40 @@ height:210px;
 font-size:40px;
 }
 
+.poster-title{
+font-size:19px;
+}
+
+.info{
+padding:11px;
+}
+
+.info b{
+font-size:13px;
+}
+
+.list-btn{
+width:32px;
+height:32px;
+right:8px;
+bottom:8px;
+}
+
+}
+
+/* ================= HIDDEN ================= */
+
+.hidden{
+display:none !important;
 }
 
 </style>
+
 </head>
 
 <body>
+
+<!-- ================= HEADER ================= -->
 
 <header>
 
@@ -658,23 +821,65 @@ BAN<span>O</span>
 
 </nav>
 
+<!-- ACCOUNT -->
+
 <div class="account">
 
 <button
 id="accountButton"
 class="account-btn"
-onclick="accountAction()">
+onclick="toggleAccountMenu()">
 Нэвтрэх
 </button>
 
+<div
+id="accountMenu"
+class="account-menu">
+
+<div
+id="accountUser"
+class="account-user">
+
+<div class="account-avatar">
+👤
+</div>
+
+<div
+id="accountName"
+class="account-name">
+Хэрэглэгч
+</div>
+
+<div
+id="accountEmail"
+class="account-email">
+</div>
+
+</div>
+
 <button
-id="logoutButton"
-class="logout-btn"
+class="account-item"
+onclick="openMyList()">
+❤️ Миний жагсаалт
+</button>
+
+<button
+class="account-item"
+onclick="closeAccountMenu()">
+⚙️ Тохиргоо
+</button>
+
+<button
+class="account-item logout"
 onclick="logout()">
-Гарах
+🚪 Гарах
 </button>
 
 </div>
+
+</div>
+
+<!-- SEARCH -->
 
 <div class="search-box">
 
@@ -695,6 +900,8 @@ class="search-results">
 
 </header>
 
+
+<!-- ================= HERO ================= -->
 
 <div class="hero">
 
@@ -737,6 +944,8 @@ href="#categories">
 </div>
 
 
+<!-- ================= CATEGORIES ================= -->
+
 <section id="categories">
 
 <div class="section-head">
@@ -745,7 +954,9 @@ href="#categories">
 Төрлөөр үзэх
 </div>
 
-<a class="more" href="#">
+<a
+class="more"
+href="#movies">
 Бүгд →
 </a>
 
@@ -786,6 +997,8 @@ href="#categories">
 </section>
 
 
+<!-- ================= TRENDING ================= -->
+
 <section id="movies">
 
 <div class="section-head">
@@ -794,12 +1007,13 @@ href="#categories">
 🔥 Тренд болж буй
 </div>
 
-<a class="more" href="#">
+<a
+class="more"
+href="#movies">
 Бүгдийг үзэх →
 </a>
 
 </div>
-
 
 <div
 class="movies"
@@ -834,7 +1048,7 @@ BANO ONE
 </b>
 
 <small>
-2026 • Action
+2026 • Action • ⭐ 9.2
 </small>
 
 </div>
@@ -876,7 +1090,7 @@ The Last Road
 </b>
 
 <small>
-2026 • Drama
+2026 • Drama • ⭐ 8.8
 </small>
 
 </div>
@@ -918,7 +1132,7 @@ Dark Night
 </b>
 
 <small>
-2025 • Thriller
+2025 • Thriller • ⭐ 8.7
 </small>
 
 </div>
@@ -960,7 +1174,7 @@ Love Story
 </b>
 
 <small>
-2026 • Romance
+2026 • Romance • ⭐ 8.6
 </small>
 
 </div>
@@ -1002,7 +1216,7 @@ Final Mission
 </b>
 
 <small>
-2025 • Action
+2025 • Action • ⭐ 8.5
 </small>
 
 </div>
@@ -1027,7 +1241,7 @@ class="no-results">
 </section>
 
 
-<!-- MY LIST -->
+<!-- ================= MY LIST ================= -->
 
 <section
 id="myListSection"
@@ -1054,6 +1268,8 @@ class="empty">
 
 </section>
 
+
+<!-- ================= FEATURE ================= -->
 
 <section class="feature">
 
@@ -1086,6 +1302,8 @@ BANO-д нэвтрэх
 </section>
 
 
+<!-- ================= HIGH RATED ================= -->
+
 <section>
 
 <div class="section-head">
@@ -1094,7 +1312,9 @@ BANO-д нэвтрэх
 ⭐ Өндөр үнэлгээтэй
 </div>
 
-<a class="more" href="#">
+<a
+class="more"
+href="#movies">
 Бүгд →
 </a>
 
@@ -1234,6 +1454,8 @@ Alone
 </section>
 
 
+<!-- ================= FOOTER ================= -->
+
 <footer>
 
 <div class="logo">
@@ -1251,6 +1473,8 @@ BAN<span>O</span>
 </footer>
 
 
+<!-- TOAST -->
+
 <div
 id="toast"
 class="toast">
@@ -1259,16 +1483,15 @@ class="toast">
 
 <script>
 
-/* =====================================
+/* ==================================================
    SUPABASE
-===================================== */
+================================================== */
 
 const SUPABASE_URL =
 "https://idjqvulwffvtqplwmamt.supabase.co";
 
 const SUPABASE_KEY =
 "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
-
 
 const supabaseClient =
 window.supabase.createClient(
@@ -1277,16 +1500,16 @@ SUPABASE_KEY
 );
 
 
-/* =====================================
+/* ==================================================
    VARIABLES
-===================================== */
+================================================== */
 
 let currentUser = null;
 
 
-/* =====================================
+/* ==================================================
    TOAST
-===================================== */
+================================================== */
 
 function showToast(message){
 
@@ -1297,6 +1520,9 @@ toast.textContent = message;
 
 toast.style.display = "block";
 
+clearTimeout(window.toastTimer);
+
+window.toastTimer =
 setTimeout(function(){
 
 toast.style.display = "none";
@@ -1306,19 +1532,114 @@ toast.style.display = "none";
 }
 
 
-/* =====================================
-   ACCOUNT
-===================================== */
+/* ==================================================
+   ACCOUNT MENU
+================================================== */
+
+function toggleAccountMenu(){
+
+const menu =
+document.getElementById("accountMenu");
+
+if(!currentUser){
+
+window.location.href =
+"login.html";
+
+return;
+
+}
+
+menu.classList.toggle("show");
+
+}
+
+
+function closeAccountMenu(){
+
+document
+.getElementById("accountMenu")
+.classList.remove("show");
+
+}
+
+
+document.addEventListener(
+"click",
+function(event){
+
+if(
+!event.target.closest(".account")
+){
+
+closeAccountMenu();
+
+}
+
+});
+
+
+/* ==================================================
+   OPEN MY LIST
+================================================== */
+
+function openMyList(){
+
+closeAccountMenu();
+
+const section =
+document.getElementById("myListSection");
+
+if(!currentUser){
+
+window.location.href =
+"login.html";
+
+return;
+
+}
+
+if(
+section.style.display === "none" ||
+section.style.display === ""
+){
+
+section.style.display =
+"block";
+
+}
+
+section.scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
+/* ==================================================
+   LOAD USER
+================================================== */
 
 async function loadUser(){
 
 const {
-data
+data,
+error
 } =
 await supabaseClient.auth.getUser();
 
+if(error){
+
+console.error(error);
+
+currentUser = null;
+
+}else{
+
 currentUser =
 data.user || null;
+
+}
 
 updateAccountUI();
 
@@ -1331,73 +1652,77 @@ await loadMyList();
 }
 
 
+/* ==================================================
+   UPDATE ACCOUNT UI
+================================================== */
+
 function updateAccountUI(){
 
 const accountButton =
-document.getElementById("accountButton");
+document.getElementById(
+"accountButton"
+);
 
-const logoutButton =
-document.getElementById("logoutButton");
+const accountName =
+document.getElementById(
+"accountName"
+);
+
+const accountEmail =
+document.getElementById(
+"accountEmail"
+);
 
 
 if(currentUser){
 
-let name =
+const name =
 currentUser.user_metadata?.full_name ||
+currentUser.user_metadata?.name ||
 currentUser.email?.split("@")[0] ||
 "Хэрэглэгч";
 
 accountButton.textContent =
 "👤 " + name;
 
-logoutButton.style.display =
-"block";
+accountName.textContent =
+name;
+
+accountEmail.textContent =
+currentUser.email || "";
 
 }else{
 
 accountButton.textContent =
 "Нэвтрэх";
 
-logoutButton.style.display =
-"none";
+accountName.textContent =
+"Хэрэглэгч";
+
+accountEmail.textContent =
+"";
 
 }
 
 }
 
 
-function accountAction(){
-
-if(currentUser){
-
-document
-.getElementById("myListSection")
-.scrollIntoView({
-behavior:"smooth"
-});
-
-}else{
-
-window.location.href =
-"login.html";
-
-}
-
-}
-
-
-/* =====================================
+/* ==================================================
    LOGOUT
-===================================== */
+================================================== */
 
 async function logout(){
 
 const {
 error
 } =
-await supabaseClient.auth.signOut();
+await supabaseClient.auth.signOut({
+scope:"local"
+});
 
 if(error){
+
+console.error(error);
 
 showToast(
 "❌ Гарахад алдаа гарлаа"
@@ -1411,9 +1736,23 @@ currentUser = null;
 
 updateAccountUI();
 
+closeAccountMenu();
+
 document
 .getElementById("myListSection")
-.style.display = "none";
+.style.display =
+"none";
+
+document
+.querySelectorAll(".list-btn")
+.forEach(function(button){
+
+button.classList.remove("saved");
+
+button.textContent =
+"♡";
+
+});
 
 showToast(
 "Амжилттай гарлаа"
@@ -1422,9 +1761,41 @@ showToast(
 }
 
 
-/* =====================================
+/* ==================================================
+   AUTH STATE
+================================================== */
+
+supabaseClient.auth.onAuthStateChange(
+function(event,session){
+
+currentUser =
+session?.user || null;
+
+updateAccountUI();
+
+if(currentUser){
+
+setTimeout(function(){
+
+loadMyList();
+
+},0);
+
+}else{
+
+document
+.getElementById("myListSection")
+.style.display =
+"none";
+
+}
+
+});
+
+
+/* ==================================================
    ADD / REMOVE MOVIE
-===================================== */
+================================================== */
 
 async function toggleMovie(
 event,
@@ -1493,6 +1864,8 @@ await supabaseClient
 
 if(deleteError){
 
+console.error(deleteError);
+
 showToast(
 "❌ Хасахад алдаа гарлаа"
 );
@@ -1550,14 +1923,41 @@ await loadMyList();
 }
 
 
-/* =====================================
+/* ==================================================
+   GET POSTER COLOR
+================================================== */
+
+function getPosterClass(name){
+
+const colors = {
+
+"BANO ONE":"orange",
+
+"The Last Road":"red",
+
+"Dark Night":"blue",
+
+"Love Story":"purple",
+
+"Final Mission":"green"
+
+};
+
+return colors[name] || "orange";
+
+}
+
+
+/* ==================================================
    LOAD MY LIST
-===================================== */
+================================================== */
 
 async function loadMyList(){
 
 if(!currentUser){
+
 return;
+
 }
 
 
@@ -1599,10 +1999,17 @@ document.getElementById(
 );
 
 
-if(data.length === 0){
+container.innerHTML =
+"";
+
+
+if(!data || data.length === 0){
 
 section.style.display =
 "none";
+
+empty.style.display =
+"block";
 
 return;
 
@@ -1611,10 +2018,6 @@ return;
 
 section.style.display =
 "block";
-
-container.innerHTML =
-"";
-
 
 empty.style.display =
 "none";
@@ -1629,11 +2032,17 @@ card.className =
 "list-card";
 
 
+const posterClass =
+getPosterClass(
+movie.movie_name
+);
+
+
 card.innerHTML = `
 
 <a href="${movie.movie_link}">
 
-<div class="poster orange">
+<div class="poster ${posterClass}">
 
 <div class="play">
 ▶
@@ -1678,9 +2087,9 @@ updateSavedButtons(data);
 }
 
 
-/* =====================================
+/* ==================================================
    REMOVE FROM LIST
-===================================== */
+================================================== */
 
 async function removeFromList(
 event,
@@ -1703,6 +2112,8 @@ await supabaseClient
 
 if(error){
 
+console.error(error);
+
 showToast(
 "❌ Хасахад алдаа гарлаа"
 );
@@ -1721,11 +2132,11 @@ await loadMyList();
 }
 
 
-/* =====================================
+/* ==================================================
    UPDATE HEART BUTTONS
-===================================== */
+================================================== */
 
-async function updateSavedButtons(list){
+function updateSavedButtons(list){
 
 const savedNames =
 list.map(function(item){
@@ -1754,7 +2165,9 @@ document
 const name =
 movie.dataset.movie;
 
-if(savedNames.includes(name)){
+if(
+savedNames.includes(name)
+){
 
 const button =
 movie.querySelector(".list-btn");
@@ -1775,20 +2188,9 @@ button.textContent =
 }
 
 
-/* =====================================
-   SEARCH
-===================================== */
-
-const searchInput =
-document.getElementById(
-"searchInput"
-);
-
-const searchResults =
-document.getElementById(
-"searchResults"
-);
-
+/* ==================================================
+   SEARCH DATA
+================================================== */
 
 const searchMovies = [
 
@@ -1840,6 +2242,21 @@ poster:"green"
 ];
 
 
+/* ==================================================
+   SEARCH
+================================================== */
+
+const searchInput =
+document.getElementById(
+"searchInput"
+);
+
+const searchResults =
+document.getElementById(
+"searchResults"
+);
+
+
 searchInput.addEventListener(
 "input",
 function(){
@@ -1849,10 +2266,11 @@ this.value
 .toLowerCase()
 .trim();
 
-searchResults.innerHTML = "";
+searchResults.innerHTML =
+"";
 
 
-if(text===""){
+if(text === ""){
 
 searchResults.style.display =
 "none";
@@ -1871,7 +2289,7 @@ movie.name
 );
 
 
-if(results.length===0){
+if(results.length === 0){
 
 searchResults.innerHTML = `
 
@@ -1891,7 +2309,7 @@ color:#777;
 }else{
 
 results.forEach(
-movie => {
+function(movie){
 
 searchResults.innerHTML += `
 
@@ -1938,9 +2356,9 @@ searchResults.style.display =
 });
 
 
-/* =====================================
+/* ==================================================
    CLOSE SEARCH
-===================================== */
+================================================== */
 
 document.addEventListener(
 "click",
@@ -1960,9 +2378,9 @@ searchResults.style.display =
 });
 
 
-/* =====================================
+/* ==================================================
    MOVIE CARD CLICK
-===================================== */
+================================================== */
 
 document
 .querySelectorAll(
@@ -1979,7 +2397,9 @@ event.target.closest(
 ".list-btn"
 )
 ){
+
 return;
+
 }
 
 
@@ -1987,8 +2407,10 @@ const link =
 movie.dataset.link;
 
 
-if(link &&
-link !== "#"){
+if(
+link &&
+link !== "#"
+){
 
 window.location.href =
 link;
@@ -2000,12 +2422,11 @@ link;
 });
 
 
-/* =====================================
+/* ==================================================
    START
-===================================== */
+================================================== */
 
 loadUser();
-
 
 </script>
 
