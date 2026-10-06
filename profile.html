@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BANO+ Profile</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  background:#080808;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+}
+
+.header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  background:#0b0b0b;
+  border-bottom:1px solid #222;
+}
+
+.logo{
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-decoration:none;
+}
+
+.logo span{
+  color:#e50914;
+}
+
+.back-btn{
+  color:#bbb;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.back-btn:hover{
+  color:#fff;
+}
+
+.container{
+  max-width:1100px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.profile-card{
+  background:#111;
+  border:1px solid #292929;
+  border-radius:16px;
+  padding:30px;
+  margin-bottom:30px;
+}
+
+.profile-top{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.avatar{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:#e50914;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  font-weight:bold;
+}
+
+.profile-info h1{
+  font-size:25px;
+  margin-bottom:7px;
+}
+
+.profile-info p{
+  color:#888;
+  font-size:14px;
+}
+
+.premium-box{
+  margin-top:25px;
+  padding:20px;
+  border-radius:12px;
+  background:linear-gradient(120deg,#191919,#101010);
+  border:1px solid #333;
+}
+
+.premium-title{
+  color:#d4a62a;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.premium-status{
+  color:#bbb;
+  font-size:14px;
+}
+
+.section-title{
+  font-size:24px;
+  margin-bottom:20px;
+}
+
+.movie-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:18px;
+}
+
+.movie-card{
+  background:#111;
+  border:1px solid #222;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.movie-card:hover{
+  transform:translateY(-5px);
+  border-color:#444;
+}
+
+.poster{
+  width:100%;
+  aspect-ratio:2/3;
+  background:#191919;
+  overflow:hidden;
+}
+
+.poster img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.movie-info{
+  padding:12px;
+}
+
+.movie-title{
+  font-size:14px;
+  font-weight:bold;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.movie-meta{
+  color:#777;
+  font-size:12px;
+  margin-top:6px;
+}
+
+.remove-btn{
+  width:100%;
+  border:0;
+  border-top:1px solid #222;
+  background:#151515;
+  color:#aaa;
+  padding:10px;
+  font-size:12px;
+}
+
+.remove-btn:hover{
+  background:#e50914;
+  color:#fff;
+}
+
+.empty{
+  background:#111;
+  border:1px solid #222;
+  border-radius:12px;
+  padding:50px 20px;
+  text-align:center;
+  color:#777;
+}
+
+.loading{
+  color:#aaa;
+  padding:40px;
+  text-align:center;
+}
+
+.logout-btn{
+  margin-top:25px;
+  border:1px solid #333;
+  background:#151515;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:7px;
+}
+
+.logout-btn:hover{
+  background:#e50914;
+  border-color:#e50914;
+}
+
+@media(max-width:1000px){
+
+  .movie-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+}
+
+@media(max-width:700px){
+
+  .header{
+    height:62px;
+    padding:0 18px;
+  }
+
+  .logo{
+    font-size:22px;
+  }
+
+  .container{
+    margin:25px auto;
+    padding:0 15px;
+  }
+
+  .profile-card{
+    padding:22px;
+  }
+
+  .profile-top{
+    gap:15px;
+  }
+
+  .avatar{
+    width:58px;
+    height:58px;
+    font-size:24px;
+  }
+
+  .profile-info h1{
+    font-size:19px;
+  }
+
+  .movie-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+  <a href="index.html" class="logo">
+    BANO<span>+</span>
+  </a>
+
+  <a href="index.html" class="back-btn">
+    ← Нүүр хуудас
+  </a>
+
+</header>
+
+<main class="container">
+
+  <section class="profile-card">
+
+    <div class="profile-top">
+
+      <div class="avatar" id="avatar">
+        B
+      </div>
+
+      <div class="profile-info">
+
+        <h1 id="userName">
+          Хэрэглэгч
+        </h1>
+
+        <p id="userEmail">
+          Ачаалж байна...
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="premium-box">
+
+      <div class="premium-title">
+        💎 BANO Premium
+      </div>
+
+      <div
+        class="premium-status"
+        id="premiumStatus"
+      >
+        Ачаалж байна...
+      </div>
+
+    </div>
+
+
+    <button
+      class="logout-btn"
+      onclick="logout()"
+    >
+      Гарах
+    </button>
+
+  </section>
+
+
+  <h2 class="section-title">
+    ❤️ Миний дуртай кино
+  </h2>
+
+
+  <div
+    class="movie-grid"
+    id="movieGrid"
+  >
+
+    <div class="loading">
+      Дуртай кинонуудыг ачаалж байна...
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://idjqvulwffvtqplwmamt.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+let currentUser = null;
+
+
+/* =========================
+   START
+========================= */
+
+async function start(){
+
+  const {
+    data:{
+      user
+    }
+  } =
+  await supabaseClient.auth.getUser();
+
+
+  if(!user){
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  currentUser =
+    user;
+
+
+  showUser();
+
+  await loadPremium();
+
+  await loadFavorites();
+
+}
+
+
+/* =========================
+   USER
+========================= */
+
+function showUser(){
+
+  const email =
+    currentUser.email ||
+    "Хэрэглэгч";
+
+
+  document.getElementById(
+    "userEmail"
+  ).textContent =
+    email;
+
+
+  document.getElementById(
+    "userName"
+  ).textContent =
+    "Сайн байна уу 👋";
+
+
+  const firstLetter =
+    email
+      .charAt(0)
+      .toUpperCase();
+
+
+  document.getElementById(
+    "avatar"
+  ).textContent =
+    firstLetter;
+
+}
+
+
+/* =========================
+   PREMIUM
+========================= */
+
+async function loadPremium(){
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("user_premium")
+    .select("premium_until")
+    .eq(
+      "user_id",
+      currentUser.id
+    )
+    .maybeSingle();
+
+
+  const status =
+    document.getElementById(
+      "premiumStatus"
+    );
+
+
+  if(error){
+
+    status.textContent =
+      "Premium мэдээлэл ачаалахад алдаа гарлаа.";
+
+    return;
+
+  }
+
+
+  if(
+    !data ||
+    !data.premium_until
+  ){
+
+    status.textContent =
+      "❌ Та одоогоор Premium эрхгүй байна.";
+
+    return;
+
+  }
+
+
+  const until =
+    new Date(
+      data.premium_until
+    );
+
+
+  const now =
+    new Date();
+
+
+  if(until <= now){
+
+    status.textContent =
+      "❌ Premium эрхийн хугацаа дууссан.";
+
+    return;
+
+  }
+
+
+  const diff =
+    until.getTime() -
+    now.getTime();
+
+
+  const days =
+    Math.ceil(
+      diff /
+      (1000 * 60 * 60 * 24)
+    );
+
+
+  status.textContent =
+    "✅ Premium идэвхтэй • " +
+    days +
+    " хоног үлдсэн • " +
+    until.toLocaleDateString(
+      "mn-MN"
+    );
+
+}
+
+
+/* =========================
+   FAVORITES
+========================= */
+
+async function loadFavorites(){
+
+  const grid =
+    document.getElementById(
+      "movieGrid"
+    );
+
+
+  grid.innerHTML =
+    '<div class="loading">Дуртай кинонуудыг ачаалж байна...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("favorites")
+    .select(`
+      id,
+      movie_id,
+      movies (
+        id,
+        title,
+        poster_url,
+        category,
+        year
+      )
+    `)
+    .eq(
+      "user_id",
+      currentUser.id
+    )
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+
+  if(error){
+
+    console.error(error);
+
+    grid.innerHTML =
+      '<div class="empty">Favorites ачаалахад алдаа гарлаа.</div>';
+
+    return;
+
+  }
+
+
+  if(
+    !data ||
+    data.length === 0
+  ){
+
+    grid.innerHTML =
+      `
+      <div class="empty">
+        ❤️<br><br>
+        Та одоогоор дуртай кино нэмээгүй байна.
+        <br><br>
+        Нүүр хуудаснаас кино сонгоод дуртайдаа нэмээрэй.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML = "";
+
+
+  data.forEach(
+    favorite => {
+
+      const movie =
+        favorite.movies;
+
+
+      if(!movie){
+        return;
+      }
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "movie-card";
+
+
+      card.onclick =
+        function(){
+
+          window.location.href =
+            "movie.html?id=" +
+            movie.id;
+
+        };
+
+
+      const poster =
+        movie.poster_url
+
+        ?
+
+        `<img
+          src="${escapeHtml(movie.poster_url)}"
+          alt="${escapeHtml(movie.title || "Movie")}"
+        >`
+
+        :
+
+        `
+        <div
+          style="
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:45px;
+          "
+        >
+          🎬
+        </div>
+        `;
+
+
+      card.innerHTML = `
+
+        <div class="poster">
+          ${poster}
+        </div>
+
+        <div class="movie-info">
+
+          <div class="movie-title">
+            ${escapeHtml(
+              movie.title ||
+              "Нэргүй кино"
+            )}
+          </div>
+
+          <div class="movie-meta">
+
+            ${movie.year || ""}
+
+            ${
+              movie.year &&
+              movie.category
+                ? " • "
+                : ""
+            }
+
+            ${escapeHtml(
+              movie.category ||
+              ""
+            )}
+
+          </div>
+
+        </div>
+
+        <button
+          class="remove-btn"
+          onclick="removeFavorite(event, ${favorite.id})"
+        >
+          ❤️ Дуртайгаас хасах
+        </button>
+
+      `;
+
+
+      grid.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   REMOVE FAVORITE
+========================= */
+
+async function removeFavorite(
+  event,
+  favoriteId
+){
+
+  event.stopPropagation();
+
+
+  const {
+    error
+  } =
+  await supabaseClient
+    .from("favorites")
+    .delete()
+    .eq(
+      "id",
+      favoriteId
+    )
+    .eq(
+      "user_id",
+      currentUser.id
+    );
+
+
+  if(error){
+
+    alert(
+      "Дуртайгаас хасахад алдаа гарлаа."
+    );
+
+    console.error(error);
+
+    return;
+
+  }
+
+
+  loadFavorites();
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(
+  value
+){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+
+    return "";
+
+  }
+
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =========================
+   RUN
+========================= */
+
+start();
+
+</script>
+
+</body>
+</html>
