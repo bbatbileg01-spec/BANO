@@ -1,403 +1,461 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANO Admin</title>
 
-<title>BANO Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-*{
-  box-sizing:border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-  margin:0;
-  background:#070707;
-  color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
-}
+    body {
+      margin: 0;
+      background: #080808;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
 
-header{
-  height:70px;
-  padding:0 5%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:#0d0d0d;
-  border-bottom:1px solid #222;
-}
+    header {
+      padding: 20px;
+      background: #111;
+      border-bottom: 1px solid #292929;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.logo{
-  font-size:27px;
-  font-weight:900;
-  letter-spacing:2px;
-}
+    header h1 {
+      margin: 0;
+      color: #e50914;
+      font-size: 24px;
+    }
 
-.logout{
-  padding:10px 16px;
-  border:1px solid #333;
-  border-radius:10px;
-  background:#151515;
-  color:#fff;
-  cursor:pointer;
-}
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:40px 20px 80px;
-}
+    .logout {
+      background: #333;
+      color: white;
+    }
 
-h1{
-  margin:0 0 10px;
-  font-size:34px;
-}
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px 15px 60px;
+    }
 
-.subtitle{
-  color:#888;
-  margin-bottom:30px;
-}
+    .card {
+      background: #111;
+      border: 1px solid #252525;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
 
-.card{
-  background:#111;
-  border:1px solid #292929;
-  border-radius:18px;
-  padding:25px;
-  margin-bottom:30px;
-}
+    h2 {
+      margin-top: 0;
+    }
 
-.card h2{
-  margin-top:0;
-}
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 13px;
+      margin-top: 7px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #1b1b1b;
+      color: white;
+      font-size: 15px;
+    }
 
-input,
-textarea{
-  width:100%;
-  padding:13px;
-  margin:7px 0 15px;
-  background:#090909;
-  color:#fff;
-  border:1px solid #333;
-  border-radius:9px;
-  outline:none;
-}
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
 
-textarea{
-  min-height:100px;
-  resize:vertical;
-}
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
 
-label{
-  color:#aaa;
-  font-size:14px;
-}
+    .check {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+      font-weight: normal;
+    }
 
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-}
+    .check input {
+      width: auto;
+      margin: 0;
+    }
 
-.check{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  margin:10px 0 20px;
-}
+    .add {
+      background: #e50914;
+      color: white;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 10px;
+    }
 
-.check input{
-  width:auto;
-  margin:0;
-}
+    .add:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
 
-button{
-  border:0;
-  border-radius:10px;
-  padding:13px 18px;
-  font-weight:700;
-  cursor:pointer;
-}
+    .movie {
+      display: flex;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid #292929;
+      align-items: center;
+    }
 
-.add{
-  width:100%;
-  background:#fff;
-  color:#000;
-}
+    .movie:last-child {
+      border-bottom: 0;
+    }
 
-.add:hover{
-  opacity:.9;
-}
+    .poster {
+      width: 75px;
+      height: 105px;
+      object-fit: cover;
+      border-radius: 7px;
+      background: #222;
+      flex-shrink: 0;
+    }
 
-.status{
-  margin-bottom:20px;
-  color:#aaa;
-}
+    .movie-info {
+      flex: 1;
+    }
 
-.movie{
-  display:flex;
-  gap:18px;
-  padding:15px 0;
-  border-bottom:1px solid #242424;
-  align-items:center;
-}
+    .movie-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
 
-.movie:last-child{
-  border-bottom:0;
-}
+    .movie-meta {
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.6;
+    }
 
-.poster{
-  width:80px;
-  height:105px;
-  object-fit:cover;
-  border-radius:8px;
-  background:#222;
-}
+    .premium {
+      color: #ffd700;
+    }
 
-.movie-info{
-  flex:1;
-}
+    .featured {
+      color: #00d4ff;
+    }
 
-.movie-title{
-  font-size:18px;
-  font-weight:700;
-  margin-bottom:7px;
-}
+    .delete {
+      background: #b00020;
+      color: white;
+    }
 
-.movie-meta{
-  color:#888;
-  font-size:13px;
-}
+    .status {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+    }
 
-.delete{
-  background:#2a1111;
-  color:#ff7777;
-}
+    .success {
+      background: #123d20;
+      color: #7dff9b;
+    }
 
-@media(max-width:650px){
+    .error {
+      background: #451414;
+      color: #ff8f8f;
+    }
 
-  .row{
-    grid-template-columns:1fr;
-  }
+    .progress {
+      display: none;
+      margin-top: 10px;
+      color: #aaa;
+    }
 
-  .movie{
-    align-items:flex-start;
-  }
+    .file-name {
+      color: #aaa;
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 12px;
+    }
 
-  .poster{
-    width:65px;
-    height:90px;
-  }
-}
-</style>
+    @media (max-width: 600px) {
+      .movie {
+        align-items: flex-start;
+      }
+
+      .movie-info {
+        min-width: 0;
+      }
+
+      .delete {
+        padding: 9px 12px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-
-  <div class="logo">BANO ADMIN</div>
-
-  <button class="logout" onclick="logout()">
-    Гарах
-  </button>
-
+  <h1>🎬 BANO ADMIN</h1>
+  <button class="logout" onclick="logout()">Гарах</button>
 </header>
 
-<main class="container">
+<main>
 
-  <h1>🎬 Кино удирдлага</h1>
+  <div id="status" class="status"></div>
 
-  <div class="subtitle">
-    Кино нэмэх, Premium тохируулах болон кино устгах
+  <div class="card">
+    <h2>➕ Шинэ кино нэмэх</h2>
+
+    <label>Киноны нэр</label>
+    <input id="title" type="text" placeholder="Жишээ: Avatar">
+
+    <label>Тайлбар</label>
+    <textarea id="description" placeholder="Киноны тайлбар..."></textarea>
+
+    <label>Ангилал</label>
+    <select id="category">
+      <option value="Action">Action</option>
+      <option value="Drama">Drama</option>
+      <option value="Comedy">Comedy</option>
+      <option value="Horror">Horror</option>
+      <option value="Romance">Romance</option>
+      <option value="Sci-Fi">Sci-Fi</option>
+      <option value="Animation">Animation</option>
+      <option value="Adventure">Adventure</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label>Он</label>
+    <input id="year" type="number" placeholder="2026">
+
+    <label>🖼️ Poster зураг</label>
+    <input id="posterFile" type="file" accept="image/*" onchange="showFileName('posterFile','posterName')">
+    <div id="posterName" class="file-name"></div>
+
+    <label>🎬 Кино видео</label>
+    <input id="videoFile" type="file" accept="video/*" onchange="showFileName('videoFile','videoName')">
+    <div id="videoName" class="file-name"></div>
+
+    <label class="check">
+      <input id="isPremium" type="checkbox">
+      💎 Premium кино
+    </label>
+
+    <label class="check">
+      <input id="isFeatured" type="checkbox">
+      ⭐ Нүүр хуудсанд онцлох
+    </label>
+
+    <button id="addButton" class="add" onclick="addMovie()">
+      🎬 Кино нэмэх
+    </button>
+
+    <div id="progress" class="progress">
+      ⏳ Файл upload хийж байна...
+    </div>
   </div>
 
-  <div id="status" class="status">
-    Шалгаж байна...
-  </div>
 
-  <div id="adminPanel" style="display:none;">
-
-    <div class="card">
-
-      <h2>➕ Шинэ кино нэмэх</h2>
-
-      <label>Киноны нэр</label>
-
-      <input
-        id="title"
-        type="text"
-        placeholder="Жишээ: The Last Kingdom"
-      >
-
-      <label>Тайлбар</label>
-
-      <textarea
-        id="description"
-        placeholder="Киноны тайлбар..."
-      ></textarea>
-
-      <div class="row">
-
-        <div>
-
-          <label>Ангилал</label>
-
-          <input
-            id="category"
-            type="text"
-            placeholder="Action"
-          >
-
-        </div>
-
-        <div>
-
-          <label>Он</label>
-
-          <input
-            id="year"
-            type="number"
-            placeholder="2026"
-          >
-
-        </div>
-
-      </div>
-
-      <label>Poster URL</label>
-
-      <input
-        id="poster"
-        type="url"
-        placeholder="https://..."
-      >
-
-      <label>Video URL</label>
-
-      <input
-        id="video"
-        type="url"
-        placeholder="https://..."
-      >
-
-      <div class="check">
-
-        <input
-          id="premium"
-          type="checkbox"
-        >
-
-        <label for="premium">
-          💎 Premium кино
-        </label>
-
-      </div>
-
-      <div class="check">
-
-        <input
-          id="featured"
-          type="checkbox"
-        >
-
-        <label for="featured">
-          ⭐ Нүүр хуудсанд онцлох
-        </label>
-
-      </div>
-
-      <button
-        class="add"
-        onclick="addMovie()"
-      >
-        🎬 Кино нэмэх
-      </button>
-
+  <div class="card">
+    <h2>🎞️ Кинонууд</h2>
+    <div id="moviesList">
+      Ачааллаж байна...
     </div>
-
-    <div class="card">
-
-      <h2>🎞️ Кинонууд</h2>
-
-      <div id="movies">
-        Кино ачаалж байна...
-      </div>
-
-    </div>
-
   </div>
 
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-const SUPABASE_URL =
-"https://idjqvulwffvtqplwmamt.supabase.co";
+const SUPABASE_URL = "https://idjqvulwffvtqplwmamt.supabase.co";
 
 const SUPABASE_KEY =
 "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
 
 const supabaseClient =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-async function checkAdmin(){
+function showStatus(message, type) {
 
-  const { data, error } =
-    await supabaseClient.auth.getUser();
+  const box = document.getElementById("status");
 
-  if(error || !data.user){
+  box.textContent = message;
 
-    document.getElementById("status").innerText =
-      "❌ Эхлээд нэвтэрнэ үү.";
+  box.className = "status " + type;
 
-    return;
+  box.style.display = "block";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+function showFileName(inputId, outputId) {
+
+  const input = document.getElementById(inputId);
+
+  const output = document.getElementById(outputId);
+
+  if (input.files.length > 0) {
+
+    output.textContent =
+      "Сонгосон файл: " + input.files[0].name;
+
+  } else {
+
+    output.textContent = "";
+
+  }
+}
+
+
+async function checkAdmin() {
+
+  const {
+    data: { user },
+    error
+  } = await supabaseClient.auth.getUser();
+
+  if (error || !user) {
+
+    window.location.href = "login.html";
+
+    return false;
   }
 
-  const user = data.user;
 
-  const { data: admin, error: adminError } =
+  const {
+    data: admin,
+    error: adminError
+  } =
     await supabaseClient
       .from("admin_users")
       .select("user_id")
       .eq("user_id", user.id)
       .maybeSingle();
 
-  if(adminError){
 
-    document.getElementById("status").innerText =
-      "❌ Admin шалгахад алдаа гарлаа: " +
-      adminError.message;
+  if (adminError || !admin) {
 
-    return;
+    document.body.innerHTML = `
+      <div style="
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:#080808;
+        color:white;
+        font-family:Arial;
+        text-align:center;
+        padding:30px;
+      ">
+        <div>
+          <h1>⛔ Admin эрх байхгүй</h1>
+          <p>Энэ хэсэг зөвхөн Admin хэрэглэгчид зориулагдсан.</p>
+          <a href="index.html" style="color:#e50914;">
+            BANO нүүр хуудас
+          </a>
+        </div>
+      </div>
+    `;
+
+    return false;
   }
 
-  if(!admin){
 
-    document.getElementById("status").innerText =
-      "❌ Танд Admin эрх байхгүй.";
-
-    return;
-  }
-
-  document.getElementById("status").innerText =
-    "👑 Admin эрхээр нэвтэрсэн.";
-
-  document.getElementById("adminPanel").style.display =
-    "block";
-
-  loadMovies();
-
+  return true;
 }
 
 
-async function addMovie(){
+async function uploadFile(bucket, file) {
+
+  if (!file) {
+    throw new Error("Файл сонгоогүй байна.");
+  }
+
+
+  const extension =
+    file.name.split(".").pop().toLowerCase();
+
+
+  const randomName =
+    crypto.randomUUID() +
+    "." +
+    extension;
+
+
+  const filePath = randomName;
+
+
+  const {
+    error
+  } =
+    await supabaseClient.storage
+      .from(bucket)
+      .upload(
+        filePath,
+        file,
+        {
+          cacheControl: "3600",
+          upsert: false
+        }
+      );
+
+
+  if (error) {
+
+    throw error;
+
+  }
+
+
+  const {
+    data
+  } =
+    supabaseClient.storage
+      .from(bucket)
+      .getPublicUrl(filePath);
+
+
+  return data.publicUrl;
+}
+
+
+async function addMovie() {
+
+  const button =
+    document.getElementById("addButton");
+
+  const progress =
+    document.getElementById("progress");
+
 
   const title =
     document.getElementById("title").value.trim();
@@ -406,254 +464,403 @@ async function addMovie(){
     document.getElementById("description").value.trim();
 
   const category =
-    document.getElementById("category").value.trim();
+    document.getElementById("category").value;
 
   const year =
     document.getElementById("year").value;
 
-  const poster =
-    document.getElementById("poster").value.trim();
+  const posterFile =
+    document.getElementById("posterFile").files[0];
 
-  const video =
-    document.getElementById("video").value.trim();
+  const videoFile =
+    document.getElementById("videoFile").files[0];
 
-  const premium =
-    document.getElementById("premium").checked;
+  const isPremium =
+    document.getElementById("isPremium").checked;
 
-  const featured =
-    document.getElementById("featured").checked;
-
-
-  if(!title){
-
-    alert("Киноны нэрээ оруулна уу.");
-
-    return;
-  }
+  const isFeatured =
+    document.getElementById("isFeatured").checked;
 
 
-  const { data:userData } =
-    await supabaseClient.auth.getUser();
+  if (!title) {
 
-
-  if(!userData.user){
-
-    alert("Нэвтэрнэ үү.");
-
-    return;
-  }
-
-
-  const { error } =
-    await supabaseClient
-      .from("movies")
-      .insert({
-
-        title:title,
-
-        description:description,
-
-        category:category,
-
-        year:year
-          ? Number(year)
-          : null,
-
-        poster_url:poster,
-
-        video_url:video,
-
-        is_premium:premium,
-
-        is_featured:featured,
-
-        created_by:userData.user.id
-
-      });
-
-
-  if(error){
-
-    alert(
-      "❌ Кино нэмэхэд алдаа гарлаа:\n\n" +
-      error.message
+    showStatus(
+      "❌ Киноны нэрээ оруулна уу.",
+      "error"
     );
 
     return;
   }
 
 
-  alert("✅ Кино амжилттай нэмэгдлээ.");
+  if (!posterFile) {
 
-  document.getElementById("title").value="";
-  document.getElementById("description").value="";
-  document.getElementById("category").value="";
-  document.getElementById("year").value="";
-  document.getElementById("poster").value="";
-  document.getElementById("video").value="";
-  document.getElementById("premium").checked=false;
-  document.getElementById("featured").checked=false;
+    showStatus(
+      "❌ Poster зураг сонгоно уу.",
+      "error"
+    );
 
-  loadMovies();
+    return;
+  }
+
+
+  if (!videoFile) {
+
+    showStatus(
+      "❌ Киноны видео файл сонгоно уу.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  try {
+
+    button.disabled = true;
+
+    progress.style.display = "block";
+
+
+    progress.textContent =
+      "⏳ Poster upload хийж байна...";
+
+
+    const posterUrl =
+      await uploadFile(
+        "posters",
+        posterFile
+      );
+
+
+    progress.textContent =
+      "⏳ Видео upload хийж байна...";
+
+
+    const videoUrl =
+      await uploadFile(
+        "videos",
+        videoFile
+      );
+
+
+    progress.textContent =
+      "⏳ Кино мэдээллийг хадгалж байна...";
+
+
+    const {
+      data: { user }
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("movies")
+        .insert({
+
+          title: title,
+
+          description: description,
+
+          poster_url: posterUrl,
+
+          video_url: videoUrl,
+
+          category: category,
+
+          year: year
+            ? Number(year)
+            : null,
+
+          is_premium: isPremium,
+
+          is_featured: isFeatured,
+
+          created_by: user.id
+
+        });
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    showStatus(
+      "✅ Кино амжилттай нэмэгдлээ!",
+      "success"
+    );
+
+
+    document.getElementById("title").value = "";
+
+    document.getElementById("description").value = "";
+
+    document.getElementById("year").value = "";
+
+    document.getElementById("posterFile").value = "";
+
+    document.getElementById("videoFile").value = "";
+
+    document.getElementById("posterName").textContent = "";
+
+    document.getElementById("videoName").textContent = "";
+
+    document.getElementById("isPremium").checked = false;
+
+    document.getElementById("isFeatured").checked = false;
+
+
+    await loadMovies();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    showStatus(
+      "❌ Алдаа: " + error.message,
+      "error"
+    );
+
+
+  } finally {
+
+    button.disabled = false;
+
+    progress.style.display = "none";
+
+  }
 
 }
 
 
-async function loadMovies(){
+async function loadMovies() {
 
-  const { data, error } =
+  const list =
+    document.getElementById("moviesList");
+
+
+  const {
+    data,
+    error
+  } =
     await supabaseClient
       .from("movies")
       .select("*")
-      .order("created_at", {
-        ascending:false
-      });
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
 
-  const box =
-    document.getElementById("movies");
+  if (error) {
 
-
-  if(error){
-
-    box.innerHTML =
-      "❌ " + error.message;
-
-    return;
-  }
-
-
-  if(!data || data.length === 0){
-
-    box.innerHTML =
-      "<div style='color:#777'>" +
-      "Одоогоор кино алга." +
-      "</div>";
+    list.innerHTML =
+      "❌ Кино ачаалахад алдаа гарлаа.";
 
     return;
   }
 
 
-  box.innerHTML = data.map(movie => {
+  if (!data || data.length === 0) {
 
-    const poster =
+    list.innerHTML =
+      "Одоогоор кино алга.";
+
+    return;
+  }
+
+
+  list.innerHTML = "";
+
+
+  data.forEach(movie => {
+
+    const item =
+      document.createElement("div");
+
+    item.className = "movie";
+
+
+    const img =
+      document.createElement("img");
+
+    img.className = "poster";
+
+    img.src =
       movie.poster_url ||
-      "https://via.placeholder.com/80x105?text=BANO";
+      "";
 
-    const premium =
-      movie.is_premium
-      ? "💎 Premium"
-      : "🆓 Үнэгүй";
+    img.alt =
+      movie.title;
 
-    const featured =
-      movie.is_featured
-      ? " ⭐"
-      : "";
+    img.onerror = function() {
 
-    return `
+      this.style.visibility = "hidden";
 
-      <div class="movie">
+    };
 
-        <img
-          class="poster"
-          src="${poster}"
-          onerror="this.src='https://via.placeholder.com/80x105?text=BANO'"
-        >
 
-        <div class="movie-info">
+    const info =
+      document.createElement("div");
 
-          <div class="movie-title">
-            ${escapeHtml(movie.title)}
-          </div>
+    info.className = "movie-info";
 
-          <div class="movie-meta">
-            ${escapeHtml(movie.category || "Ангилалгүй")}
-            ·
-            ${movie.year || "Он тодорхойгүй"}
-            ·
-            ${premium}
-            ${featured}
-          </div>
 
-        </div>
+    const title =
+      document.createElement("div");
 
-        <button
-          class="delete"
-          onclick="deleteMovie('${movie.id}')"
-        >
-          🗑️
-        </button>
+    title.className = "movie-title";
 
-      </div>
+    title.textContent =
+      movie.title;
+
+
+    const meta =
+      document.createElement("div");
+
+    meta.className = "movie-meta";
+
+    meta.innerHTML = `
+
+      ${movie.category || ""}
+
+      ${movie.year ? " • " + movie.year : ""}
+
+      <br>
+
+      ${
+        movie.is_premium
+        ? '<span class="premium">💎 Premium</span>'
+        : "🆓 Үнэгүй"
+      }
+
+      &nbsp;
+
+      ${
+        movie.is_featured
+        ? '<span class="featured">⭐ Онцлох</span>'
+        : ""
+      }
 
     `;
 
-  }).join("");
+
+    info.appendChild(title);
+
+    info.appendChild(meta);
+
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.className = "delete";
+
+    deleteButton.textContent =
+      "🗑️ Устгах";
+
+
+    deleteButton.onclick =
+      () => deleteMovie(movie);
+
+
+    item.appendChild(img);
+
+    item.appendChild(info);
+
+    item.appendChild(deleteButton);
+
+
+    list.appendChild(item);
+
+  });
 
 }
 
 
-async function deleteMovie(id){
+async function deleteMovie(movie) {
 
   const ok =
     confirm(
-      "Энэ киног устгах уу?"
+      `"${movie.title}" киног устгах уу?`
     );
 
-  if(!ok){
-    return;
-  }
+
+  if (!ok) return;
 
 
-  const { error } =
-    await supabaseClient
-      .from("movies")
-      .delete()
-      .eq("id", id);
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("movies")
+        .delete()
+        .eq("id", movie.id);
 
 
-  if(error){
+    if (error) {
 
-    alert(
-      "❌ Устгахад алдаа гарлаа:\n\n" +
-      error.message
+      throw error;
+
+    }
+
+
+    showStatus(
+      "✅ Кино устгагдлаа.",
+      "success"
     );
 
-    return;
+
+    await loadMovies();
+
+
+  } catch (error) {
+
+    showStatus(
+      "❌ Устгахад алдаа гарлаа: " +
+      error.message,
+      "error"
+    );
+
   }
-
-
-  alert("✅ Кино устгагдлаа.");
-
-  loadMovies();
 
 }
 
 
-function escapeHtml(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-async function logout(){
+async function logout() {
 
   await supabaseClient.auth.signOut();
 
-  location.reload();
+  window.location.href =
+    "login.html";
 
 }
 
 
-checkAdmin();
+(async function() {
+
+  const isAdmin =
+    await checkAdmin();
+
+  if (isAdmin) {
+
+    await loadMovies();
+
+  }
+
+})();
 
 </script>
 
 </body>
-</html>;
+</html>
