@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BANO — Кино</title>
+<title>BANO Premium — Кино</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 *{
   box-sizing:border-box;
   margin:0;
@@ -17,640 +16,868 @@
 }
 
 body{
-  background:#07080b;
+  background:#070707;
   color:#fff;
   font-family:Arial,Helvetica,sans-serif;
 }
 
-header{
-  height:72px;
-  padding:0 6%;
+.header{
+  height:70px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:#08090c;
-  border-bottom:1px solid #202228;
+  padding:0 5%;
+  background:rgba(8,8,8,.95);
+  border-bottom:1px solid #242424;
+  position:sticky;
+  top:0;
+  z-index:100;
 }
 
 .logo{
-  font-size:30px;
+  font-size:27px;
   font-weight:900;
-  letter-spacing:5px;
+  letter-spacing:2px;
 }
 
 .logo span{
-  color:#ff9d00;
+  color:#e50914;
 }
 
 .back{
   color:#aaa;
   text-decoration:none;
+  font-size:14px;
 }
 
 .back:hover{
   color:#fff;
 }
 
-
-/* VIDEO */
-
-.player-section{
-  padding:40px 6% 20px;
-}
-
-.player{
+.container{
+  width:90%;
   max-width:1100px;
   margin:auto;
-  background:#000;
-  border-radius:14px;
+  padding:35px 0 60px;
+}
+
+.loading{
+  text-align:center;
+  color:#888;
+  padding:100px 0;
+}
+
+.movie-layout{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:35px;
+}
+
+.poster{
+  width:100%;
+  aspect-ratio:2/3;
+  border-radius:12px;
   overflow:hidden;
-  border:1px solid #252830;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  background:#151515;
+  border:1px solid #292929;
+}
+
+.poster img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.no-poster{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:60px;
+}
+
+.badge{
+  display:inline-block;
+  background:#e50914;
+  color:#fff;
+  font-size:11px;
+  font-weight:bold;
+  padding:6px 10px;
+  border-radius:5px;
+  margin-bottom:14px;
+}
+
+.badge.premium{
+  background:#d4a62a;
+  color:#111;
+}
+
+h1{
+  font-size:40px;
+  margin-bottom:15px;
+}
+
+.meta{
+  color:#888;
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+.description{
+  color:#bbb;
+  line-height:1.7;
+  max-width:700px;
+  margin-bottom:28px;
+}
+
+.video-box{
+  margin-top:35px;
+  background:#000;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid #242424;
 }
 
 video{
   width:100%;
   display:block;
+  max-height:650px;
   background:#000;
-  aspect-ratio:16/9;
 }
 
-
-/* MOVIE INFO */
-
-.movie-section{
-  padding:40px 6% 70px;
+.notice{
+  padding:30px;
+  text-align:center;
+  background:#121212;
+  border:1px solid #292929;
+  border-radius:12px;
 }
 
-.movie-content{
-  max-width:1100px;
-  margin:auto;
+.notice-icon{
+  font-size:45px;
+  margin-bottom:12px;
 }
 
-.badge{
-  display:inline-block;
-  padding:8px 14px;
-  border:1px solid #ff9d00;
-  border-radius:30px;
-  color:#ffb52e;
-  font-size:12px;
-  font-weight:bold;
-  margin-bottom:18px;
+.notice h2{
+  margin-bottom:10px;
 }
 
-h1{
-  font-size:48px;
-  margin-bottom:15px;
-}
-
-.description{
-  color:#aaa;
-  font-size:17px;
-  line-height:1.7;
-  max-width:750px;
+.notice p{
+  color:#888;
+  line-height:1.6;
   margin-bottom:20px;
 }
 
-.meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:18px;
-  color:#aaa;
-  margin-bottom:25px;
-}
-
-.rating{
-  color:#ffb52e;
-  font-weight:bold;
-}
-
-.buttons{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
 .btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:13px 22px;
+  display:inline-block;
+  border:0;
   border-radius:8px;
-  text-decoration:none;
+  padding:12px 20px;
+  background:#e50914;
+  color:#fff;
   font-weight:bold;
-  border:none;
+  text-decoration:none;
   cursor:pointer;
 }
 
-.primary{
-  background:#ff9d00;
-  color:#08090c;
-}
-
-.secondary{
-  background:#1b1d23;
-  color:#fff;
-  border:1px solid #30333a;
-}
-
-
-/* NOTICE */
-
-.notice{
-  max-width:1100px;
-  margin:0 auto 40px;
-  padding:15px 18px;
-  background:#111318;
-  border:1px solid #252830;
-  border-radius:10px;
-  color:#888;
-  font-size:13px;
-}
-
-
-/* LOADING */
-
-.loading{
-  text-align:center;
-  padding:60px 20px;
-  color:#aaa;
-  font-size:18px;
+.btn.gold{
+  background:#d4a62a;
+  color:#111;
 }
 
 .error{
   text-align:center;
-  padding:60px 20px;
-  color:#ff6b6b;
-  font-size:17px;
+  padding:100px 20px;
 }
 
-
-/* FOOTER */
-
-footer{
-  padding:40px 6%;
-  text-align:center;
-  color:#666;
-  border-top:1px solid #1c1e23;
+.error h2{
+  margin-bottom:15px;
 }
 
+.error p{
+  color:#888;
+}
 
-/* MOBILE */
+@media(max-width:750px){
 
-@media(max-width:700px){
-
-  header{
-    height:64px;
-    padding:0 5%;
+  .header{
+    height:62px;
+    padding:0 18px;
   }
 
   .logo{
-    font-size:25px;
+    font-size:22px;
   }
 
-  .player-section{
-    padding:25px 5% 15px;
+  .container{
+    width:94%;
+    padding-top:25px;
   }
 
-  .player{
-    border-radius:10px;
+  .movie-layout{
+    grid-template-columns:1fr;
+    gap:25px;
   }
 
-  .movie-section{
-    padding:30px 5% 55px;
+  .poster{
+    width:190px;
+    margin:auto;
   }
 
   h1{
-    font-size:36px;
+    font-size:29px;
   }
 
   .description{
-    font-size:15px;
+    font-size:14px;
   }
-
 }
-
 </style>
-
 </head>
 
 <body>
 
-
-<header>
+<header class="header">
 
   <div class="logo">
-    BAN<span>O</span>
+    BANO<span>+</span>
   </div>
 
-  <a class="back" href="index.html">
-    ← Нүүр
+  <a
+    class="back"
+    href="index.html"
+  >
+    ← Буцах
   </a>
 
 </header>
 
 
-<!-- VIDEO PLAYER -->
-
-<section class="player-section">
-
-  <div class="player">
-
-    <video
-      id="movieVideo"
-      controls
-      playsinline
-      preload="metadata"
-    >
-      Таны төхөөрөмж видео тоглуулагчийг дэмжихгүй байна.
-    </video>
-
-  </div>
-
-</section>
-
-
-<div
-  class="notice"
-  id="notice"
->
-  🎬 Кино ачаалж байна...
-</div>
-
-
-<!-- MOVIE INFORMATION -->
-
-<section class="movie-section">
+<main class="container">
 
   <div
-    class="movie-content"
-    id="movieContent"
+    id="loading"
+    class="loading"
+  >
+    Кино ачаалж байна...
+  </div>
+
+
+  <div
+    id="content"
+    style="display:none;"
   >
 
-    <div class="loading">
-      ⏳ Киноны мэдээлэл ачаалж байна...
+    <div class="movie-layout">
+
+      <div>
+
+        <div class="poster">
+
+          <img
+            id="poster"
+            style="display:none;"
+            alt=""
+          >
+
+          <div
+            id="noPoster"
+            class="no-poster"
+          >
+            🎬
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div>
+
+        <div
+          id="badge"
+          class="badge"
+        >
+          КИНО
+        </div>
+
+        <h1 id="title">
+          Кино
+        </h1>
+
+        <div
+          id="meta"
+          class="meta"
+        ></div>
+
+        <p
+          id="description"
+          class="description"
+        ></p>
+
+
+        <div
+          id="videoArea"
+        ></div>
+
+      </div>
+
     </div>
 
   </div>
 
-</section>
 
+  <div
+    id="error"
+    class="error"
+    style="display:none;"
+  >
 
-<footer>
+    <h2>😔 Кино олдсонгүй</h2>
 
-  <div class="logo">
-    BAN<span>O</span>
+    <p>
+      Энэ кино устсан эсвэл буруу холбоос байна.
+    </p>
+
   </div>
 
-  <br>
-
-  © 2026 BANO • Бүх эрх хуулиар хамгаалагдсан.
-
-</footer>
+</main>
 
 
 <script>
 
-/* ==================================================
+/* =========================================
    SUPABASE
-================================================== */
+========================================= */
 
 const SUPABASE_URL =
-"https://idjqvulwffvtqplwmamt.supabase.co";
+  "https://idjqvulwffvtqplwmamt.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
+  "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
 
 const supabaseClient =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-/* ==================================================
-   GET MOVIE ID FROM URL
-================================================== */
+/* =========================================
+   MOVIE ID
+========================================= */
 
 const params =
-new URLSearchParams(
-  window.location.search
-);
+  new URLSearchParams(
+    window.location.search
+  );
 
 const movieId =
-params.get("id");
+  params.get("id");
 
 
-/* ==================================================
+/* =========================================
    ELEMENTS
-================================================== */
+========================================= */
 
-const movieVideo =
-document.getElementById(
-  "movieVideo"
-);
+const loading =
+  document.getElementById("loading");
 
-const movieContent =
-document.getElementById(
-  "movieContent"
-);
+const content =
+  document.getElementById("content");
 
-const notice =
-document.getElementById(
-  "notice"
-);
+const errorBox =
+  document.getElementById("error");
+
+const poster =
+  document.getElementById("poster");
+
+const noPoster =
+  document.getElementById("noPoster");
+
+const title =
+  document.getElementById("title");
+
+const meta =
+  document.getElementById("meta");
+
+const description =
+  document.getElementById("description");
+
+const badge =
+  document.getElementById("badge");
+
+const videoArea =
+  document.getElementById("videoArea");
 
 
-/* ==================================================
+/* =========================================
    LOAD MOVIE
-================================================== */
+========================================= */
 
 async function loadMovie(){
 
   if(!movieId){
 
-    movieContent.innerHTML = `
-      <div class="error">
-        ❌ Киноны ID олдсонгүй.
-      </div>
-    `;
-
-    notice.textContent =
-      "❌ Кино сонгогдоогүй байна.";
+    showError();
 
     return;
+
   }
 
 
   const {
-    data: movie,
+    data:movie,
     error
   } = await supabaseClient
     .from("movies")
     .select("*")
-    .eq("id", movieId)
+    .eq("id",movieId)
     .single();
 
 
-  if(error){
+  if(error || !movie){
 
-    console.error(
-      "Movie load error:",
-      error
-    );
+    console.error(error);
 
-    movieContent.innerHTML = `
-      <div class="error">
-        ❌ Киноны мэдээллийг ачаалж чадсангүй.
-      </div>
-    `;
-
-    notice.textContent =
-      "❌ Кино ачаалахад алдаа гарлаа.";
+    showError();
 
     return;
+
   }
 
 
-  if(!movie){
+  renderMovie(movie);
 
-    movieContent.innerHTML = `
-      <div class="error">
-        ❌ Кино олдсонгүй.
-      </div>
-    `;
-
-    return;
-  }
+}
 
 
-  /* ==================================================
-     PAGE TITLE
-  ================================================== */
+/* =========================================
+   RENDER MOVIE
+========================================= */
+
+async function renderMovie(movie){
+
+  loading.style.display =
+    "none";
+
+  content.style.display =
+    "block";
+
 
   document.title =
-    "BANO — " + movie.title;
+    "BANO Premium — " +
+    (movie.title || "Кино");
 
 
-  /* ==================================================
-     MOVIE INFORMATION
-  ================================================== */
-
-  movieContent.innerHTML = `
-
-    <div class="badge">
-
-      ${
-        movie.is_premium
-        ? "💎 PREMIUM"
-        : "🎬 BANO MOVIE"
-      }
-
-    </div>
+  title.textContent =
+    movie.title || "Нэргүй кино";
 
 
-    <h1>
-      ${movie.title}
-    </h1>
+  description.textContent =
+    movie.description ||
+    "Энэ киноны тайлбар одоогоор байхгүй байна.";
 
 
-    <p class="description">
-
-      ${
-        movie.description
-        || "Энэ киноны тайлбар одоогоор оруулаагүй байна."
-      }
-
-    </p>
-
-
-    <div class="meta">
-
-      ${
-        movie.year
-        ? `<span>${movie.year}</span>`
-        : ""
-      }
-
-      ${
-        movie.category
-        ? `<span>${movie.category}</span>`
-        : ""
-      }
-
-      ${
-        movie.is_premium
-        ? `<span class="rating">💎 Premium</span>`
-        : `<span class="rating">▶ Үзэх боломжтой</span>`
-      }
-
-    </div>
+  meta.textContent =
+    [
+      movie.year || "",
+      movie.category || ""
+    ]
+    .filter(Boolean)
+    .join(" • ");
 
 
-    <div class="buttons">
+  if(movie.poster_url){
 
-      <button
-        class="btn primary"
-        onclick="playMovie()"
-      >
-        ▶ Кино үзэх
-      </button>
+    poster.src =
+      movie.poster_url;
 
+    poster.style.display =
+      "block";
+
+    noPoster.style.display =
+      "none";
+
+  }
+
+
+  if(movie.is_premium){
+
+    badge.textContent =
+      "💎 PREMIUM";
+
+    badge.classList.add("premium");
+
+    await handlePremiumMovie(movie);
+
+  }
+  else{
+
+    badge.textContent =
+      "🎬 FREE";
+
+    await showVideo(movie);
+
+  }
+
+}
+
+
+/* =========================================
+   PREMIUM MOVIE
+========================================= */
+
+async function handlePremiumMovie(movie){
+
+  const {
+    data:{
+      user
+    }
+  } = await supabaseClient.auth.getUser();
+
+
+  if(!user){
+
+    showPremiumLocked(
+      "Premium кино үзэхийн тулд нэвтэрнэ үү.",
+      "Нэвтрэх",
+      "login.html"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data:premium,
+    error
+  } = await supabaseClient
+    .from("user_premium")
+    .select("premium_until")
+    .eq("user_id",user.id)
+    .maybeSingle();
+
+
+  if(
+    error ||
+    !premium ||
+    !premium.premium_until ||
+    new Date(premium.premium_until) <= new Date()
+  ){
+
+    showPremiumLocked(
+      "Энэ кино зөвхөн Premium эрхтэй хэрэглэгчдэд зориулагдсан.",
+      "💎 Premium авах",
+      "premium.html"
+    );
+
+    return;
+
+  }
+
+
+  await showVideo(movie);
+
+}
+
+
+/* =========================================
+   PREMIUM LOCK
+========================================= */
+
+function showPremiumLocked(
+  text,
+  buttonText,
+  link
+){
+
+  videoArea.innerHTML = `
+
+    <div class="notice">
+
+      <div class="notice-icon">
+        🔒
+      </div>
+
+      <h2>
+        Premium кино
+      </h2>
+
+      <p>
+        ${text}
+      </p>
 
       <a
-        class="btn secondary"
-        href="index.html"
+        class="btn gold"
+        href="${link}"
       >
-        ← Буцах
+        ${buttonText}
       </a>
 
     </div>
 
   `;
 
-
-  /* ==================================================
-     VIDEO
-  ================================================== */
-
-  if(movie.video_url){
-
-    let videoUrl =
-      movie.video_url;
+}
 
 
-    /*
-      Хэрэв video_url нь
-      Supabase Storage-ийн
-      private file path бол
-      signed URL үүсгэнэ.
-    */
+/* =========================================
+   SHOW VIDEO
+========================================= */
 
-    if(
-      videoUrl.includes(
-        "/storage/v1/object/"
-      )
-    ){
+async function showVideo(movie){
 
-      try{
+  if(!movie.video_url){
 
-        const parts =
-          videoUrl.split(
-            "/storage/v1/object/"
-          )[1];
+    videoArea.innerHTML = `
 
-        const cleanPath =
-          parts
-          .replace(
-            "public/",
-            ""
-          )
-          .replace(
-            "sign/",
-            ""
-          )
-          .replace(
-            "authenticated/",
-            ""
-          );
+      <div class="notice">
 
-        const firstSlash =
-          cleanPath.indexOf("/");
+        <div class="notice-icon">
+          🎬
+        </div>
 
-        const bucket =
-          cleanPath.substring(
-            0,
-            firstSlash
-          );
+        <h2>
+          Видео одоогоор байхгүй
+        </h2>
 
-        const filePath =
-          cleanPath.substring(
-            firstSlash + 1
-          );
+        <p>
+          Энэ кинонд видео файл нэмэгдээгүй байна.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
 
 
-        const {
-          data,
-          error
-        } =
-        await supabaseClient
-          .storage
-          .from(bucket)
-          .createSignedUrl(
-            filePath,
-            3600
-          );
+  let videoUrl =
+    movie.video_url;
 
 
-        if(
-          !error &&
-          data &&
-          data.signedUrl
-        ){
+  /*
+    Private Supabase Storage URL бол
+    signed URL үүсгэхийг оролдоно.
+  */
 
-          videoUrl =
-            data.signedUrl;
+  try{
 
-        }
+    const parsed =
+      parseSupabaseStorageUrl(
+        movie.video_url
+      );
 
-      }
-      catch(e){
 
-        console.error(
-          "Signed URL error:",
-          e
+    if(parsed){
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .storage
+        .from(parsed.bucket)
+        .createSignedUrl(
+          parsed.path,
+          3600
         );
+
+
+      if(!error && data && data.signedUrl){
+
+        videoUrl =
+          data.signedUrl;
 
       }
 
     }
 
+  }
+  catch(err){
 
-    movieVideo.src =
-      videoUrl;
-
-    movieVideo.load();
-
-
-    notice.textContent =
-      "🎬 " +
-      movie.title +
-      " — Видео бэлэн.";
+    console.error(
+      "Signed URL error:",
+      err
+    );
 
   }
-  else{
 
-    notice.textContent =
-      "🎬 Энэ кинонд видео файл оруулаагүй байна.";
 
-  }
+  videoArea.innerHTML = `
+
+    <div class="video-box">
+
+      <video
+        id="movieVideo"
+        controls
+        playsinline
+        preload="metadata"
+      >
+        <source
+          src="${escapeHtml(videoUrl)}"
+        >
+        Таны төхөөрөмж видео тоглуулахыг дэмжихгүй байна.
+      </video>
+
+    </div>
+
+  `;
 
 }
 
 
-/* ==================================================
-   PLAY
-================================================== */
+/* =========================================
+   PARSE STORAGE URL
+========================================= */
 
-function playMovie(){
+function parseSupabaseStorageUrl(url){
 
-  movieVideo
-    .play()
-    .catch(function(error){
+  try{
 
-      console.error(
-        "Video play error:",
-        error
+    if(
+      !url ||
+      !url.includes("/storage/v1/object/")
+    ){
+
+      return null;
+
+    }
+
+
+    const part =
+      url.split(
+        "/storage/v1/object/"
+      )[1];
+
+
+    if(!part){
+
+      return null;
+
+    }
+
+
+    let clean =
+      part.replace(
+        /^public\//,
+        ""
       );
 
-    });
+
+    clean =
+      clean.replace(
+        /^sign\//,
+        ""
+      );
+
+
+    clean =
+      clean.replace(
+        /^authenticated\//,
+        ""
+      );
+
+
+    const slash =
+      clean.indexOf("/");
+
+
+    if(slash === -1){
+
+      return null;
+
+    }
+
+
+    const bucket =
+      clean.substring(
+        0,
+        slash
+      );
+
+
+    const path =
+      clean.substring(
+        slash + 1
+      );
+
+
+    if(!bucket || !path){
+
+      return null;
+
+    }
+
+
+    return {
+      bucket:bucket,
+      path:path
+    };
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    return null;
+
+  }
 
 }
 
 
-/* ==================================================
+/* =========================================
+   ERROR
+========================================= */
+
+function showError(){
+
+  loading.style.display =
+    "none";
+
+  content.style.display =
+    "none";
+
+  errorBox.style.display =
+    "block";
+
+}
+
+
+/* =========================================
+   ESCAPE
+========================================= */
+
+function escapeHtml(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+
+    return "";
+
+  }
+
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
    START
-================================================== */
+========================================= */
 
 loadMovie();
 
