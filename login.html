@@ -1,480 +1,739 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BANO — Нэвтрэх</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>BANO — Нэвтрэх</title>
 
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-body{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 50% 20%,#2b1800,#07080b 45%);
-  color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-.login-box{
-  width:420px;
-  max-width:92%;
-  background:#111318;
-  border:1px solid #292c33;
-  border-radius:18px;
-  padding:40px;
-  box-shadow:0 25px 80px rgba(0,0,0,.6);
-}
+    body {
+      min-height: 100vh;
+      background: #070707;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-.logo{
-  text-align:center;
-  font-size:38px;
-  font-weight:900;
-  letter-spacing:6px;
-  margin-bottom:10px;
-}
+    .box {
+      width: 100%;
+      max-width: 430px;
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 18px;
+      padding: 35px 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
 
-.logo span{
-  color:#ff9d00;
-}
+    .logo {
+      text-align: center;
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
 
-.subtitle{
-  text-align:center;
-  color:#888;
-  margin-bottom:32px;
-}
+    .subtitle {
+      text-align: center;
+      color: #999;
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
 
-.tabs{
-  display:flex;
-  background:#08090c;
-  border-radius:10px;
-  padding:4px;
-  margin-bottom:25px;
-}
+    .tabs {
+      display: flex;
+      background: #1b1b1b;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 25px;
+    }
 
-.tab{
-  width:50%;
-  padding:11px;
-  border:0;
-  border-radius:8px;
-  background:transparent;
-  color:#777;
-  cursor:pointer;
-  font-weight:bold;
-}
+    .tab {
+      width: 50%;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      color: #999;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
 
-.tab.active{
-  background:#ff9d00;
-  color:#08090c;
-}
+    .tab.active {
+      background: white;
+      color: black;
+      font-weight: bold;
+    }
 
-.form{
-  display:none;
-}
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #bbb;
+      font-size: 13px;
+    }
 
-.form.active{
-  display:block;
-}
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 17px;
+      background: #1b1b1b;
+      color: white;
+      border: 1px solid #333;
+      border-radius: 9px;
+      outline: none;
+      font-size: 15px;
+    }
 
-label{
-  display:block;
-  color:#aaa;
-  font-size:13px;
-  margin-bottom:8px;
-}
+    input:focus {
+      border-color: #777;
+    }
 
-.input{
-  width:100%;
-  padding:14px;
-  margin-bottom:18px;
-  background:#08090c;
-  border:1px solid #292c33;
-  border-radius:9px;
-  color:#fff;
-  outline:none;
-  font-size:15px;
-}
+    .main-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 9px;
+      background: white;
+      color: black;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+    }
 
-.input:focus{
-  border-color:#ff9d00;
-}
+    .main-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
 
-.button{
-  width:100%;
-  padding:14px;
-  border:0;
-  border-radius:9px;
-  background:#ff9d00;
-  color:#08090c;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-}
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      text-align: center;
+    }
 
-.button:hover{
-  background:#ffb52e;
-}
+    .success {
+      display: block;
+      background: #102817;
+      color: #79e69a;
+      border: 1px solid #245d35;
+    }
 
-.message{
-  display:none;
-  text-align:center;
-  color:#ffb52e;
-  margin-top:15px;
-  font-size:14px;
-}
+    .error {
+      display: block;
+      background: #2a1111;
+      color: #ff8d8d;
+      border: 1px solid #692828;
+    }
 
-.back{
-  display:block;
-  text-align:center;
-  margin-top:25px;
-  color:#777;
-  text-decoration:none;
-  font-size:14px;
-}
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 22px;
+      color: #888;
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-.back:hover{
-  color:#fff;
-}
-</style>
+    .back:hover {
+      color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .debug {
+      margin-top: 18px;
+      text-align: center;
+      color: #555;
+      font-size: 11px;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="login-box">
+<div class="box">
 
-  <div class="logo">
-    BAN<span>O</span>
-  </div>
+  <div class="logo">BANO</div>
 
   <div class="subtitle">
-    Киноны ертөнцөд тавтай морил
+    Монголын кино үзвэрийн платформ
   </div>
 
   <div class="tabs">
-
-    <button
-      class="tab active"
-      onclick="showForm('login')"
-      id="loginTab">
+    <button class="tab active" id="loginTab" onclick="showLogin()">
       Нэвтрэх
     </button>
 
-    <button
-      class="tab"
-      onclick="showForm('register')"
-      id="registerTab">
+    <button class="tab" id="registerTab" onclick="showRegister()">
       Бүртгүүлэх
     </button>
-
   </div>
 
+  <!-- LOGIN -->
 
-  <!-- НЭВТРЭХ -->
+  <div id="loginForm">
 
-  <div
-    class="form active"
-    id="loginForm">
-
-    <label>И-мэйл</label>
+    <label>Имэйл</label>
 
     <input
-      class="input"
-      type="email"
       id="loginEmail"
-      placeholder="example@gmail.com">
+      type="email"
+      placeholder="name@example.com"
+      autocomplete="email"
+    >
 
     <label>Нууц үг</label>
 
     <input
-      class="input"
-      type="password"
       id="loginPassword"
-      placeholder="Нууц үгээ оруулна уу">
+      type="password"
+      placeholder="Нууц үг"
+      autocomplete="current-password"
+    >
 
     <button
-      class="button"
-      onclick="login()">
+      class="main-btn"
+      id="loginButton"
+      onclick="login()"
+    >
       Нэвтрэх
     </button>
-
-    <div
-      class="message"
-      id="loginMessage">
-    </div>
 
   </div>
 
 
-  <!-- БҮРТГҮҮЛЭХ -->
+  <!-- REGISTER -->
 
-  <div
-    class="form"
-    id="registerForm">
+  <div id="registerForm" class="hidden">
 
     <label>Нэр</label>
 
     <input
-      class="input"
-      type="text"
       id="registerName"
-      placeholder="Таны нэр">
+      type="text"
+      placeholder="Таны нэр"
+      autocomplete="name"
+    >
 
-    <label>И-мэйл</label>
+    <label>Имэйл</label>
 
     <input
-      class="input"
-      type="email"
       id="registerEmail"
-      placeholder="example@gmail.com">
+      type="email"
+      placeholder="name@example.com"
+      autocomplete="email"
+    >
 
     <label>Нууц үг</label>
 
     <input
-      class="input"
-      type="password"
       id="registerPassword"
-      placeholder="Нууц үг үүсгэнэ үү">
+      type="password"
+      placeholder="Доод тал нь 6 тэмдэгт"
+      autocomplete="new-password"
+    >
 
     <button
-      class="button"
-      onclick="register()">
+      class="main-btn"
+      id="registerButton"
+      onclick="register()"
+    >
       Бүртгэл үүсгэх
     </button>
 
-    <div
-      class="message"
-      id="registerMessage">
-    </div>
-
   </div>
 
-  <a
-    class="back"
-    href="index.html">
+
+  <div id="message" class="message"></div>
+
+  <a href="index.html" class="back">
     ← BANO нүүр хуудас руу буцах
   </a>
+
+  <div class="debug">
+    BANO Authentication
+  </div>
 
 </div>
 
 
 <script>
 
-/* =====================================
-   SUPABASE ТОХИРГОО
-   ===================================== */
+  /* ================================
+     SUPABASE
+     ================================ */
 
-const SUPABASE_URL =
-  "https://idjqvulwffvtqplwmamt.supabase.co";
+  const SUPABASE_URL =
+    "https://idjqvulwffvtqplwmamt.supabase.co";
 
-const SUPABASE_KEY =
-  "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
+  const SUPABASE_KEY =
+    "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
 
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+  /* ================================
+     CLIENT
+     ================================ */
+
+  let supabaseClient;
+
+  try {
+
+    supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+  } catch (error) {
+
+    showMessage(
+      "Supabase холболт үүссэнгүй: " + error.message,
+      false
+    );
+
+  }
+
+
+  /* ================================
+     TAB
+     ================================ */
+
+  function showLogin() {
+
+    document
+      .getElementById("loginForm")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("registerForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("loginTab")
+      .classList.add("active");
+
+    document
+      .getElementById("registerTab")
+      .classList.remove("active");
+
+    clearMessage();
+  }
+
+
+  function showRegister() {
+
+    document
+      .getElementById("loginForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("registerForm")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("loginTab")
+      .classList.remove("active");
+
+    document
+      .getElementById("registerTab")
+      .classList.add("active");
+
+    clearMessage();
+  }
+
+
+  /* ================================
+     MESSAGE
+     ================================ */
+
+  function showMessage(text, success) {
+
+    const box =
+      document.getElementById("message");
+
+    box.textContent = text;
+
+    box.className =
+      "message " + (success ? "success" : "error");
+
+  }
+
+
+  function clearMessage() {
+
+    const box =
+      document.getElementById("message");
+
+    box.textContent = "";
+
+    box.className = "message";
+
+  }
+
+
+  /* ================================
+     REGISTER
+     ================================ */
+
+  async function register() {
+
+    clearMessage();
+
+    const name =
+      document
+        .getElementById("registerName")
+        .value
+        .trim();
+
+    const email =
+      document
+        .getElementById("registerEmail")
+        .value
+        .trim();
+
+    const password =
+      document
+        .getElementById("registerPassword")
+        .value;
+
+    const button =
+      document.getElementById("registerButton");
+
+
+    if (!name) {
+
+      showMessage(
+        "Нэрээ оруулна уу.",
+        false
+      );
+
+      return;
+    }
+
+
+    if (!email) {
+
+      showMessage(
+        "Имэйл хаягаа оруулна уу.",
+        false
+      );
+
+      return;
+    }
+
+
+    if (password.length < 6) {
+
+      showMessage(
+        "Нууц үг хамгийн багадаа 6 тэмдэгт байна.",
+        false
+      );
+
+      return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+      "Бүртгүүлж байна...";
+
+
+    try {
+
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password,
+
+          options: {
+
+            data: {
+              full_name: name
+            },
+
+            emailRedirectTo:
+              "https://bbatbileg01-spec.github.io/BANO/login.html"
+
+          }
+
+        });
+
+
+      if (error) {
+
+        console.error(
+          "REGISTER ERROR:",
+          error
+        );
+
+        showMessage(
+          "❌ " + error.message,
+          false
+        );
+
+        return;
+      }
+
+
+      if (data.user) {
+
+        if (data.session) {
+
+          showMessage(
+            "✅ Бүртгэл амжилттай үүслээ. Одоо нэвтэрч болно.",
+            true
+          );
+
+        } else {
+
+          showMessage(
+            "✅ Бүртгэл амжилттай үүслээ. Имэйлээ шалгаад баталгаажуулна уу.",
+            true
+          );
+
+        }
+
+      } else {
+
+        showMessage(
+          "Бүртгэл үүссэн эсэхийг шалгана уу.",
+          true
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "REGISTER EXCEPTION:",
+        error
+      );
+
+      showMessage(
+        "❌ " + error.message,
+        false
+      );
+
+    } finally {
+
+      button.disabled = false;
+
+      button.textContent =
+        "Бүртгэл үүсгэх";
+
+    }
+
+  }
+
+
+  /* ================================
+     LOGIN
+     ================================ */
+
+  async function login() {
+
+    clearMessage();
+
+    const email =
+      document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+    const password =
+      document
+        .getElementById("loginPassword")
+        .value;
+
+    const button =
+      document.getElementById("loginButton");
+
+
+    if (!email) {
+
+      showMessage(
+        "Имэйл хаягаа оруулна уу.",
+        false
+      );
+
+      return;
+    }
+
+
+    if (!password) {
+
+      showMessage(
+        "Нууц үгээ оруулна уу.",
+        false
+      );
+
+      return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+      "Нэвтэрч байна...";
+
+
+    try {
+
+      const { data, error } =
+        await supabaseClient.auth
+          .signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+      if (error) {
+
+        console.error(
+          "LOGIN ERROR:",
+          error
+        );
+
+        showMessage(
+          "❌ " + error.message,
+          false
+        );
+
+        return;
+      }
+
+
+      if (data.session) {
+
+        showMessage(
+          "✅ Амжилттай нэвтэрлээ!",
+          true
+        );
+
+
+        setTimeout(() => {
+
+          window.location.href =
+            "index.html";
+
+        }, 800);
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "LOGIN EXCEPTION:",
+        error
+      );
+
+      showMessage(
+        "❌ " + error.message,
+        false
+      );
+
+    } finally {
+
+      button.disabled = false;
+
+      button.textContent =
+        "Нэвтрэх";
+
+    }
+
+  }
+
+
+  /* ================================
+     ENTER KEY
+     ================================ */
+
+  document.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (event.key !== "Enter") {
+        return;
+      }
+
+      if (
+        !document
+          .getElementById("loginForm")
+          .classList.contains("hidden")
+      ) {
+
+        login();
+
+      } else {
+
+        register();
+
+      }
+
+    }
   );
 
 
-/* =====================================
-   FORM СОЛИХ
-   ===================================== */
+  /* ================================
+     CHECK EXISTING SESSION
+     ================================ */
 
-function showForm(type){
+  async function checkSession() {
 
-  const loginForm =
-    document.getElementById("loginForm");
+    try {
 
-  const registerForm =
-    document.getElementById("registerForm");
+      const {
+        data
+      } =
+        await supabaseClient.auth
+          .getSession();
 
-  const loginTab =
-    document.getElementById("loginTab");
+      if (data.session) {
 
-  const registerTab =
-    document.getElementById("registerTab");
+        console.log(
+          "Already logged in:",
+          data.session.user.email
+        );
 
-
-  if(type === "login"){
-
-    loginForm.classList.add("active");
-    registerForm.classList.remove("active");
-
-    loginTab.classList.add("active");
-    registerTab.classList.remove("active");
-
-  }else{
-
-    registerForm.classList.add("active");
-    loginForm.classList.remove("active");
-
-    registerTab.classList.add("active");
-    loginTab.classList.remove("active");
-
-  }
-
-}
-
-
-/* =====================================
-   БҮРТГҮҮЛЭХ
-   ===================================== */
-
-async function register(){
-
-  const name =
-    document.getElementById(
-      "registerName"
-    ).value.trim();
-
-  const email =
-    document.getElementById(
-      "registerEmail"
-    ).value.trim();
-
-  const password =
-    document.getElementById(
-      "registerPassword"
-    ).value;
-
-  const message =
-    document.getElementById(
-      "registerMessage"
-    );
-
-
-  message.style.display="block";
-
-
-  if(!name || !email || !password){
-
-    message.textContent =
-      "⚠️ Бүх талбарыг бөглөнө үү.";
-
-    return;
-
-  }
-
-
-  if(password.length < 6){
-
-    message.textContent =
-      "⚠️ Нууц үг хамгийн багадаа 6 тэмдэгт байна.";
-
-    return;
-
-  }
-
-
-  const { data, error } =
-    await supabaseClient.auth.signUp({
-
-      email:email,
-
-      password:password,
-
-      options:{
-        data:{
-          full_name:name
-        }
       }
 
-    });
+    } catch (error) {
 
+      console.error(
+        "SESSION ERROR:",
+        error
+      );
 
-  if(error){
-
-    message.textContent =
-      "❌ " + error.message;
-
-    return;
-
-  }
-
-
-  message.textContent =
-    "✅ Бүртгэл амжилттай үүслээ. И-мэйлээ шалгана уу.";
-
-}
-
-
-/* =====================================
-   НЭВТРЭХ
-   ===================================== */
-
-async function login(){
-
-  const email =
-    document.getElementById(
-      "loginEmail"
-    ).value.trim();
-
-  const password =
-    document.getElementById(
-      "loginPassword"
-    ).value;
-
-  const message =
-    document.getElementById(
-      "loginMessage"
-    );
-
-
-  message.style.display="block";
-
-
-  if(!email || !password){
-
-    message.textContent =
-      "⚠️ И-мэйл болон нууц үгээ оруулна уу.";
-
-    return;
+    }
 
   }
 
 
-  const { data, error } =
-    await supabaseClient.auth.signInWithPassword({
-
-      email:email,
-
-      password:password
-
-    });
-
-
-  if(error){
-
-    message.textContent =
-      "❌ " + error.message;
-
-    return;
-
-  }
-
-
-  message.textContent =
-    "✅ Амжилттай нэвтэрлээ!";
-
-
-  setTimeout(function(){
-
-    window.location.href =
-      "index.html";
-
-  },1000);
-
-}
+  checkSession();
 
 </script>
 
