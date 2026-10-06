@@ -9,6 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -128,54 +129,44 @@ h1{
   color:#bbb;
   line-height:1.7;
   max-width:700px;
-  margin-bottom:18px;
+  margin-bottom:22px;
 }
 
-/* =========================================
+
+/* =========================
    FAVORITE BUTTON
-========================================= */
+========================= */
 
 .favorite-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
   border:1px solid #333;
-  border-radius:9px;
-  padding:11px 17px;
   background:#151515;
   color:#fff;
+  border-radius:8px;
+  padding:12px 18px;
   font-size:14px;
   font-weight:bold;
   cursor:pointer;
   transition:.2s;
-  margin-bottom:8px;
+  margin-bottom:5px;
 }
 
 .favorite-btn:hover{
-  background:#222;
-  border-color:#555;
-}
-
-.favorite-btn.saved{
   background:#e50914;
   border-color:#e50914;
-  color:#fff;
 }
 
-.favorite-btn:disabled{
-  opacity:.6;
-  cursor:default;
+.favorite-btn.active{
+  background:#e50914;
+  border-color:#e50914;
 }
 
-.favorite-message{
-  color:#777;
-  font-size:12px;
-  margin-bottom:18px;
-  min-height:16px;
-}
+
+/* =========================
+   VIDEO
+========================= */
 
 .video-box{
-  margin-top:20px;
+  margin-top:30px;
   background:#000;
   border-radius:12px;
   overflow:hidden;
@@ -188,6 +179,11 @@ video{
   max-height:650px;
   background:#000;
 }
+
+
+/* =========================
+   NOTICE
+========================= */
 
 .notice{
   padding:30px;
@@ -242,6 +238,7 @@ video{
   color:#888;
 }
 
+
 @media(max-width:750px){
 
   .header{
@@ -278,9 +275,11 @@ video{
 
   .favorite-btn{
     width:100%;
-    justify-content:center;
+    padding:13px;
   }
+
 }
+
 </style>
 </head>
 
@@ -370,15 +369,10 @@ video{
         <button
           id="favoriteBtn"
           class="favorite-btn"
-          type="button"
+          onclick="toggleFavorite()"
         >
           ♡ Дуртайд нэмэх
         </button>
-
-        <div
-          id="favoriteMessage"
-          class="favorite-message"
-        ></div>
 
 
         <div
@@ -442,6 +436,15 @@ const movieId =
 
 
 /* =========================================
+   VARIABLES
+========================================= */
+
+let currentMovie = null;
+let currentUser = null;
+let favoriteId = null;
+
+
+/* =========================================
    ELEMENTS
 ========================================= */
 
@@ -477,17 +480,6 @@ const videoArea =
 
 const favoriteBtn =
   document.getElementById("favoriteBtn");
-
-const favoriteMessage =
-  document.getElementById("favoriteMessage");
-
-
-/* =========================================
-   FAVORITE STATE
-========================================= */
-
-let currentUser = null;
-let favoriteId = null;
 
 
 /* =========================================
@@ -526,7 +518,24 @@ async function loadMovie(){
   }
 
 
+  currentMovie = movie;
+
+
+  const {
+    data:{
+      user
+    }
+  } =
+  await supabaseClient.auth.getUser();
+
+
+  currentUser = user || null;
+
+
   renderMovie(movie);
+
+
+  await loadFavorite();
 
 }
 
@@ -581,9 +590,6 @@ async function renderMovie(movie){
   }
 
 
-  await loadFavoriteState();
-
-
   if(movie.is_premium){
 
     badge.textContent =
@@ -607,29 +613,19 @@ async function renderMovie(movie){
 
 
 /* =========================================
-   LOAD FAVORITE STATE
+   LOAD FAVORITE
 ========================================= */
 
-async function loadFavoriteState(){
+async function loadFavorite(){
 
-  favoriteId = null;
+  if(!currentUser){
 
-  const {
-    data:{
-      user
-    }
-  } = await supabaseClient.auth.getUser();
-
-
-  currentUser = user;
-
-
-  if(!user){
-
-    favoriteBtn.innerHTML =
+    favoriteBtn.textContent =
       "♡ Дуртайд нэмэх";
 
-    favoriteBtn.classList.remove("saved");
+    favoriteBtn.classList.remove(
+      "active"
+    );
 
     return;
 
@@ -639,11 +635,18 @@ async function loadFavoriteState(){
   const {
     data,
     error
-  } = await supabaseClient
+  } =
+  await supabaseClient
     .from("favorites")
     .select("id")
-    .eq("user_id",user.id)
-    .eq("movie_id",movieId)
+    .eq(
+      "user_id",
+      currentUser.id
+    )
+    .eq(
+      "movie_id",
+      currentMovie.id
+    )
     .maybeSingle();
 
 
@@ -664,18 +667,24 @@ async function loadFavoriteState(){
     favoriteId =
       data.id;
 
-    favoriteBtn.innerHTML =
-      "❤️ Дуртайд хадгалсан";
+    favoriteBtn.textContent =
+      "❤️ Дуртайгаас хасах";
 
-    favoriteBtn.classList.add("saved");
+    favoriteBtn.classList.add(
+      "active"
+    );
 
   }
   else{
 
-    favoriteBtn.innerHTML =
+    favoriteId = null;
+
+    favoriteBtn.textContent =
       "♡ Дуртайд нэмэх";
 
-    favoriteBtn.classList.remove("saved");
+    favoriteBtn.classList.remove(
+      "active"
+    );
 
   }
 
@@ -688,11 +697,11 @@ async function loadFavoriteState(){
 
 async function toggleFavorite(){
 
-  favoriteMessage.textContent =
-    "";
-
-
   if(!currentUser){
+
+    alert(
+      "❤️ Дуртай кино нэмэхийн тулд эхлээд нэвтэрнэ үү."
+    );
 
     window.location.href =
       "login.html";
@@ -706,93 +715,96 @@ async function toggleFavorite(){
     true;
 
 
-  try{
+  /* REMOVE */
 
-    /* REMOVE */
+  if(favoriteId){
 
-    if(favoriteId){
+    const {
+      error
+    } =
+    await supabaseClient
+      .from("favorites")
+      .delete()
+      .eq(
+        "id",
+        favoriteId
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      );
 
-      const {
-        error
-      } = await supabaseClient
-        .from("favorites")
-        .delete()
-        .eq("id",favoriteId)
-        .eq("user_id",currentUser.id);
 
+    if(error){
 
-      if(error){
+      console.error(error);
 
-        throw error;
+      alert(
+        "Дуртайгаас хасахад алдаа гарлаа."
+      );
 
-      }
-
+    }
+    else{
 
       favoriteId =
         null;
 
-      favoriteBtn.innerHTML =
+      favoriteBtn.textContent =
         "♡ Дуртайд нэмэх";
 
       favoriteBtn.classList.remove(
-        "saved"
+        "active"
       );
-
-      favoriteMessage.textContent =
-        "Дуртай жагсаалтаас хасагдлаа.";
-
-    }
-
-
-    /* ADD */
-
-    else{
-
-      const {
-        data,
-        error
-      } = await supabaseClient
-        .from("favorites")
-        .insert({
-          user_id:currentUser.id,
-          movie_id:movieId
-        })
-        .select("id")
-        .single();
-
-
-      if(error){
-
-        throw error;
-
-      }
-
-
-      favoriteId =
-        data.id;
-
-      favoriteBtn.innerHTML =
-        "❤️ Дуртайд хадгалсан";
-
-      favoriteBtn.classList.add(
-        "saved"
-      );
-
-      favoriteMessage.textContent =
-        "Дуртай жагсаалтад нэмэгдлээ ❤️";
 
     }
 
   }
-  catch(error){
 
-    console.error(
-      "Favorite error:",
+  /* ADD */
+
+  else{
+
+    const {
+      data,
       error
-    );
+    } =
+    await supabaseClient
+      .from("favorites")
+      .insert({
+        user_id:
+          currentUser.id,
 
-    favoriteMessage.textContent =
-      "Алдаа гарлаа. Дахин оролдоно уу.";
+        movie_id:
+          currentMovie.id
+      })
+      .select("id")
+      .single();
+
+
+    if(error){
+
+      console.error(error);
+
+      alert(
+        "Дуртайд нэмэхэд алдаа гарлаа."
+      );
+
+      await loadFavorite();
+
+    }
+    else{
+
+      favoriteId =
+        data.id;
+
+      favoriteBtn.textContent =
+        "❤️ Дуртайгаас хасах";
+
+      favoriteBtn.classList.add(
+        "active"
+      );
+
+    }
 
   }
 
@@ -801,16 +813,6 @@ async function toggleFavorite(){
     false;
 
 }
-
-
-/* =========================================
-   FAVORITE CLICK
-========================================= */
-
-favoriteBtn.addEventListener(
-  "click",
-  toggleFavorite
-);
 
 
 /* =========================================
@@ -845,7 +847,10 @@ async function handlePremiumMovie(movie){
   } = await supabaseClient
     .from("user_premium")
     .select("premium_until")
-    .eq("user_id",user.id)
+    .eq(
+      "user_id",
+      user.id
+    )
     .maybeSingle();
 
 
@@ -853,7 +858,9 @@ async function handlePremiumMovie(movie){
     error ||
     !premium ||
     !premium.premium_until ||
-    new Date(premium.premium_until) <= new Date()
+    new Date(
+      premium.premium_until
+    ) <= new Date()
   ){
 
     showPremiumLocked(
@@ -971,7 +978,11 @@ async function showVideo(movie){
         );
 
 
-      if(!error && data && data.signedUrl){
+      if(
+        !error &&
+        data &&
+        data.signedUrl
+      ){
 
         videoUrl =
           data.signedUrl;
@@ -1027,7 +1038,9 @@ function parseSupabaseStorageUrl(url){
 
     if(
       !url ||
-      !url.includes("/storage/v1/object/")
+      !url.includes(
+        "/storage/v1/object/"
+      )
     ){
 
       return null;
@@ -1152,11 +1165,31 @@ function escapeHtml(value){
 
 
   return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
