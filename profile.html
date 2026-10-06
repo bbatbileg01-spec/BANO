@@ -66,7 +66,7 @@ body{
   border:1px solid #292929;
   border-radius:16px;
   padding:30px;
-  margin-bottom:30px;
+  margin-bottom:35px;
 }
 
 .profile-top{
@@ -125,6 +125,7 @@ body{
   display:grid;
   grid-template-columns:repeat(5,1fr);
   gap:18px;
+  margin-bottom:40px;
 }
 
 .movie-card{
@@ -181,11 +182,75 @@ body{
   color:#aaa;
   padding:10px;
   font-size:12px;
+  cursor:pointer;
 }
 
 .remove-btn:hover{
   background:#e50914;
   color:#fff;
+}
+
+.list-card{
+  background:#111;
+  border:1px solid #222;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.list-info{
+  min-width:0;
+}
+
+.list-title{
+  font-size:16px;
+  font-weight:bold;
+  margin-bottom:6px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.list-date{
+  color:#777;
+  font-size:12px;
+}
+
+.list-actions{
+  display:flex;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.open-list-btn{
+  display:inline-block;
+  background:#e50914;
+  color:#fff;
+  text-decoration:none;
+  padding:9px 14px;
+  border-radius:7px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.delete-list-btn{
+  border:1px solid #333;
+  background:#151515;
+  color:#aaa;
+  padding:9px 12px;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.delete-list-btn:hover{
+  background:#e50914;
+  color:#fff;
+  border-color:#e50914;
 }
 
 .empty{
@@ -195,6 +260,7 @@ body{
   padding:50px 20px;
   text-align:center;
   color:#777;
+  margin-bottom:35px;
 }
 
 .loading{
@@ -210,6 +276,7 @@ body{
   color:#fff;
   padding:10px 18px;
   border-radius:7px;
+  cursor:pointer;
 }
 
 .logout-btn:hover{
@@ -264,6 +331,21 @@ body{
     gap:12px;
   }
 
+  .list-card{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .list-actions{
+    width:100%;
+  }
+
+  .open-list-btn,
+  .delete-list-btn{
+    flex:1;
+    text-align:center;
+  }
+
 }
 
 </style>
@@ -283,7 +365,10 @@ body{
 
 </header>
 
+
 <main class="container">
+
+  <!-- PROFILE -->
 
   <section class="profile-card">
 
@@ -334,6 +419,8 @@ body{
   </section>
 
 
+  <!-- FAVORITES -->
+
   <h2 class="section-title">
     ❤️ Миний дуртай кино
   </h2>
@@ -350,10 +437,30 @@ body{
 
   </div>
 
+
+  <!-- MY LIST -->
+
+  <h2 class="section-title">
+    📋 Миний жагсаалт
+  </h2>
+
+
+  <div id="myListArea">
+
+    <div class="loading">
+      Миний жагсаалтыг ачаалж байна...
+    </div>
+
+  </div>
+
 </main>
 
 
 <script>
+
+/* =========================================
+   SUPABASE
+========================================= */
 
 const SUPABASE_URL =
   "https://idjqvulwffvtqplwmamt.supabase.co";
@@ -371,9 +478,9 @@ const supabaseClient =
 let currentUser = null;
 
 
-/* =========================
+/* =========================================
    START
-========================= */
+========================================= */
 
 async function start(){
 
@@ -405,12 +512,14 @@ async function start(){
 
   await loadFavorites();
 
+  await loadMyList();
+
 }
 
 
-/* =========================
+/* =========================================
    USER
-========================= */
+========================================= */
 
 function showUser(){
 
@@ -445,9 +554,9 @@ function showUser(){
 }
 
 
-/* =========================
+/* =========================================
    PREMIUM
-========================= */
+========================================= */
 
 async function loadPremium(){
 
@@ -537,9 +646,9 @@ async function loadPremium(){
 }
 
 
-/* =========================
+/* =========================================
    FAVORITES
-========================= */
+========================================= */
 
 async function loadFavorites(){
 
@@ -731,9 +840,9 @@ async function loadFavorites(){
 }
 
 
-/* =========================
+/* =========================================
    REMOVE FAVORITE
-========================= */
+========================================= */
 
 async function removeFavorite(
   event,
@@ -777,9 +886,224 @@ async function removeFavorite(
 }
 
 
-/* =========================
+/* =========================================
+   MY LIST
+========================================= */
+
+async function loadMyList(){
+
+  const area =
+    document.getElementById(
+      "myListArea"
+    );
+
+
+  area.innerHTML =
+    '<div class="loading">Миний жагсаалтыг ачаалж байна...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("my_list")
+    .select(`
+      id,
+      movie_name,
+      movie_link,
+      created_at
+    `)
+    .eq(
+      "user_id",
+      currentUser.id
+    )
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+
+  if(error){
+
+    console.error(
+      "My list error:",
+      error
+    );
+
+    area.innerHTML =
+      `
+      <div class="empty">
+        📋<br><br>
+        Миний жагсаалт ачаалахад алдаа гарлаа.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  if(
+    !data ||
+    data.length === 0
+  ){
+
+    area.innerHTML =
+      `
+      <div class="empty">
+        📋<br><br>
+        Таны жагсаалт одоогоор хоосон байна.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  area.innerHTML = "";
+
+
+  data.forEach(
+    item => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "list-card";
+
+
+      const title =
+        item.movie_name ||
+        "Нэргүй кино";
+
+
+      const date =
+        item.created_at
+          ? new Date(
+              item.created_at
+            ).toLocaleDateString(
+              "mn-MN"
+            )
+          : "";
+
+
+      card.innerHTML = `
+
+        <div class="list-info">
+
+          <div class="list-title">
+            📋 ${escapeHtml(title)}
+          </div>
+
+          <div class="list-date">
+            Нэмсэн: ${date}
+          </div>
+
+        </div>
+
+        <div class="list-actions">
+
+          ${
+            item.movie_link
+            ?
+            `
+            <a
+              class="open-list-btn"
+              href="${escapeHtml(item.movie_link)}"
+            >
+              ▶ Үзэх
+            </a>
+            `
+            :
+            ""
+          }
+
+          <button
+            class="delete-list-btn"
+            onclick="removeFromMyList(${item.id})"
+          >
+            🗑 Хасах
+          </button>
+
+        </div>
+
+      `;
+
+
+      area.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   REMOVE FROM MY LIST
+========================================= */
+
+async function removeFromMyList(
+  listId
+){
+
+  const ok =
+    confirm(
+      "Энэ киног Миний жагсаалтаас хасах уу?"
+    );
+
+
+  if(!ok){
+    return;
+  }
+
+
+  const {
+    error
+  } =
+  await supabaseClient
+    .from("my_list")
+    .delete()
+    .eq(
+      "id",
+      listId
+    )
+    .eq(
+      "user_id",
+      currentUser.id
+    );
+
+
+  if(error){
+
+    alert(
+      "Жагсаалтаас хасахад алдаа гарлаа."
+    );
+
+    console.error(error);
+
+    return;
+
+  }
+
+
+  await loadMyList();
+
+}
+
+
+/* =========================================
    LOGOUT
-========================= */
+========================================= */
 
 async function logout(){
 
@@ -791,9 +1115,9 @@ async function logout(){
 }
 
 
-/* =========================
+/* =========================================
    ESCAPE HTML
-========================= */
+========================================= */
 
 function escapeHtml(
   value
@@ -839,9 +1163,9 @@ function escapeHtml(
 }
 
 
-/* =========================
+/* =========================================
    RUN
-========================= */
+========================================= */
 
 start();
 
