@@ -6,179 +6,253 @@
 
 <title>BANO Premium</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{
   box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#070707;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 0%,#382700 0%,#111 35%,#070707 75%);
   color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-header{
+.header{
   height:70px;
+  padding:0 5%;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 6%;
-  background:#0d0d0d;
-  border-bottom:1px solid #222;
+  border-bottom:1px solid #252525;
+  background:rgba(7,7,7,.92);
+  backdrop-filter:blur(15px);
 }
 
 .logo{
-  font-size:28px;
+  font-size:27px;
   font-weight:900;
-  color:#fff;
-  text-decoration:none;
   letter-spacing:2px;
 }
 
-.back{
-  color:#fff;
-  text-decoration:none;
-  font-size:15px;
-  padding:10px 16px;
-  border:1px solid #333;
-  border-radius:10px;
+.logo span{
+  color:#e50914;
 }
 
-.back:hover{
-  background:#1a1a1a;
+.header a{
+  color:#aaa;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.header a:hover{
+  color:#fff;
 }
 
 .container{
-  max-width:900px;
-  margin:0 auto;
-  padding:70px 20px 100px;
+  width:92%;
+  max-width:1100px;
+  margin:auto;
+  padding:55px 0;
+}
+
+.hero{
+  text-align:center;
+  margin-bottom:45px;
+}
+
+.crown{
+  font-size:55px;
+  margin-bottom:12px;
+}
+
+.hero h1{
+  font-size:42px;
+  margin-bottom:12px;
+}
+
+.hero h1 span{
+  color:#d4a62a;
+}
+
+.hero p{
+  color:#999;
+  line-height:1.6;
+}
+
+.status{
+  max-width:600px;
+  margin:0 auto 35px;
+  padding:17px 20px;
+  border-radius:10px;
+  background:#121212;
+  border:1px solid #292929;
   text-align:center;
 }
 
-.badge{
-  display:inline-block;
-  padding:8px 15px;
-  border-radius:30px;
-  background:#1b1b1b;
-  border:1px solid #333;
-  font-size:13px;
-  margin-bottom:20px;
-}
-
-h1{
-  font-size:42px;
-  margin:10px 0;
-}
-
-.subtitle{
+.status-title{
   color:#aaa;
-  font-size:17px;
-  line-height:1.6;
-  max-width:600px;
-  margin:0 auto 40px;
+  font-size:12px;
+  margin-bottom:7px;
 }
 
-.card{
-  max-width:430px;
-  margin:auto;
-  padding:35px 30px;
-  background:linear-gradient(145deg,#151515,#0d0d0d);
-  border:1px solid #333;
-  border-radius:24px;
-  box-shadow:0 20px 60px rgba(0,0,0,.45);
+.status-value{
+  font-weight:bold;
+  font-size:16px;
 }
 
-.card h2{
-  font-size:25px;
-  margin:0 0 15px;
+.active{
+  color:#5ee38a;
+}
+
+.inactive{
+  color:#ff6868;
+}
+
+.plans{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.plan{
+  background:linear-gradient(145deg,#171717,#0d0d0d);
+  border:1px solid #292929;
+  border-radius:15px;
+  padding:30px 25px;
+  position:relative;
+  overflow:hidden;
+}
+
+.plan.featured{
+  border-color:#d4a62a;
+  box-shadow:0 0 35px rgba(212,166,42,.08);
+}
+
+.popular{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  text-align:center;
+  background:#d4a62a;
+  color:#111;
+  padding:7px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.plan.featured{
+  padding-top:52px;
+}
+
+.plan h2{
+  font-size:21px;
+  margin-bottom:10px;
 }
 
 .price{
-  font-size:42px;
+  font-size:34px;
   font-weight:900;
   margin:15px 0 5px;
 }
 
-.period{
-  color:#999;
-  margin-bottom:30px;
+.price small{
+  font-size:13px;
+  color:#777;
+  font-weight:normal;
+}
+
+.plan-desc{
+  color:#888;
+  font-size:13px;
+  min-height:38px;
+  line-height:1.5;
 }
 
 .features{
-  text-align:left;
-  margin:25px 0;
-  padding:0;
   list-style:none;
+  margin:25px 0;
 }
 
 .features li{
-  padding:12px 0;
-  border-bottom:1px solid #242424;
-  color:#ddd;
+  padding:8px 0;
+  color:#bbb;
+  font-size:13px;
 }
 
-.features li:last-child{
-  border-bottom:0;
+.features li::before{
+  content:"✓";
+  color:#d4a62a;
+  font-weight:bold;
+  margin-right:9px;
 }
 
 .buy{
   width:100%;
-  padding:15px;
-  border:0;
-  border-radius:12px;
-  background:#fff;
-  color:#000;
-  font-size:17px;
-  font-weight:800;
+  padding:13px;
+  border-radius:8px;
+  border:1px solid #444;
+  background:#191919;
+  color:#fff;
+  font-weight:bold;
   cursor:pointer;
 }
 
 .buy:hover{
-  opacity:.9;
+  background:#242424;
 }
 
-.note{
+.featured .buy{
+  background:#d4a62a;
+  color:#111;
+  border-color:#d4a62a;
+}
+
+.info{
+  margin-top:35px;
+  padding:22px;
+  border:1px solid #242424;
+  border-radius:12px;
+  background:#101010;
   color:#777;
-  font-size:12px;
-  line-height:1.6;
-  margin-top:18px;
+  text-align:center;
+  font-size:13px;
+  line-height:1.7;
 }
 
-#userInfo{
-  margin-top:25px;
+.message{
+  text-align:center;
+  min-height:25px;
+  margin:25px 0;
   color:#aaa;
-  font-size:14px;
 }
 
-@media(max-width:600px){
+.footer{
+  text-align:center;
+  color:#555;
+  border-top:1px solid #222;
+  padding:30px;
+  margin-top:30px;
+}
 
-  header{
-    padding:0 18px;
+@media(max-width:800px){
+
+  .plans{
+    grid-template-columns:1fr;
   }
 
-  .logo{
-    font-size:24px;
+  .hero h1{
+    font-size:32px;
   }
 
   .container{
-    padding-top:50px;
-  }
-
-  h1{
-    font-size:34px;
-  }
-
-  .subtitle{
-    font-size:15px;
-  }
-
-  .card{
-    padding:30px 22px;
-  }
-
-  .price{
-    font-size:36px;
+    padding-top:35px;
   }
 }
 </style>
@@ -186,12 +260,14 @@ h1{
 
 <body>
 
-<header>
+<header class="header">
 
-  <a href="index.html" class="logo">BANO</a>
+  <div class="logo">
+    BANO<span>+</span>
+  </div>
 
-  <a href="index.html" class="back">
-    ← Буцах
+  <a href="index.html">
+    ← Нүүр
   </a>
 
 </header>
@@ -199,114 +275,412 @@ h1{
 
 <main class="container">
 
-  <div class="badge">
-    💎 BANO PREMIUM
-  </div>
+  <section class="hero">
 
-  <h1>Premium эрх</h1>
-
-  <p class="subtitle">
-    BANO-ийн Premium кинонуудыг өндөр чанартайгаар
-    үзэх боломжтой 30 хоногийн эрх.
-  </p>
-
-
-  <div class="card">
-
-    <h2>BANO Premium</h2>
-
-    <div class="price">
-      15,000₮
+    <div class="crown">
+      👑
     </div>
 
-    <div class="period">
-      30 хоног
+    <h1>
+      BANO <span>Premium</span>
+    </h1>
+
+    <p>
+      Premium эрхээр илүү олон кино,
+      онцгой контент үзээрэй.
+    </p>
+
+  </section>
+
+
+  <div class="status">
+
+    <div class="status-title">
+      Таны Premium төлөв
     </div>
 
-
-    <ul class="features">
-
-      <li>✓ Premium кино үзэх</li>
-
-      <li>✓ Өндөр чанартай видео</li>
-
-      <li>✓ Шинэ кинонуудыг үзэх</li>
-
-      <li>✓ Миний жагсаалт ашиглах</li>
-
-      <li>✓ 30 хоногийн эрх</li>
-
-    </ul>
-
-
-    <button class="buy" onclick="startPayment()">
-      💳 Premium авах
-    </button>
-
-    <div class="note">
-      Төлбөрийн систем дараагийн шатанд холбогдоно.
+    <div
+      id="statusValue"
+      class="status-value"
+    >
+      Шалгаж байна...
     </div>
 
   </div>
 
 
-  <div id="userInfo"></div>
+  <div class="plans">
+
+
+    <!-- 30 DAYS -->
+
+    <div class="plan">
+
+      <h2>
+        30 хоног
+      </h2>
+
+      <div class="price">
+        9,900₮
+        <small>/сар</small>
+      </div>
+
+      <div class="plan-desc">
+        30 хоногийн Premium эрх
+      </div>
+
+      <ul class="features">
+
+        <li>Premium кино үзэх</li>
+
+        <li>Шинэ кинонууд</li>
+
+        <li>Заргүй үзэх боломж</li>
+
+        <li>Гар утас болон компьютер</li>
+
+      </ul>
+
+      <button
+        class="buy"
+        onclick="buyPremium(30)"
+      >
+        30 хоног авах
+      </button>
+
+    </div>
+
+
+    <!-- 90 DAYS -->
+
+    <div class="plan featured">
+
+      <div class="popular">
+        ⭐ ХАМГИЙН СОНГОЛТ
+      </div>
+
+      <h2>
+        90 хоног
+      </h2>
+
+      <div class="price">
+        24,900₮
+        <small>/3 сар</small>
+      </div>
+
+      <div class="plan-desc">
+        3 сарын Premium эрх
+      </div>
+
+      <ul class="features">
+
+        <li>Premium кино үзэх</li>
+
+        <li>Шинэ кинонууд</li>
+
+        <li>Заргүй үзэх боломж</li>
+
+        <li>Гар утас болон компьютер</li>
+
+      </ul>
+
+      <button
+        class="buy"
+        onclick="buyPremium(90)"
+      >
+        90 хоног авах
+      </button>
+
+    </div>
+
+
+    <!-- 365 DAYS -->
+
+    <div class="plan">
+
+      <h2>
+        1 жил
+      </h2>
+
+      <div class="price">
+        79,900₮
+        <small>/жил</small>
+      </div>
+
+      <div class="plan-desc">
+        365 хоногийн Premium эрх
+      </div>
+
+      <ul class="features">
+
+        <li>Premium кино үзэх</li>
+
+        <li>Шинэ кинонууд</li>
+
+        <li>Заргүй үзэх боломж</li>
+
+        <li>Гар утас болон компьютер</li>
+
+      </ul>
+
+      <button
+        class="buy"
+        onclick="buyPremium(365)"
+      >
+        1 жил авах
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="message"
+    class="message"
+  ></div>
+
+
+  <div class="info">
+
+    💳 <b>Төлбөрийн систем</b><br>
+
+    Одоогоор энэ хэсэг туршилтын горимд байна.
+    Бодит төлбөрийн системийг дараагийн алхамд
+    холбож, төлбөр баталгаажсаны дараа Premium
+    эрхийг автоматаар идэвхжүүлнэ.
+
+  </div>
 
 </main>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<footer class="footer">
+
+  © 2026 BANO Premium
+
+</footer>
+
 
 <script>
 
+/* =========================================
+   SUPABASE
+========================================= */
+
 const SUPABASE_URL =
-"https://idjqvulwffvtqplwmamt.supabase.co";
+  "https://idjqvulwffvtqplwmamt.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
+  "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
 
 const supabaseClient =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
+
+/* =========================================
+   CURRENT USER
+========================================= */
+
+let currentUser = null;
+
+
+/* =========================================
+   LOAD USER
+========================================= */
 
 async function loadUser(){
 
-  const { data, error } =
-    await supabaseClient.auth.getUser();
+  const {
+    data:{
+      user
+    }
+  } = await supabaseClient.auth.getUser();
 
-  if(error || !data.user){
-    document.getElementById("userInfo").innerHTML =
-      "Premium авахын өмнө эхлээд нэвтэрнэ үү.";
+
+  currentUser = user;
+
+
+  if(!user){
+
+    document.getElementById("statusValue").innerHTML =
+      '<span class="inactive">Нэвтрээгүй байна</span>';
+
+    document.getElementById("message").textContent =
+      "Premium авахын тулд эхлээд нэвтэрнэ үү.";
+
     return;
+
   }
 
-  const user = data.user;
 
-  const name =
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    user.email?.split("@")[0] ||
-    "Хэрэглэгч";
-
-  document.getElementById("userInfo").innerHTML =
-    "Сайн байна уу, " + name + " 👋";
+  await loadPremium(user.id);
 
 }
 
 
-function startPayment(){
+/* =========================================
+   LOAD PREMIUM
+========================================= */
 
-  alert(
-    "💎 BANO Premium\n\n" +
-    "15,000₮ / 30 хоног\n\n" +
-    "Төлбөрийн системийг дараагийн алхамд холбоно."
+async function loadPremium(userId){
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("user_premium")
+    .select("premium_until")
+    .eq("user_id",userId)
+    .maybeSingle();
+
+
+  if(error){
+
+    console.error(error);
+
+    document.getElementById("statusValue").innerHTML =
+      '<span class="inactive">Шалгах боломжгүй</span>';
+
+    return;
+
+  }
+
+
+  if(
+    data &&
+    data.premium_until &&
+    new Date(data.premium_until) > new Date()
+  ){
+
+    const date =
+      new Date(data.premium_until);
+
+    document.getElementById("statusValue").innerHTML =
+      `
+      <span class="active">
+        💎 Premium идэвхтэй
+      </span>
+      <br>
+      <small style="color:#888;">
+        Дуусах хугацаа:
+        ${formatDate(date)}
+      </small>
+      `;
+
+  }
+  else{
+
+    document.getElementById("statusValue").innerHTML =
+      '<span class="inactive">Premium идэвхгүй</span>';
+
+  }
+
+}
+
+
+/* =========================================
+   BUY PREMIUM
+========================================= */
+
+async function buyPremium(days){
+
+  const message =
+    document.getElementById("message");
+
+
+  if(!currentUser){
+
+    message.innerHTML =
+      `
+      🔒 Эхлээд
+      <a
+        href="login.html"
+        style="color:#e50914;"
+      >
+        нэвтэрнэ үү
+      </a>.
+      `;
+
+    return;
+
+  }
+
+
+  /*
+    ОДОО БОЛ ТУРШИЛТЫН ГОРИМ.
+
+    Бодит төлбөрийн систем холбогдох үед
+    энэ хэсгийг төлбөрийн баталгаажуулалтаар
+    солих шаардлагатай.
+  */
+
+
+  message.textContent =
+    "⏳ Premium идэвхжүүлж байна...";
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient.rpc(
+    "activate_premium",
+    {
+      p_user_id:currentUser.id,
+      p_days:days
+    }
+  );
+
+
+  if(error){
+
+    console.error(error);
+
+    message.textContent =
+      "❌ Premium идэвхжүүлэхэд алдаа гарлаа.";
+
+    return;
+
+  }
+
+
+  message.innerHTML =
+    `
+    <span style="color:#5ee38a;">
+      ✅ Premium амжилттай идэвхжлээ!
+    </span>
+    `;
+
+
+  await loadPremium(currentUser.id);
+
+}
+
+
+/* =========================================
+   DATE
+========================================= */
+
+function formatDate(date){
+
+  return date.toLocaleDateString(
+    "mn-MN",
+    {
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    }
   );
 
 }
 
+
+/* =========================================
+   START
+========================================= */
 
 loadUser();
 
