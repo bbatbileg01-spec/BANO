@@ -135,6 +135,7 @@ label{
 
 input[type="text"],
 input[type="number"],
+input[type="email"],
 textarea,
 select{
   width:100%;
@@ -201,6 +202,11 @@ input[type="file"]{
   opacity:.9;
 }
 
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 .btn.secondary{
   background:#292929;
 }
@@ -208,6 +214,53 @@ input[type="file"]{
 .btn.gold{
   background:#d4a62a;
   color:#111;
+}
+
+.premium-box{
+  background:linear-gradient(135deg,#16130a,#111);
+  border:1px solid #5d4915;
+}
+
+.premium-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.premium-title span{
+  color:#d4a62a;
+}
+
+.premium-description{
+  color:#888;
+  font-size:14px;
+  margin-bottom:20px;
+  line-height:1.5;
+}
+
+.premium-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+
+.premium-actions .btn{
+  flex:1;
+  min-width:130px;
+}
+
+.premium-result{
+  margin-top:18px;
+  padding:14px;
+  border-radius:8px;
+  background:#0b0b0b;
+  border:1px solid #292929;
+  color:#aaa;
+  display:none;
+  line-height:1.6;
+  font-size:14px;
 }
 
 .message{
@@ -412,6 +465,14 @@ input[type="file"]{
   .small-btn{
     flex:1;
   }
+
+  .premium-actions{
+    flex-direction:column;
+  }
+
+  .premium-actions .btn{
+    width:100%;
+  }
 }
 </style>
 </head>
@@ -426,17 +487,11 @@ input[type="file"]{
 
   <div class="header-right">
 
-    <a
-      class="back"
-      href="index.html"
-    >
+    <a class="back" href="index.html">
       ← Сайт руу
     </a>
 
-    <button
-      class="logout"
-      onclick="logout()"
-    >
+    <button class="logout" onclick="logout()">
       Гарах
     </button>
 
@@ -452,7 +507,7 @@ input[type="file"]{
     <h1>🎬 Кино удирдлага</h1>
 
     <p>
-      BANO+ кино сангаа эндээс удирдана.
+      BANO+ кино сан болон Premium эрхийг эндээс удирдана.
     </p>
 
     <div class="admin-badge">
@@ -460,6 +515,70 @@ input[type="file"]{
     </div>
 
   </div>
+
+
+  <!-- PREMIUM MANAGEMENT -->
+
+  <section class="card premium-box">
+
+    <div class="premium-title">
+      <h2>💎 Premium эрх олгох</h2>
+      <span>VIP</span>
+    </div>
+
+    <p class="premium-description">
+      Хэрэглэгчийн BANO+ бүртгэлтэй email хаягийг оруулаад
+      Premium эрхийн хугацааг сонгоно.
+    </p>
+
+    <div class="field">
+
+      <label>
+        👤 Хэрэглэгчийн email
+      </label>
+
+      <input
+        id="premiumEmail"
+        type="email"
+        placeholder="example@gmail.com"
+      >
+
+    </div>
+
+    <div class="premium-actions">
+
+      <button
+        id="premium30Btn"
+        class="btn gold"
+        onclick="givePremium(30)"
+      >
+        💎 30 хоног
+      </button>
+
+      <button
+        id="premium90Btn"
+        class="btn gold"
+        onclick="givePremium(90)"
+      >
+        💎 90 хоног
+      </button>
+
+      <button
+        id="premium365Btn"
+        class="btn gold"
+        onclick="givePremium(365)"
+      >
+        💎 365 хоног
+      </button>
+
+    </div>
+
+    <div
+      id="premiumResult"
+      class="premium-result"
+    ></div>
+
+  </section>
 
 
   <!-- ADD MOVIE -->
@@ -520,7 +639,7 @@ input[type="file"]{
       <div class="field">
 
         <label>
-          Постер URL (хэрэв upload хийхгүй бол)
+          Постер URL
         </label>
 
         <input
@@ -721,13 +840,11 @@ const supabaseClient =
 
 
 /* =========================================
-   ADMIN
+   VARIABLES
 ========================================= */
 
 let currentUser = null;
-
 let editingId = null;
-
 let deleteId = null;
 
 
@@ -797,6 +914,171 @@ async function checkAdmin(){
 
 
 /* =========================================
+   PREMIUM
+========================================= */
+
+async function givePremium(days){
+
+  const email =
+    document.getElementById(
+      "premiumEmail"
+    ).value.trim();
+
+
+  if(!email){
+
+    showPremiumResult(
+      "❌ Хэрэглэгчийн email оруулна уу.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const buttons = [
+    document.getElementById("premium30Btn"),
+    document.getElementById("premium90Btn"),
+    document.getElementById("premium365Btn")
+  ];
+
+
+  buttons.forEach(button => {
+    button.disabled = true;
+  });
+
+
+  showPremiumResult(
+    "⏳ Premium эрх олгож байна...",
+    false
+  );
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "admin_set_premium",
+          {
+            p_email:email,
+            p_days:days
+          }
+        );
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    let expiryText = "";
+
+
+    if(
+      data &&
+      data.premium_until
+    ){
+
+      expiryText =
+        new Date(
+          data.premium_until
+        ).toLocaleString(
+          "mn-MN"
+        );
+
+    }
+
+
+    showPremiumResult(
+      "✅ Premium амжилттай олголоо!<br>" +
+      "👤 " +
+      escapeHtml(email) +
+      "<br>" +
+      "💎 Хугацаа: " +
+      days +
+      " хоног<br>" +
+      (
+        expiryText
+        ? "⏳ Дуусах хугацаа: " +
+          expiryText
+        : ""
+      ),
+      false
+    );
+
+
+    document.getElementById(
+      "premiumEmail"
+    ).value = "";
+
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showPremiumResult(
+      "❌ Алдаа: " +
+      escapeHtml(
+        error.message ||
+        "Premium олгоход алдаа гарлаа."
+      ),
+      true
+    );
+
+  }
+  finally{
+
+    buttons.forEach(button => {
+      button.disabled = false;
+    });
+
+  }
+
+}
+
+
+function showPremiumResult(
+  text,
+  isError
+){
+
+  const result =
+    document.getElementById(
+      "premiumResult"
+    );
+
+
+  result.innerHTML =
+    text;
+
+
+  result.style.display =
+    "block";
+
+
+  result.style.color =
+    isError
+    ? "#ff8989"
+    : "#76e69b";
+
+
+  result.style.borderColor =
+    isError
+    ? "#6a2020"
+    : "#1d6835";
+
+}
+
+
+/* =========================================
    LOAD MOVIES
 ========================================= */
 
@@ -860,6 +1142,7 @@ async function loadMovies(){
         "div"
       );
 
+
     item.className =
       "movie-item";
 
@@ -906,7 +1189,10 @@ async function loadMovies(){
       <div class="movie-info">
 
         <h3>
-          ${escapeHtml(movie.title || "Нэргүй кино")}
+          ${escapeHtml(
+            movie.title ||
+            "Нэргүй кино"
+          )}
         </h3>
 
         <p>
@@ -1045,9 +1331,7 @@ async function saveMovie(){
       null;
 
 
-    /* ==========================
-       POSTER UPLOAD
-    ========================== */
+    /* POSTER */
 
     if(posterFile){
 
@@ -1101,9 +1385,7 @@ async function saveMovie(){
     }
 
 
-    /* ==========================
-       VIDEO UPLOAD
-    ========================== */
+    /* VIDEO */
 
     if(videoFile){
 
@@ -1139,11 +1421,6 @@ async function saveMovie(){
       }
 
 
-      /*
-        Private bucket тулд
-        Storage object URL хадгална.
-      */
-
       finalVideoUrl =
         SUPABASE_URL +
         "/storage/v1/object/videos/" +
@@ -1152,9 +1429,7 @@ async function saveMovie(){
     }
 
 
-    /* ==========================
-       UPDATE
-    ========================== */
+    /* UPDATE */
 
     if(editingId){
 
@@ -1227,9 +1502,8 @@ async function saveMovie(){
 
     }
 
-    /* ==========================
-       INSERT
-    ========================== */
+
+    /* INSERT */
 
     else{
 
@@ -1290,7 +1564,6 @@ async function saveMovie(){
 
     loadMovies();
 
-
   }
   catch(error){
 
@@ -1298,7 +1571,10 @@ async function saveMovie(){
 
     showMessage(
       "❌ Алдаа: " +
-      (error.message || "Тодорхойгүй алдаа"),
+      (
+        error.message ||
+        "Тодорхойгүй алдаа"
+      ),
       "error"
     );
 
@@ -1350,63 +1626,43 @@ async function editMovie(id){
     id;
 
 
-  document.getElementById(
-    "title"
-  ).value =
+  document.getElementById("title").value =
     movie.title || "";
 
 
-  document.getElementById(
-    "description"
-  ).value =
+  document.getElementById("description").value =
     movie.description || "";
 
 
-  document.getElementById(
-    "category"
-  ).value =
+  document.getElementById("category").value =
     movie.category || "";
 
 
-  document.getElementById(
-    "year"
-  ).value =
+  document.getElementById("year").value =
     movie.year || "";
 
 
-  document.getElementById(
-    "posterUrl"
-  ).value =
+  document.getElementById("posterUrl").value =
     movie.poster_url || "";
 
 
-  document.getElementById(
-    "isPremium"
-  ).checked =
+  document.getElementById("isPremium").checked =
     !!movie.is_premium;
 
 
-  document.getElementById(
-    "isFeatured"
-  ).checked =
+  document.getElementById("isFeatured").checked =
     !!movie.is_featured;
 
 
-  document.getElementById(
-    "formTitle"
-  ).textContent =
+  document.getElementById("formTitle").textContent =
     "✏️ Кино засах";
 
 
-  document.getElementById(
-    "saveBtn"
-  ).textContent =
+  document.getElementById("saveBtn").textContent =
     "💾 Хадгалах";
 
 
-  document.getElementById(
-    "cancelBtn"
-  ).style.display =
+  document.getElementById("cancelBtn").style.display =
     "inline-block";
 
 
@@ -1419,7 +1675,7 @@ async function editMovie(id){
 
 
 /* =========================================
-   CANCEL EDIT
+   CANCEL
 ========================================= */
 
 function cancelEdit(){
@@ -1439,75 +1695,51 @@ function resetForm(){
     null;
 
 
-  document.getElementById(
-    "title"
-  ).value =
+  document.getElementById("title").value =
     "";
 
 
-  document.getElementById(
-    "description"
-  ).value =
+  document.getElementById("description").value =
     "";
 
 
-  document.getElementById(
-    "category"
-  ).value =
+  document.getElementById("category").value =
     "";
 
 
-  document.getElementById(
-    "year"
-  ).value =
+  document.getElementById("year").value =
     "";
 
 
-  document.getElementById(
-    "posterUrl"
-  ).value =
+  document.getElementById("posterUrl").value =
     "";
 
 
-  document.getElementById(
-    "posterFile"
-  ).value =
+  document.getElementById("posterFile").value =
     "";
 
 
-  document.getElementById(
-    "videoFile"
-  ).value =
+  document.getElementById("videoFile").value =
     "";
 
 
-  document.getElementById(
-    "isPremium"
-  ).checked =
+  document.getElementById("isPremium").checked =
     false;
 
 
-  document.getElementById(
-    "isFeatured"
-  ).checked =
+  document.getElementById("isFeatured").checked =
     false;
 
 
-  document.getElementById(
-    "formTitle"
-  ).textContent =
+  document.getElementById("formTitle").textContent =
     "➕ Шинэ кино нэмэх";
 
 
-  document.getElementById(
-    "saveBtn"
-  ).textContent =
+  document.getElementById("saveBtn").textContent =
     "🎬 Кино нэмэх";
 
 
-  document.getElementById(
-    "cancelBtn"
-  ).style.display =
+  document.getElementById("cancelBtn").style.display =
     "none";
 
 }
@@ -1555,7 +1787,7 @@ function closeDeleteModal(){
 
 
 /* =========================================
-   CONFIRM DELETE
+   DELETE
 ========================================= */
 
 async function confirmDelete(){
@@ -1699,26 +1931,11 @@ function escapeHtml(
 
 
   return String(value)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
@@ -1732,26 +1949,11 @@ function escapeJs(
 ){
 
   return String(value)
-    .replace(
-      /\\/g,
-      "\\\\"
-    )
-    .replace(
-      /'/g,
-      "\\'"
-    )
-    .replace(
-      /"/g,
-      '\\"'
-    )
-    .replace(
-      /\n/g,
-      "\\n"
-    )
-    .replace(
-      /\r/g,
-      "\\r"
-    );
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'\\"')
+    .replace(/\n/g,"\\n")
+    .replace(/\r/g,"\\r");
 
 }
 
