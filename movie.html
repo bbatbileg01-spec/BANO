@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BANO — BANO ONE</title>
+<title>BANO — Кино</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
@@ -136,6 +138,8 @@ h1{
   border-radius:8px;
   text-decoration:none;
   font-weight:bold;
+  border:none;
+  cursor:pointer;
 }
 
 .primary{
@@ -161,6 +165,23 @@ h1{
   border-radius:10px;
   color:#888;
   font-size:13px;
+}
+
+
+/* LOADING */
+
+.loading{
+  text-align:center;
+  padding:60px 20px;
+  color:#aaa;
+  font-size:18px;
+}
+
+.error{
+  text-align:center;
+  padding:60px 20px;
+  color:#ff6b6b;
+  font-size:17px;
 }
 
 
@@ -236,20 +257,12 @@ footer{
   <div class="player">
 
     <video
+      id="movieVideo"
       controls
       playsinline
       preload="metadata"
     >
-
-      <!--
-      ЭНД ЛИЦЕНЗТЭЙ / ӨӨРИЙН ВИДЕО URL-ЭЭ
-      ДАРАА НЬ ОРУУЛНА.
-      -->
-
-      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-
       Таны төхөөрөмж видео тоглуулагчийг дэмжихгүй байна.
-
     </video>
 
   </div>
@@ -257,11 +270,11 @@ footer{
 </section>
 
 
-<div class="notice">
-
-  🎬 BANO ONE — Видео тоглуулагч бэлэн.
-  Одоогоор видео файл холбогдоогүй байна.
-
+<div
+  class="notice"
+  id="notice"
+>
+  🎬 Кино ачаалж байна...
 </div>
 
 
@@ -269,57 +282,13 @@ footer{
 
 <section class="movie-section">
 
-  <div class="movie-content">
+  <div
+    class="movie-content"
+    id="movieContent"
+  >
 
-    <div class="badge">
-      BANO ORIGINAL
-    </div>
-
-    <h1>
-      BANO ONE
-    </h1>
-
-    <p class="description">
-
-      BANO платформын онцлох бүтээл.
-      Тулаан, адал явдал, нууцлаг үйл явдлаар
-      дүүрэн шинэ кино.
-
-    </p>
-
-
-    <div class="meta">
-
-      <span>2026</span>
-
-      <span>Action</span>
-
-      <span>Монгол</span>
-
-      <span class="rating">
-        ⭐ 9.2
-      </span>
-
-    </div>
-
-
-    <div class="buttons">
-
-      <a
-        class="btn primary"
-        href="#"
-        onclick="document.querySelector('video').play(); return false;"
-      >
-        ▶ Кино үзэх
-      </a>
-
-      <a
-        class="btn secondary"
-        href="index.html"
-      >
-        ← Буцах
-      </a>
-
+    <div class="loading">
+      ⏳ Киноны мэдээлэл ачаалж байна...
     </div>
 
   </div>
@@ -339,6 +308,353 @@ footer{
 
 </footer>
 
+
+<script>
+
+/* ==================================================
+   SUPABASE
+================================================== */
+
+const SUPABASE_URL =
+"https://idjqvulwffvtqplwmamt.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* ==================================================
+   GET MOVIE ID FROM URL
+================================================== */
+
+const params =
+new URLSearchParams(
+  window.location.search
+);
+
+const movieId =
+params.get("id");
+
+
+/* ==================================================
+   ELEMENTS
+================================================== */
+
+const movieVideo =
+document.getElementById(
+  "movieVideo"
+);
+
+const movieContent =
+document.getElementById(
+  "movieContent"
+);
+
+const notice =
+document.getElementById(
+  "notice"
+);
+
+
+/* ==================================================
+   LOAD MOVIE
+================================================== */
+
+async function loadMovie(){
+
+  if(!movieId){
+
+    movieContent.innerHTML = `
+      <div class="error">
+        ❌ Киноны ID олдсонгүй.
+      </div>
+    `;
+
+    notice.textContent =
+      "❌ Кино сонгогдоогүй байна.";
+
+    return;
+  }
+
+
+  const {
+    data: movie,
+    error
+  } = await supabaseClient
+    .from("movies")
+    .select("*")
+    .eq("id", movieId)
+    .single();
+
+
+  if(error){
+
+    console.error(
+      "Movie load error:",
+      error
+    );
+
+    movieContent.innerHTML = `
+      <div class="error">
+        ❌ Киноны мэдээллийг ачаалж чадсангүй.
+      </div>
+    `;
+
+    notice.textContent =
+      "❌ Кино ачаалахад алдаа гарлаа.";
+
+    return;
+  }
+
+
+  if(!movie){
+
+    movieContent.innerHTML = `
+      <div class="error">
+        ❌ Кино олдсонгүй.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  /* ==================================================
+     PAGE TITLE
+  ================================================== */
+
+  document.title =
+    "BANO — " + movie.title;
+
+
+  /* ==================================================
+     MOVIE INFORMATION
+  ================================================== */
+
+  movieContent.innerHTML = `
+
+    <div class="badge">
+
+      ${
+        movie.is_premium
+        ? "💎 PREMIUM"
+        : "🎬 BANO MOVIE"
+      }
+
+    </div>
+
+
+    <h1>
+      ${movie.title}
+    </h1>
+
+
+    <p class="description">
+
+      ${
+        movie.description
+        || "Энэ киноны тайлбар одоогоор оруулаагүй байна."
+      }
+
+    </p>
+
+
+    <div class="meta">
+
+      ${
+        movie.year
+        ? `<span>${movie.year}</span>`
+        : ""
+      }
+
+      ${
+        movie.category
+        ? `<span>${movie.category}</span>`
+        : ""
+      }
+
+      ${
+        movie.is_premium
+        ? `<span class="rating">💎 Premium</span>`
+        : `<span class="rating">▶ Үзэх боломжтой</span>`
+      }
+
+    </div>
+
+
+    <div class="buttons">
+
+      <button
+        class="btn primary"
+        onclick="playMovie()"
+      >
+        ▶ Кино үзэх
+      </button>
+
+
+      <a
+        class="btn secondary"
+        href="index.html"
+      >
+        ← Буцах
+      </a>
+
+    </div>
+
+  `;
+
+
+  /* ==================================================
+     VIDEO
+  ================================================== */
+
+  if(movie.video_url){
+
+    let videoUrl =
+      movie.video_url;
+
+
+    /*
+      Хэрэв video_url нь
+      Supabase Storage-ийн
+      private file path бол
+      signed URL үүсгэнэ.
+    */
+
+    if(
+      videoUrl.includes(
+        "/storage/v1/object/"
+      )
+    ){
+
+      try{
+
+        const parts =
+          videoUrl.split(
+            "/storage/v1/object/"
+          )[1];
+
+        const cleanPath =
+          parts
+          .replace(
+            "public/",
+            ""
+          )
+          .replace(
+            "sign/",
+            ""
+          )
+          .replace(
+            "authenticated/",
+            ""
+          );
+
+        const firstSlash =
+          cleanPath.indexOf("/");
+
+        const bucket =
+          cleanPath.substring(
+            0,
+            firstSlash
+          );
+
+        const filePath =
+          cleanPath.substring(
+            firstSlash + 1
+          );
+
+
+        const {
+          data,
+          error
+        } =
+        await supabaseClient
+          .storage
+          .from(bucket)
+          .createSignedUrl(
+            filePath,
+            3600
+          );
+
+
+        if(
+          !error &&
+          data &&
+          data.signedUrl
+        ){
+
+          videoUrl =
+            data.signedUrl;
+
+        }
+
+      }
+      catch(e){
+
+        console.error(
+          "Signed URL error:",
+          e
+        );
+
+      }
+
+    }
+
+
+    movieVideo.src =
+      videoUrl;
+
+    movieVideo.load();
+
+
+    notice.textContent =
+      "🎬 " +
+      movie.title +
+      " — Видео бэлэн.";
+
+  }
+  else{
+
+    notice.textContent =
+      "🎬 Энэ кинонд видео файл оруулаагүй байна.";
+
+  }
+
+}
+
+
+/* ==================================================
+   PLAY
+================================================== */
+
+function playMovie(){
+
+  movieVideo
+    .play()
+    .catch(function(error){
+
+      console.error(
+        "Video play error:",
+        error
+      );
+
+    });
+
+}
+
+
+/* ==================================================
+   START
+================================================== */
+
+loadMovie();
+
+</script>
 
 </body>
 </html>
