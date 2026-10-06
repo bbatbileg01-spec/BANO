@@ -128,11 +128,54 @@ h1{
   color:#bbb;
   line-height:1.7;
   max-width:700px;
-  margin-bottom:28px;
+  margin-bottom:18px;
+}
+
+/* =========================================
+   FAVORITE BUTTON
+========================================= */
+
+.favorite-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid #333;
+  border-radius:9px;
+  padding:11px 17px;
+  background:#151515;
+  color:#fff;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+  margin-bottom:8px;
+}
+
+.favorite-btn:hover{
+  background:#222;
+  border-color:#555;
+}
+
+.favorite-btn.saved{
+  background:#e50914;
+  border-color:#e50914;
+  color:#fff;
+}
+
+.favorite-btn:disabled{
+  opacity:.6;
+  cursor:default;
+}
+
+.favorite-message{
+  color:#777;
+  font-size:12px;
+  margin-bottom:18px;
+  min-height:16px;
 }
 
 .video-box{
-  margin-top:35px;
+  margin-top:20px;
   background:#000;
   border-radius:12px;
   overflow:hidden;
@@ -232,6 +275,11 @@ video{
   .description{
     font-size:14px;
   }
+
+  .favorite-btn{
+    width:100%;
+    justify-content:center;
+  }
 }
 </style>
 </head>
@@ -315,6 +363,22 @@ video{
           id="description"
           class="description"
         ></p>
+
+
+        <!-- FAVORITE -->
+
+        <button
+          id="favoriteBtn"
+          class="favorite-btn"
+          type="button"
+        >
+          ♡ Дуртайд нэмэх
+        </button>
+
+        <div
+          id="favoriteMessage"
+          class="favorite-message"
+        ></div>
 
 
         <div
@@ -411,6 +475,20 @@ const badge =
 const videoArea =
   document.getElementById("videoArea");
 
+const favoriteBtn =
+  document.getElementById("favoriteBtn");
+
+const favoriteMessage =
+  document.getElementById("favoriteMessage");
+
+
+/* =========================================
+   FAVORITE STATE
+========================================= */
+
+let currentUser = null;
+let favoriteId = null;
+
 
 /* =========================================
    LOAD MOVIE
@@ -503,6 +581,9 @@ async function renderMovie(movie){
   }
 
 
+  await loadFavoriteState();
+
+
   if(movie.is_premium){
 
     badge.textContent =
@@ -523,6 +604,213 @@ async function renderMovie(movie){
   }
 
 }
+
+
+/* =========================================
+   LOAD FAVORITE STATE
+========================================= */
+
+async function loadFavoriteState(){
+
+  favoriteId = null;
+
+  const {
+    data:{
+      user
+    }
+  } = await supabaseClient.auth.getUser();
+
+
+  currentUser = user;
+
+
+  if(!user){
+
+    favoriteBtn.innerHTML =
+      "♡ Дуртайд нэмэх";
+
+    favoriteBtn.classList.remove("saved");
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("favorites")
+    .select("id")
+    .eq("user_id",user.id)
+    .eq("movie_id",movieId)
+    .maybeSingle();
+
+
+  if(error){
+
+    console.error(
+      "Favorite load error:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if(data){
+
+    favoriteId =
+      data.id;
+
+    favoriteBtn.innerHTML =
+      "❤️ Дуртайд хадгалсан";
+
+    favoriteBtn.classList.add("saved");
+
+  }
+  else{
+
+    favoriteBtn.innerHTML =
+      "♡ Дуртайд нэмэх";
+
+    favoriteBtn.classList.remove("saved");
+
+  }
+
+}
+
+
+/* =========================================
+   TOGGLE FAVORITE
+========================================= */
+
+async function toggleFavorite(){
+
+  favoriteMessage.textContent =
+    "";
+
+
+  if(!currentUser){
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  favoriteBtn.disabled =
+    true;
+
+
+  try{
+
+    /* REMOVE */
+
+    if(favoriteId){
+
+      const {
+        error
+      } = await supabaseClient
+        .from("favorites")
+        .delete()
+        .eq("id",favoriteId)
+        .eq("user_id",currentUser.id);
+
+
+      if(error){
+
+        throw error;
+
+      }
+
+
+      favoriteId =
+        null;
+
+      favoriteBtn.innerHTML =
+        "♡ Дуртайд нэмэх";
+
+      favoriteBtn.classList.remove(
+        "saved"
+      );
+
+      favoriteMessage.textContent =
+        "Дуртай жагсаалтаас хасагдлаа.";
+
+    }
+
+
+    /* ADD */
+
+    else{
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from("favorites")
+        .insert({
+          user_id:currentUser.id,
+          movie_id:movieId
+        })
+        .select("id")
+        .single();
+
+
+      if(error){
+
+        throw error;
+
+      }
+
+
+      favoriteId =
+        data.id;
+
+      favoriteBtn.innerHTML =
+        "❤️ Дуртайд хадгалсан";
+
+      favoriteBtn.classList.add(
+        "saved"
+      );
+
+      favoriteMessage.textContent =
+        "Дуртай жагсаалтад нэмэгдлээ ❤️";
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Favorite error:",
+      error
+    );
+
+    favoriteMessage.textContent =
+      "Алдаа гарлаа. Дахин оролдоно уу.";
+
+  }
+
+
+  favoriteBtn.disabled =
+    false;
+
+}
+
+
+/* =========================================
+   FAVORITE CLICK
+========================================= */
+
+favoriteBtn.addEventListener(
+  "click",
+  toggleFavorite
+);
 
 
 /* =========================================
@@ -661,11 +949,6 @@ async function showVideo(movie){
     movie.video_url;
 
 
-  /*
-    Private Supabase Storage URL бол
-    signed URL үүсгэхийг оролдоно.
-  */
-
   try{
 
     const parsed =
@@ -718,10 +1001,13 @@ async function showVideo(movie){
         playsinline
         preload="metadata"
       >
+
         <source
           src="${escapeHtml(videoUrl)}"
         >
+
         Таны төхөөрөмж видео тоглуулахыг дэмжихгүй байна.
+
       </video>
 
     </div>
