@@ -108,6 +108,24 @@ button{
   white-space:nowrap;
 }
 
+/* PROFILE BUTTON */
+
+.profile-link{
+  color:#fff;
+  text-decoration:none;
+  border:1px solid #333;
+  background:#151515;
+  padding:8px 12px;
+  border-radius:6px;
+  font-size:12px;
+  transition:.2s;
+}
+
+.profile-link:hover{
+  border-color:#e50914;
+  background:#e50914;
+}
+
 .logout{
   border:1px solid #333;
   background:#151515;
@@ -115,6 +133,11 @@ button{
   padding:8px 12px;
   border-radius:6px;
   font-size:12px;
+}
+
+.logout:hover{
+  border-color:#e50914;
+  background:#e50914;
 }
 
 /* =========================
@@ -142,6 +165,11 @@ button{
   padding:13px;
   color:#ddd;
   text-decoration:none;
+}
+
+.mobile-nav a:hover{
+  color:#fff;
+  background:#181818;
 }
 
 /* =========================
@@ -217,12 +245,20 @@ button{
   font-weight:bold;
 }
 
+.primary-btn:hover{
+  background:#ff1823;
+}
+
 .secondary-btn{
   border:1px solid #555;
   background:#191919;
   color:#fff;
   padding:13px 22px;
   border-radius:8px;
+}
+
+.secondary-btn:hover{
+  background:#252525;
 }
 
 /* =========================
@@ -377,6 +413,10 @@ button{
   background:#222;
   color:#fff;
   padding:0 14px;
+}
+
+.search button:hover{
+  background:#333;
 }
 
 /* =========================
@@ -619,6 +659,10 @@ button{
   font-weight:bold;
 }
 
+.premium-btn:hover{
+  background:#edc33b;
+}
+
 /* =========================
    FOOTER
 ========================= */
@@ -735,6 +779,16 @@ button{
     display:none;
   }
 
+  .profile-link{
+    padding:7px 9px;
+    font-size:11px;
+  }
+
+  .logout{
+    padding:7px 9px;
+    font-size:11px;
+  }
+
   /* FEATURED MOBILE */
 
   .featured-section{
@@ -776,6 +830,14 @@ button{
 
   .movie-title{
     font-size:12px;
+  }
+
+  .profile-link{
+    padding:6px 8px;
+  }
+
+  .logout{
+    padding:6px 8px;
   }
 
 }
@@ -835,6 +897,13 @@ button{
     id="userBox"
   >
 
+    <a
+      href="profile.html"
+      class="profile-link"
+    >
+      👤 Profile
+    </a>
+
     <span
       class="user-email"
       id="userEmail"
@@ -879,7 +948,22 @@ button{
     Premium
   </a>
 
-  <a href="login.html">
+  <a href="profile.html">
+    👤 Profile
+  </a>
+
+  <a
+    href="admin.html"
+    id="mobileAdminLink"
+    style="display:none;"
+  >
+    ⚙ Admin
+  </a>
+
+  <a
+    href="login.html"
+    id="mobileLoginLink"
+  >
     Нэвтрэх
   </a>
 
@@ -1148,6 +1232,11 @@ async function loadUser(){
       "userEmail"
     );
 
+  const mobileLoginLink =
+    document.getElementById(
+      "mobileLoginLink"
+    );
+
 
   if(user){
 
@@ -1162,6 +1251,14 @@ async function loadUser(){
       "Хэрэглэгч";
 
 
+    if(mobileLoginLink){
+
+      mobileLoginLink.style.display =
+        "none";
+
+    }
+
+
     checkAdmin(
       user.id
     );
@@ -1173,6 +1270,14 @@ async function loadUser(){
 
     userBox.style.display =
       "none";
+
+
+    if(mobileLoginLink){
+
+      mobileLoginLink.style.display =
+        "block";
+
+    }
 
   }
 
@@ -1210,6 +1315,18 @@ async function checkAdmin(
       "adminLink"
     ).style.display =
       "inline";
+
+    const mobileAdminLink =
+      document.getElementById(
+        "mobileAdminLink"
+      );
+
+    if(mobileAdminLink){
+
+      mobileAdminLink.style.display =
+        "block";
+
+    }
 
   }
 
