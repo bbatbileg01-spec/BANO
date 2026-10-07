@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>BANO Premium — Кино</title>
 
@@ -129,15 +134,22 @@ h1{
   color:#bbb;
   line-height:1.7;
   max-width:700px;
-  margin-bottom:22px;
+  margin-bottom:20px;
 }
 
 
 /* =========================
-   FAVORITE BUTTON
+   ACTION BUTTONS
 ========================= */
 
-.favorite-btn{
+.action-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:5px;
+}
+
+.action-btn{
   border:1px solid #333;
   background:#151515;
   color:#fff;
@@ -147,17 +159,26 @@ h1{
   font-weight:bold;
   cursor:pointer;
   transition:.2s;
-  margin-bottom:5px;
 }
 
-.favorite-btn:hover{
+.action-btn:hover{
   background:#e50914;
   border-color:#e50914;
 }
 
-.favorite-btn.active{
+.action-btn.active{
   background:#e50914;
   border-color:#e50914;
+}
+
+.action-btn.list-active{
+  background:#333;
+  border-color:#555;
+}
+
+.action-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 
@@ -186,6 +207,7 @@ video{
 ========================= */
 
 .notice{
+  margin-top:30px;
   padding:30px;
   text-align:center;
   background:#121212;
@@ -239,6 +261,10 @@ video{
 }
 
 
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:750px){
 
   .header{
@@ -273,17 +299,25 @@ video{
     font-size:14px;
   }
 
-  .favorite-btn{
+  .action-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .action-btn{
     width:100%;
-    padding:13px;
+    padding:13px 8px;
   }
 
 }
 
 </style>
+
 </head>
 
+
 <body>
+
 
 <header class="header">
 
@@ -303,6 +337,7 @@ video{
 
 <main class="container">
 
+
   <div
     id="loading"
     class="loading"
@@ -317,6 +352,9 @@ video{
   >
 
     <div class="movie-layout">
+
+
+      <!-- POSTER -->
 
       <div>
 
@@ -340,7 +378,10 @@ video{
       </div>
 
 
+      <!-- MOVIE INFO -->
+
       <div>
+
 
         <div
           id="badge"
@@ -349,14 +390,17 @@ video{
           КИНО
         </div>
 
+
         <h1 id="title">
           Кино
         </h1>
+
 
         <div
           id="meta"
           class="meta"
         ></div>
+
 
         <p
           id="description"
@@ -364,20 +408,38 @@ video{
         ></p>
 
 
-        <!-- FAVORITE -->
+        <!-- ACTION BUTTONS -->
 
-        <button
-          id="favoriteBtn"
-          class="favorite-btn"
-          onclick="toggleFavorite()"
-        >
-          ♡ Дуртайд нэмэх
-        </button>
+        <div class="action-buttons">
 
+
+          <button
+            id="favoriteBtn"
+            class="action-btn"
+            onclick="toggleFavorite()"
+          >
+            ♡ Дуртайд нэмэх
+          </button>
+
+
+          <button
+            id="myListBtn"
+            class="action-btn"
+            onclick="toggleMyList()"
+          >
+            📋 Жагсаалтад нэмэх
+          </button>
+
+
+        </div>
+
+
+        <!-- VIDEO -->
 
         <div
           id="videoArea"
         ></div>
+
 
       </div>
 
@@ -386,13 +448,17 @@ video{
   </div>
 
 
+  <!-- ERROR -->
+
   <div
     id="error"
     class="error"
     style="display:none;"
   >
 
-    <h2>😔 Кино олдсонгүй</h2>
+    <h2>
+      😔 Кино олдсонгүй
+    </h2>
 
     <p>
       Энэ кино устсан эсвэл буруу холбоос байна.
@@ -400,10 +466,13 @@ video{
 
   </div>
 
+
 </main>
 
 
+
 <script>
+
 
 /* =========================================
    SUPABASE
@@ -412,14 +481,17 @@ video{
 const SUPABASE_URL =
   "https://idjqvulwffvtqplwmamt.supabase.co";
 
+
 const SUPABASE_KEY =
   "sb_publishable_XsH8zpr25shhUUDjMEo0cQ_e5df7co5";
+
 
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
+
 
 
 /* =========================================
@@ -431,8 +503,10 @@ const params =
     window.location.search
   );
 
+
 const movieId =
   params.get("id");
+
 
 
 /* =========================================
@@ -440,8 +514,13 @@ const movieId =
 ========================================= */
 
 let currentMovie = null;
+
 let currentUser = null;
+
 let favoriteId = null;
+
+let myListId = null;
+
 
 
 /* =========================================
@@ -451,35 +530,50 @@ let favoriteId = null;
 const loading =
   document.getElementById("loading");
 
+
 const content =
   document.getElementById("content");
+
 
 const errorBox =
   document.getElementById("error");
 
+
 const poster =
   document.getElementById("poster");
+
 
 const noPoster =
   document.getElementById("noPoster");
 
+
 const title =
   document.getElementById("title");
+
 
 const meta =
   document.getElementById("meta");
 
+
 const description =
   document.getElementById("description");
+
 
 const badge =
   document.getElementById("badge");
 
+
 const videoArea =
   document.getElementById("videoArea");
 
+
 const favoriteBtn =
   document.getElementById("favoriteBtn");
+
+
+const myListBtn =
+  document.getElementById("myListBtn");
+
 
 
 /* =========================================
@@ -487,6 +581,7 @@ const favoriteBtn =
 ========================================= */
 
 async function loadMovie(){
+
 
   if(!movieId){
 
@@ -500,14 +595,25 @@ async function loadMovie(){
   const {
     data:movie,
     error
-  } = await supabaseClient
+  } =
+  await supabaseClient
+
     .from("movies")
+
     .select("*")
-    .eq("id",movieId)
+
+    .eq(
+      "id",
+      movieId
+    )
+
     .single();
 
 
-  if(error || !movie){
+  if(
+    error ||
+    !movie
+  ){
 
     console.error(error);
 
@@ -518,7 +624,8 @@ async function loadMovie(){
   }
 
 
-  currentMovie = movie;
+  currentMovie =
+    movie;
 
 
   const {
@@ -526,10 +633,13 @@ async function loadMovie(){
       user
     }
   } =
-  await supabaseClient.auth.getUser();
+  await supabaseClient
+    .auth
+    .getUser();
 
 
-  currentUser = user || null;
+  currentUser =
+    user || null;
 
 
   renderMovie(movie);
@@ -537,7 +647,11 @@ async function loadMovie(){
 
   await loadFavorite();
 
+
+  await loadMyList();
+
 }
+
 
 
 /* =========================================
@@ -546,8 +660,10 @@ async function loadMovie(){
 
 async function renderMovie(movie){
 
+
   loading.style.display =
     "none";
+
 
   content.style.display =
     "block";
@@ -555,11 +671,15 @@ async function renderMovie(movie){
 
   document.title =
     "BANO Premium — " +
-    (movie.title || "Кино");
+    (
+      movie.title ||
+      "Кино"
+    );
 
 
   title.textContent =
-    movie.title || "Нэргүй кино";
+    movie.title ||
+    "Нэргүй кино";
 
 
   description.textContent =
@@ -572,9 +692,14 @@ async function renderMovie(movie){
       movie.year || "",
       movie.category || ""
     ]
+
     .filter(Boolean)
+
     .join(" • ");
 
+
+
+  /* POSTER */
 
   if(movie.poster_url){
 
@@ -590,16 +715,22 @@ async function renderMovie(movie){
   }
 
 
+
+  /* PREMIUM */
+
   if(movie.is_premium){
 
     badge.textContent =
       "💎 PREMIUM";
 
-    badge.classList.add("premium");
+    badge.classList.add(
+      "premium"
+    );
 
     await handlePremiumMovie(movie);
 
   }
+
   else{
 
     badge.textContent =
@@ -612,11 +743,13 @@ async function renderMovie(movie){
 }
 
 
+
 /* =========================================
    LOAD FAVORITE
 ========================================= */
 
 async function loadFavorite(){
+
 
   if(!currentUser){
 
@@ -637,16 +770,21 @@ async function loadFavorite(){
     error
   } =
   await supabaseClient
+
     .from("favorites")
+
     .select("id")
+
     .eq(
       "user_id",
       currentUser.id
     )
+
     .eq(
       "movie_id",
       currentMovie.id
     )
+
     .maybeSingle();
 
 
@@ -675,9 +813,11 @@ async function loadFavorite(){
     );
 
   }
+
   else{
 
-    favoriteId = null;
+    favoriteId =
+      null;
 
     favoriteBtn.textContent =
       "♡ Дуртайд нэмэх";
@@ -691,11 +831,13 @@ async function loadFavorite(){
 }
 
 
+
 /* =========================================
    TOGGLE FAVORITE
 ========================================= */
 
 async function toggleFavorite(){
+
 
   if(!currentUser){
 
@@ -715,6 +857,7 @@ async function toggleFavorite(){
     true;
 
 
+
   /* REMOVE */
 
   if(favoriteId){
@@ -723,12 +866,16 @@ async function toggleFavorite(){
       error
     } =
     await supabaseClient
+
       .from("favorites")
+
       .delete()
+
       .eq(
         "id",
         favoriteId
       )
+
       .eq(
         "user_id",
         currentUser.id
@@ -744,6 +891,7 @@ async function toggleFavorite(){
       );
 
     }
+
     else{
 
       favoriteId =
@@ -760,6 +908,8 @@ async function toggleFavorite(){
 
   }
 
+
+
   /* ADD */
 
   else{
@@ -769,15 +919,21 @@ async function toggleFavorite(){
       error
     } =
     await supabaseClient
+
       .from("favorites")
+
       .insert({
+
         user_id:
           currentUser.id,
 
         movie_id:
           currentMovie.id
+
       })
+
       .select("id")
+
       .single();
 
 
@@ -792,6 +948,7 @@ async function toggleFavorite(){
       await loadFavorite();
 
     }
+
     else{
 
       favoriteId =
@@ -815,25 +972,268 @@ async function toggleFavorite(){
 }
 
 
+
+/* =========================================
+   LOAD MY LIST
+========================================= */
+
+async function loadMyList(){
+
+
+  if(!currentUser){
+
+    myListBtn.textContent =
+      "📋 Жагсаалтад нэмэх";
+
+    myListBtn.classList.remove(
+      "list-active"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+
+    .from("my_list")
+
+    .select("id")
+
+    .eq(
+      "user_id",
+      currentUser.id
+    )
+
+    .eq(
+      "movie_link",
+      "movie.html?id=" +
+      currentMovie.id
+    )
+
+    .maybeSingle();
+
+
+  if(error){
+
+    console.error(
+      "My list load error:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if(data){
+
+    myListId =
+      data.id;
+
+    myListBtn.textContent =
+      "📋 Жагсаалтаас хасах";
+
+    myListBtn.classList.add(
+      "list-active"
+    );
+
+  }
+
+  else{
+
+    myListId =
+      null;
+
+    myListBtn.textContent =
+      "📋 Жагсаалтад нэмэх";
+
+    myListBtn.classList.remove(
+      "list-active"
+    );
+
+  }
+
+}
+
+
+
+/* =========================================
+   TOGGLE MY LIST
+========================================= */
+
+async function toggleMyList(){
+
+
+  if(!currentUser){
+
+    alert(
+      "📋 Жагсаалтад нэмэхийн тулд эхлээд нэвтэрнэ үү."
+    );
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  myListBtn.disabled =
+    true;
+
+
+
+  /* REMOVE */
+
+  if(myListId){
+
+    const {
+      error
+    } =
+    await supabaseClient
+
+      .from("my_list")
+
+      .delete()
+
+      .eq(
+        "id",
+        myListId
+      )
+
+      .eq(
+        "user_id",
+        currentUser.id
+      );
+
+
+    if(error){
+
+      console.error(error);
+
+      alert(
+        "Жагсаалтаас хасахад алдаа гарлаа."
+      );
+
+    }
+
+    else{
+
+      myListId =
+        null;
+
+      myListBtn.textContent =
+        "📋 Жагсаалтад нэмэх";
+
+      myListBtn.classList.remove(
+        "list-active"
+      );
+
+    }
+
+  }
+
+
+
+  /* ADD */
+
+  else{
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient
+
+      .from("my_list")
+
+      .insert({
+
+        user_id:
+          currentUser.id,
+
+        movie_name:
+          currentMovie.title,
+
+        movie_link:
+          "movie.html?id=" +
+          currentMovie.id
+
+      })
+
+      .select("id")
+
+      .single();
+
+
+    if(error){
+
+      console.error(error);
+
+      alert(
+        "Жагсаалтад нэмэхэд алдаа гарлаа."
+      );
+
+      await loadMyList();
+
+    }
+
+    else{
+
+      myListId =
+        data.id;
+
+      myListBtn.textContent =
+        "📋 Жагсаалтаас хасах";
+
+      myListBtn.classList.add(
+        "list-active"
+      );
+
+    }
+
+  }
+
+
+  myListBtn.disabled =
+    false;
+
+}
+
+
+
 /* =========================================
    PREMIUM MOVIE
 ========================================= */
 
 async function handlePremiumMovie(movie){
 
+
   const {
     data:{
       user
     }
-  } = await supabaseClient.auth.getUser();
+  } =
+  await supabaseClient
+    .auth
+    .getUser();
 
 
   if(!user){
 
     showPremiumLocked(
+
       "Premium кино үзэхийн тулд нэвтэрнэ үү.",
+
       "Нэвтрэх",
+
       "login.html"
+
     );
 
     return;
@@ -844,29 +1244,45 @@ async function handlePremiumMovie(movie){
   const {
     data:premium,
     error
-  } = await supabaseClient
+  } =
+  await supabaseClient
+
     .from("user_premium")
-    .select("premium_until")
+
+    .select(
+      "premium_until"
+    )
+
     .eq(
       "user_id",
       user.id
     )
+
     .maybeSingle();
 
 
   if(
+
     error ||
+
     !premium ||
+
     !premium.premium_until ||
+
     new Date(
       premium.premium_until
     ) <= new Date()
+
   ){
 
     showPremiumLocked(
+
       "Энэ кино зөвхөн Premium эрхтэй хэрэглэгчдэд зориулагдсан.",
+
       "💎 Premium авах",
+
       "premium.html"
+
     );
 
     return;
@@ -877,6 +1293,7 @@ async function handlePremiumMovie(movie){
   await showVideo(movie);
 
 }
+
 
 
 /* =========================================
@@ -919,11 +1336,13 @@ function showPremiumLocked(
 }
 
 
+
 /* =========================================
    SHOW VIDEO
 ========================================= */
 
 async function showVideo(movie){
+
 
   if(!movie.video_url){
 
@@ -969,9 +1388,15 @@ async function showVideo(movie){
       const {
         data,
         error
-      } = await supabaseClient
+      } =
+      await supabaseClient
+
         .storage
-        .from(parsed.bucket)
+
+        .from(
+          parsed.bucket
+        )
+
         .createSignedUrl(
           parsed.path,
           3600
@@ -979,9 +1404,13 @@ async function showVideo(movie){
 
 
       if(
+
         !error &&
+
         data &&
+
         data.signedUrl
+
       ){
 
         videoUrl =
@@ -992,6 +1421,7 @@ async function showVideo(movie){
     }
 
   }
+
   catch(err){
 
     console.error(
@@ -1028,6 +1458,7 @@ async function showVideo(movie){
 }
 
 
+
 /* =========================================
    PARSE STORAGE URL
 ========================================= */
@@ -1037,10 +1468,13 @@ function parseSupabaseStorageUrl(url){
   try{
 
     if(
+
       !url ||
+
       !url.includes(
         "/storage/v1/object/"
       )
+
     ){
 
       return null;
@@ -1106,7 +1540,10 @@ function parseSupabaseStorageUrl(url){
       );
 
 
-    if(!bucket || !path){
+    if(
+      !bucket ||
+      !path
+    ){
 
       return null;
 
@@ -1119,6 +1556,7 @@ function parseSupabaseStorageUrl(url){
     };
 
   }
+
   catch(error){
 
     console.error(error);
@@ -1128,6 +1566,7 @@ function parseSupabaseStorageUrl(url){
   }
 
 }
+
 
 
 /* =========================================
@@ -1148,15 +1587,19 @@ function showError(){
 }
 
 
+
 /* =========================================
-   ESCAPE
+   ESCAPE HTML
 ========================================= */
 
 function escapeHtml(value){
 
   if(
+
     value === null ||
+
     value === undefined
+
   ){
 
     return "";
@@ -1194,6 +1637,7 @@ function escapeHtml(value){
 }
 
 
+
 /* =========================================
    START
 ========================================= */
@@ -1201,6 +1645,7 @@ function escapeHtml(value){
 loadMovie();
 
 </script>
+
 
 </body>
 </html>
