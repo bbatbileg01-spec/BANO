@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>BANO+ Profile</title>
 
@@ -20,25 +25,46 @@ body{
   background:#080808;
   color:#fff;
   font-family:Arial,Helvetica,sans-serif;
-  min-height:100vh;
 }
+
+button{
+  font:inherit;
+  cursor:pointer;
+}
+
+a{
+  text-decoration:none;
+}
+
+/* =========================
+   HEADER
+========================= */
 
 .header{
   height:70px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   padding:0 5%;
+
   background:#0b0b0b;
+
   border-bottom:1px solid #222;
+
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
 
 .logo{
   color:#fff;
+
   font-size:28px;
   font-weight:900;
+
   letter-spacing:2px;
-  text-decoration:none;
 }
 
 .logo span{
@@ -47,113 +73,273 @@ body{
 
 .back-btn{
   color:#bbb;
-  text-decoration:none;
-  font-size:14px;
+
+  border:1px solid #333;
+
+  background:#151515;
+
+  padding:9px 15px;
+
+  border-radius:7px;
+
+  font-size:13px;
 }
 
 .back-btn:hover{
   color:#fff;
+  border-color:#e50914;
 }
+
+/* =========================
+   MAIN
+========================= */
 
 .container{
+  width:90%;
   max-width:1100px;
-  margin:40px auto;
-  padding:0 20px;
+
+  margin:40px auto 70px;
 }
 
-.profile-card{
-  background:#111;
+/* =========================
+   PROFILE HEADER
+========================= */
+
+.profile-header{
+  background:
+    linear-gradient(
+      135deg,
+      #171717,
+      #0e0e0e
+    );
+
   border:1px solid #292929;
-  border-radius:16px;
-  padding:30px;
-  margin-bottom:35px;
-}
 
-.profile-top{
+  border-radius:16px;
+
+  padding:30px;
+
   display:flex;
+
   align-items:center;
-  gap:20px;
+
+  gap:22px;
+
+  margin-bottom:25px;
 }
 
 .avatar{
-  width:70px;
-  height:70px;
+  width:75px;
+  height:75px;
+
   border-radius:50%;
-  background:#e50914;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
+  background:#e50914;
+
+  color:#fff;
+
   font-size:30px;
+
   font-weight:bold;
+
+  flex-shrink:0;
+}
+
+.profile-info{
+  min-width:0;
 }
 
 .profile-info h1{
   font-size:25px;
+
   margin-bottom:7px;
 }
 
-.profile-info p{
-  color:#888;
+.email{
+  color:#999;
+
   font-size:14px;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
 }
 
-.premium-box{
-  margin-top:25px;
-  padding:20px;
-  border-radius:12px;
-  background:linear-gradient(120deg,#191919,#101010);
-  border:1px solid #333;
+/* =========================
+   CARDS
+========================= */
+
+.card{
+  background:#111;
+
+  border:1px solid #292929;
+
+  border-radius:14px;
+
+  padding:25px;
+
+  margin-bottom:25px;
 }
 
-.premium-title{
-  color:#d4a62a;
+.card-title{
+  font-size:20px;
+
   font-weight:bold;
-  margin-bottom:8px;
-}
 
-.premium-status{
-  color:#bbb;
-  font-size:14px;
-}
-
-.section-title{
-  font-size:24px;
   margin-bottom:20px;
 }
 
+/* =========================
+   PREMIUM
+========================= */
+
+.premium-card{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+}
+
+.premium-left{
+  display:flex;
+
+  align-items:center;
+
+  gap:15px;
+}
+
+.premium-icon{
+  width:50px;
+  height:50px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:12px;
+
+  background:#d4a62a;
+
+  color:#111;
+
+  font-size:22px;
+}
+
+.premium-title{
+  font-size:16px;
+
+  font-weight:bold;
+
+  margin-bottom:6px;
+}
+
+.premium-status{
+  color:#999;
+
+  font-size:13px;
+}
+
+.premium-active{
+  color:#d4a62a;
+}
+
+.premium-expired{
+  color:#e50914;
+}
+
+.premium-btn{
+  background:#d4a62a;
+
+  color:#111;
+
+  border:0;
+
+  padding:11px 18px;
+
+  border-radius:8px;
+
+  font-weight:bold;
+}
+
+.premium-btn:hover{
+  background:#edc33b;
+}
+
+/* =========================
+   MOVIE GRID
+========================= */
+
 .movie-grid{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+
+  grid-template-columns:
+    repeat(5,1fr);
+
   gap:18px;
-  margin-bottom:40px;
 }
 
 .movie-card{
-  background:#111;
-  border:1px solid #222;
+  background:#151515;
+
+  border:1px solid #242424;
+
   border-radius:10px;
+
   overflow:hidden;
+
   cursor:pointer;
+
   transition:.2s;
+
+  position:relative;
 }
 
 .movie-card:hover{
   transform:translateY(-5px);
+
   border-color:#444;
 }
 
 .poster{
   width:100%;
+
   aspect-ratio:2/3;
-  background:#191919;
+
+  background:#202020;
+
+  position:relative;
+
   overflow:hidden;
 }
 
 .poster img{
   width:100%;
   height:100%;
+
   object-fit:cover;
+
   display:block;
+}
+
+.no-poster{
+  width:100%;
+  height:100%;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  font-size:40px;
 }
 
 .movie-info{
@@ -162,140 +348,160 @@ body{
 
 .movie-title{
   font-size:14px;
+
   font-weight:bold;
+
   white-space:nowrap;
+
   overflow:hidden;
+
   text-overflow:ellipsis;
 }
 
 .movie-meta{
   color:#777;
-  font-size:12px;
+
+  font-size:11px;
+
   margin-top:6px;
 }
 
 .remove-btn{
-  width:100%;
+  position:absolute;
+
+  top:8px;
+  right:8px;
+
+  width:32px;
+  height:32px;
+
   border:0;
-  border-top:1px solid #222;
-  background:#151515;
-  color:#aaa;
-  padding:10px;
-  font-size:12px;
-  cursor:pointer;
+
+  border-radius:50%;
+
+  background:rgba(0,0,0,.8);
+
+  color:#fff;
+
+  font-size:15px;
+
+  z-index:5;
 }
 
 .remove-btn:hover{
   background:#e50914;
-  color:#fff;
 }
+
+/* =========================
+   MY LIST
+========================= */
 
 .list-card{
-  background:#111;
-  border:1px solid #222;
-  border-radius:12px;
-  padding:16px;
-  margin-bottom:12px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
+  position:relative;
 }
 
-.list-info{
-  min-width:0;
-}
+.list-open{
+  width:100%;
 
-.list-title{
-  font-size:16px;
-  font-weight:bold;
-  margin-bottom:6px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
+  margin-top:10px;
 
-.list-date{
-  color:#777;
-  font-size:12px;
-}
-
-.list-actions{
-  display:flex;
-  gap:8px;
-  flex-shrink:0;
-}
-
-.open-list-btn{
-  display:inline-block;
-  background:#e50914;
-  color:#fff;
-  text-decoration:none;
-  padding:9px 14px;
-  border-radius:7px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.delete-list-btn{
   border:1px solid #333;
-  background:#151515;
-  color:#aaa;
-  padding:9px 12px;
-  border-radius:7px;
-  cursor:pointer;
+
+  background:#191919;
+
+  color:#fff;
+
+  padding:8px;
+
+  border-radius:6px;
+
   font-size:12px;
 }
 
-.delete-list-btn:hover{
+.list-open:hover{
   background:#e50914;
-  color:#fff;
+
   border-color:#e50914;
 }
 
+/* =========================
+   EMPTY
+========================= */
+
 .empty{
-  background:#111;
-  border:1px solid #222;
-  border-radius:12px;
-  padding:50px 20px;
+  padding:40px 15px;
+
   text-align:center;
-  color:#777;
-  margin-bottom:35px;
+
+  color:#666;
+
+  border:1px dashed #292929;
+
+  border-radius:10px;
+
+  line-height:1.6;
 }
 
-.loading{
-  color:#aaa;
-  padding:40px;
+/* =========================
+   LOGOUT
+========================= */
+
+.logout-section{
   text-align:center;
+
+  margin-top:30px;
 }
 
 .logout-btn{
-  margin-top:25px;
   border:1px solid #333;
+
   background:#151515;
+
   color:#fff;
-  padding:10px 18px;
-  border-radius:7px;
-  cursor:pointer;
+
+  padding:11px 25px;
+
+  border-radius:8px;
 }
 
 .logout-btn:hover{
   background:#e50914;
+
   border-color:#e50914;
 }
 
-@media(max-width:1000px){
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  color:#888;
+
+  text-align:center;
+
+  padding:30px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
 
   .movie-grid{
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:
+      repeat(3,1fr);
+
+    gap:12px;
   }
 
 }
 
-@media(max-width:700px){
+@media(max-width:600px){
 
   .header{
     height:62px;
+
     padding:0 18px;
   }
 
@@ -304,163 +510,246 @@ body{
   }
 
   .container{
-    margin:25px auto;
-    padding:0 15px;
+    width:auto;
+
+    margin:25px 18px 50px;
   }
 
-  .profile-card{
+  .profile-header{
     padding:22px;
-  }
 
-  .profile-top{
     gap:15px;
   }
 
   .avatar{
-    width:58px;
-    height:58px;
+    width:60px;
+    height:60px;
+
     font-size:24px;
   }
 
   .profile-info h1{
-    font-size:19px;
+    font-size:20px;
   }
 
-  .movie-grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
+  .email{
+    font-size:12px;
   }
 
-  .list-card{
-    align-items:flex-start;
-    flex-direction:column;
+  .card{
+    padding:18px;
   }
 
-  .list-actions{
+  .premium-card{
+    display:block;
+  }
+
+  .premium-left{
+    margin-bottom:18px;
+  }
+
+  .premium-btn{
     width:100%;
   }
 
-  .open-list-btn,
-  .delete-list-btn{
-    flex:1;
-    text-align:center;
+  .movie-grid{
+    grid-template-columns:
+      repeat(2,1fr);
+
+    gap:10px;
+  }
+
+  .movie-info{
+    padding:9px;
+  }
+
+  .movie-title{
+    font-size:12px;
+  }
+
+  .movie-meta{
+    font-size:10px;
   }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header class="header">
 
-  <a href="index.html" class="logo">
+  <div class="logo">
     BANO<span>+</span>
-  </a>
+  </div>
 
-  <a href="index.html" class="back-btn">
-    ← Нүүр хуудас
+  <a
+    href="index.html"
+    class="back-btn"
+  >
+    ← Нүүр
   </a>
 
 </header>
 
 
+<!-- =========================
+     MAIN
+========================= -->
+
 <main class="container">
+
 
   <!-- PROFILE -->
 
-  <section class="profile-card">
+  <section class="profile-header">
 
-    <div class="profile-top">
-
-      <div class="avatar" id="avatar">
-        B
-      </div>
-
-      <div class="profile-info">
-
-        <h1 id="userName">
-          Хэрэглэгч
-        </h1>
-
-        <p id="userEmail">
-          Ачаалж байна...
-        </p>
-
-      </div>
-
+    <div
+      class="avatar"
+      id="avatar"
+    >
+      B
     </div>
 
+    <div class="profile-info">
 
-    <div class="premium-box">
-
-      <div class="premium-title">
-        💎 BANO Premium
-      </div>
+      <h1>
+        Сайн байна уу 👋
+      </h1>
 
       <div
-        class="premium-status"
-        id="premiumStatus"
+        class="email"
+        id="userEmail"
       >
         Ачаалж байна...
       </div>
 
     </div>
 
+  </section>
+
+
+  <!-- =========================
+       PREMIUM
+  ========================= -->
+
+  <section class="card">
+
+    <div class="premium-card">
+
+      <div class="premium-left">
+
+        <div class="premium-icon">
+          💎
+        </div>
+
+        <div>
+
+          <div class="premium-title">
+            BANO Premium
+          </div>
+
+          <div
+            class="premium-status"
+            id="premiumStatus"
+          >
+            Шалгаж байна...
+          </div>
+
+        </div>
+
+      </div>
+
+      <button
+        class="premium-btn"
+        onclick="location.href='premium.html'"
+      >
+        Premium
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FAVORITES
+  ========================= -->
+
+  <section class="card">
+
+    <div class="card-title">
+      ❤️ Дуртай кинонууд
+    </div>
+
+    <div
+      class="movie-grid"
+      id="favoriteGrid"
+    >
+
+      <div class="loading">
+        Ачаалж байна...
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       MY LIST
+  ========================= -->
+
+  <section class="card">
+
+    <div class="card-title">
+      📋 Миний жагсаалт
+    </div>
+
+    <div
+      class="movie-grid"
+      id="myListGrid"
+    >
+
+      <div class="loading">
+        Ачаалж байна...
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       LOGOUT
+  ========================= -->
+
+  <div class="logout-section">
 
     <button
       class="logout-btn"
       onclick="logout()"
     >
-      Гарах
+      🚪 Гарах
     </button>
 
-  </section>
-
-
-  <!-- FAVORITES -->
-
-  <h2 class="section-title">
-    ❤️ Миний дуртай кино
-  </h2>
-
-
-  <div
-    class="movie-grid"
-    id="movieGrid"
-  >
-
-    <div class="loading">
-      Дуртай кинонуудыг ачаалж байна...
-    </div>
-
   </div>
 
-
-  <!-- MY LIST -->
-
-  <h2 class="section-title">
-    📋 Миний жагсаалт
-  </h2>
-
-
-  <div id="myListArea">
-
-    <div class="loading">
-      Миний жагсаалтыг ачаалж байна...
-    </div>
-
-  </div>
 
 </main>
 
 
 <script>
 
-/* =========================================
+/* =========================
    SUPABASE
-========================================= */
+========================= */
 
 const SUPABASE_URL =
   "https://idjqvulwffvtqplwmamt.supabase.co";
@@ -475,12 +764,16 @@ const supabaseClient =
   );
 
 
+/* =========================
+   USER
+========================= */
+
 let currentUser = null;
 
 
-/* =========================================
+/* =========================
    START
-========================================= */
+========================= */
 
 async function start(){
 
@@ -517,9 +810,9 @@ async function start(){
 }
 
 
-/* =========================================
-   USER
-========================================= */
+/* =========================
+   SHOW USER
+========================= */
 
 function showUser(){
 
@@ -532,12 +825,6 @@ function showUser(){
     "userEmail"
   ).textContent =
     email;
-
-
-  document.getElementById(
-    "userName"
-  ).textContent =
-    "Сайн байна уу 👋";
 
 
   const firstLetter =
@@ -554,25 +841,11 @@ function showUser(){
 }
 
 
-/* =========================================
+/* =========================
    PREMIUM
-========================================= */
+========================= */
 
 async function loadPremium(){
-
-  const {
-    data,
-    error
-  } =
-  await supabaseClient
-    .from("user_premium")
-    .select("premium_until")
-    .eq(
-      "user_id",
-      currentUser.id
-    )
-    .maybeSingle();
-
 
   const status =
     document.getElementById(
@@ -580,10 +853,34 @@ async function loadPremium(){
     );
 
 
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("user_premium")
+    .select(
+      "premium_until"
+    )
+    .eq(
+      "user_id",
+      currentUser.id
+    )
+    .maybeSingle();
+
+
   if(error){
 
+    console.error(
+      "Premium error:",
+      error
+    );
+
     status.textContent =
-      "Premium мэдээлэл ачаалахад алдаа гарлаа.";
+      "Premium мэдээлэл ачааллахад алдаа гарлаа.";
+
+    status.className =
+      "premium-status premium-expired";
 
     return;
 
@@ -596,14 +893,17 @@ async function loadPremium(){
   ){
 
     status.textContent =
-      "❌ Та одоогоор Premium эрхгүй байна.";
+      "Premium идэвхгүй";
+
+    status.className =
+      "premium-status premium-expired";
 
     return;
 
   }
 
 
-  const until =
+  const premiumUntil =
     new Date(
       data.premium_until
     );
@@ -613,53 +913,56 @@ async function loadPremium(){
     new Date();
 
 
-  if(until <= now){
+  if(
+    premiumUntil > now
+  ){
+
+    const dateText =
+      premiumUntil.toLocaleDateString(
+        "mn-MN",
+        {
+          year:"numeric",
+          month:"long",
+          day:"numeric"
+        }
+      );
+
 
     status.textContent =
-      "❌ Premium эрхийн хугацаа дууссан.";
+      "Идэвхтэй • " +
+      dateText +
+      " хүртэл";
 
-    return;
+    status.className =
+      "premium-status premium-active";
+
+  }else{
+
+    status.textContent =
+      "Premium хугацаа дууссан";
+
+    status.className =
+      "premium-status premium-expired";
 
   }
-
-
-  const diff =
-    until.getTime() -
-    now.getTime();
-
-
-  const days =
-    Math.ceil(
-      diff /
-      (1000 * 60 * 60 * 24)
-    );
-
-
-  status.textContent =
-    "✅ Premium идэвхтэй • " +
-    days +
-    " хоног үлдсэн • " +
-    until.toLocaleDateString(
-      "mn-MN"
-    );
 
 }
 
 
-/* =========================================
+/* =========================
    FAVORITES
-========================================= */
+========================= */
 
 async function loadFavorites(){
 
   const grid =
     document.getElementById(
-      "movieGrid"
+      "favoriteGrid"
     );
 
 
   grid.innerHTML =
-    '<div class="loading">Дуртай кинонуудыг ачаалж байна...</div>';
+    '<div class="loading">Ачаалж байна...</div>';
 
 
   const {
@@ -693,10 +996,13 @@ async function loadFavorites(){
 
   if(error){
 
-    console.error(error);
+    console.error(
+      "Favorites error:",
+      error
+    );
 
     grid.innerHTML =
-      '<div class="empty">Favorites ачаалахад алдаа гарлаа.</div>';
+      '<div class="empty">❤️ Дуртай кино ачааллахад алдаа гарлаа.</div>';
 
     return;
 
@@ -713,8 +1019,6 @@ async function loadFavorites(){
       <div class="empty">
         ❤️<br><br>
         Та одоогоор дуртай кино нэмээгүй байна.
-        <br><br>
-        Нүүр хуудаснаас кино сонгоод дуртайдаа нэмээрэй.
       </div>
       `;
 
@@ -723,111 +1027,28 @@ async function loadFavorites(){
   }
 
 
-  grid.innerHTML = "";
+  grid.innerHTML =
+    "";
 
 
   data.forEach(
-    favorite => {
+    item => {
 
-      const movie =
-        favorite.movies;
-
-
-      if(!movie){
+      if(!item.movies){
         return;
       }
 
 
+      const movie =
+        item.movies;
+
+
       const card =
-        document.createElement(
-          "div"
+        createMovieCard(
+          movie,
+          item.id,
+          true
         );
-
-
-      card.className =
-        "movie-card";
-
-
-      card.onclick =
-        function(){
-
-          window.location.href =
-            "movie.html?id=" +
-            movie.id;
-
-        };
-
-
-      const poster =
-        movie.poster_url
-
-        ?
-
-        `<img
-          src="${escapeHtml(movie.poster_url)}"
-          alt="${escapeHtml(movie.title || "Movie")}"
-        >`
-
-        :
-
-        `
-        <div
-          style="
-            height:100%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:45px;
-          "
-        >
-          🎬
-        </div>
-        `;
-
-
-      card.innerHTML = `
-
-        <div class="poster">
-          ${poster}
-        </div>
-
-        <div class="movie-info">
-
-          <div class="movie-title">
-            ${escapeHtml(
-              movie.title ||
-              "Нэргүй кино"
-            )}
-          </div>
-
-          <div class="movie-meta">
-
-            ${movie.year || ""}
-
-            ${
-              movie.year &&
-              movie.category
-                ? " • "
-                : ""
-            }
-
-            ${escapeHtml(
-              movie.category ||
-              ""
-            )}
-
-          </div>
-
-        </div>
-
-        <button
-          class="remove-btn"
-          onclick="removeFavorite(event, ${favorite.id})"
-        >
-          ❤️ Дуртайгаас хасах
-        </button>
-
-      `;
 
 
       grid.appendChild(
@@ -840,17 +1061,385 @@ async function loadFavorites(){
 }
 
 
-/* =========================================
-   REMOVE FAVORITE
-========================================= */
+/* =========================
+   MY LIST
+========================= */
 
-async function removeFavorite(
-  event,
-  favoriteId
+async function loadMyList(){
+
+  const grid =
+    document.getElementById(
+      "myListGrid"
+    );
+
+
+  grid.innerHTML =
+    '<div class="loading">Ачаалж байна...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("my_list")
+    .select("*")
+    .eq(
+      "user_id",
+      currentUser.id
+    )
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+
+  if(error){
+
+    console.error(
+      "My list error:",
+      error
+    );
+
+    grid.innerHTML =
+      '<div class="empty">📋 Жагсаалт ачааллахад алдаа гарлаа.</div>';
+
+    return;
+
+  }
+
+
+  if(
+    !data ||
+    data.length === 0
+  ){
+
+    grid.innerHTML =
+      `
+      <div class="empty">
+        📋<br><br>
+        Таны жагсаалт хоосон байна.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    "";
+
+
+  for(
+    const item of data
+  ){
+
+    const movieLink =
+      item.movie_link;
+
+
+    if(!movieLink){
+
+      continue;
+
+    }
+
+
+    let movieId = null;
+
+
+    try{
+
+      const url =
+        new URL(
+          movieLink,
+          window.location.origin
+        );
+
+
+      movieId =
+        url.searchParams.get(
+          "id"
+        );
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+
+    let movie = null;
+
+
+    if(movieId){
+
+      const {
+        data:movieData
+      } =
+      await supabaseClient
+        .from("movies")
+        .select(`
+          id,
+          title,
+          poster_url,
+          category,
+          year
+        `)
+        .eq(
+          "id",
+          movieId
+        )
+        .maybeSingle();
+
+
+      movie =
+        movieData;
+
+    }
+
+
+    if(movie){
+
+      const card =
+        createMovieCard(
+          movie,
+          item.id,
+          false
+        );
+
+
+      grid.appendChild(
+        card
+      );
+
+    }else{
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "movie-card";
+
+
+      card.innerHTML =
+        `
+        <div class="poster">
+
+          <div class="no-poster">
+            🎬
+          </div>
+
+        </div>
+
+        <div class="movie-info">
+
+          <div class="movie-title">
+            ${escapeHtml(
+              item.movie_name ||
+              "Кино"
+            )}
+          </div>
+
+          <button
+            class="list-open"
+            onclick="window.location.href='${escapeJs(movieLink)}'"
+          >
+            ▶ Нээх
+          </button>
+
+        </div>
+        `;
+
+
+      grid.appendChild(
+        card
+      );
+
+    }
+
+  }
+
+
+  if(
+    grid.children.length === 0
+  ){
+
+    grid.innerHTML =
+      `
+      <div class="empty">
+        📋<br><br>
+        Таны жагсаалт хоосон байна.
+      </div>
+      `;
+
+  }
+
+}
+
+
+/* =========================
+   CREATE MOVIE CARD
+========================= */
+
+function createMovieCard(
+  movie,
+  itemId,
+  isFavorite
 ){
 
-  event.stopPropagation();
+  const card =
+    document.createElement(
+      "div"
+    );
 
+
+  card.className =
+    "movie-card";
+
+
+  card.onclick =
+    function(){
+
+      window.location.href =
+        "movie.html?id=" +
+        encodeURIComponent(
+          movie.id
+        );
+
+    };
+
+
+  const poster =
+    movie.poster_url
+
+    ?
+
+    `
+    <img
+      src="${escapeHtml(
+        movie.poster_url
+      )}"
+      alt="${escapeHtml(
+        movie.title ||
+        "Movie"
+      )}"
+      loading="lazy"
+    >
+    `
+
+    :
+
+    `
+    <div class="no-poster">
+      🎬
+    </div>
+    `;
+
+
+  let removeButton =
+    "";
+
+
+  if(isFavorite){
+
+    removeButton =
+      `
+      <button
+        class="remove-btn"
+        title="Дуртайгаас хасах"
+        onclick="
+          event.stopPropagation();
+          removeFavorite('${escapeJs(itemId)}');
+        "
+      >
+        ×
+      </button>
+      `;
+
+  }else{
+
+    removeButton =
+      `
+      <button
+        class="remove-btn"
+        title="Жагсаалтаас хасах"
+        onclick="
+          event.stopPropagation();
+          removeMyList('${escapeJs(itemId)}');
+        "
+      >
+        ×
+      </button>
+      `;
+
+  }
+
+
+  card.innerHTML =
+    `
+
+    <div class="poster">
+
+      ${poster}
+
+      ${removeButton}
+
+    </div>
+
+    <div class="movie-info">
+
+      <div class="movie-title">
+        ${escapeHtml(
+          movie.title ||
+          "Нэргүй кино"
+        )}
+      </div>
+
+      <div class="movie-meta">
+
+        ${
+          movie.year ||
+          ""
+        }
+
+        ${
+          movie.year &&
+          movie.category
+            ? " • "
+            : ""
+        }
+
+        ${escapeHtml(
+          movie.category ||
+          ""
+        )}
+
+      </div>
+
+    </div>
+
+    `;
+
+
+  return card;
+
+}
+
+
+/* =========================
+   REMOVE FAVORITE
+========================= */
+
+async function removeFavorite(
+  favoriteId
+){
 
   const {
     error
@@ -881,191 +1470,18 @@ async function removeFavorite(
   }
 
 
-  loadFavorites();
+  await loadFavorites();
 
 }
 
 
-/* =========================================
-   MY LIST
-========================================= */
+/* =========================
+   REMOVE MY LIST
+========================= */
 
-async function loadMyList(){
-
-  const area =
-    document.getElementById(
-      "myListArea"
-    );
-
-
-  area.innerHTML =
-    '<div class="loading">Миний жагсаалтыг ачаалж байна...</div>';
-
-
-  const {
-    data,
-    error
-  } =
-  await supabaseClient
-    .from("my_list")
-    .select(`
-      id,
-      movie_name,
-      movie_link,
-      created_at
-    `)
-    .eq(
-      "user_id",
-      currentUser.id
-    )
-    .order(
-      "created_at",
-      {
-        ascending:false
-      }
-    );
-
-
-  if(error){
-
-    console.error(
-      "My list error:",
-      error
-    );
-
-    area.innerHTML =
-      `
-      <div class="empty">
-        📋<br><br>
-        Миний жагсаалт ачаалахад алдаа гарлаа.
-      </div>
-      `;
-
-    return;
-
-  }
-
-
-  if(
-    !data ||
-    data.length === 0
-  ){
-
-    area.innerHTML =
-      `
-      <div class="empty">
-        📋<br><br>
-        Таны жагсаалт одоогоор хоосон байна.
-      </div>
-      `;
-
-    return;
-
-  }
-
-
-  area.innerHTML = "";
-
-
-  data.forEach(
-    item => {
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "list-card";
-
-
-      const title =
-        item.movie_name ||
-        "Нэргүй кино";
-
-
-      const date =
-        item.created_at
-          ? new Date(
-              item.created_at
-            ).toLocaleDateString(
-              "mn-MN"
-            )
-          : "";
-
-
-      card.innerHTML = `
-
-        <div class="list-info">
-
-          <div class="list-title">
-            📋 ${escapeHtml(title)}
-          </div>
-
-          <div class="list-date">
-            Нэмсэн: ${date}
-          </div>
-
-        </div>
-
-        <div class="list-actions">
-
-          ${
-            item.movie_link
-            ?
-            `
-            <a
-              class="open-list-btn"
-              href="${escapeHtml(item.movie_link)}"
-            >
-              ▶ Үзэх
-            </a>
-            `
-            :
-            ""
-          }
-
-          <button
-            class="delete-list-btn"
-            onclick="removeFromMyList(${item.id})"
-          >
-            🗑 Хасах
-          </button>
-
-        </div>
-
-      `;
-
-
-      area.appendChild(
-        card
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================
-   REMOVE FROM MY LIST
-========================================= */
-
-async function removeFromMyList(
+async function removeMyList(
   listId
 ){
-
-  const ok =
-    confirm(
-      "Энэ киног Миний жагсаалтаас хасах уу?"
-    );
-
-
-  if(!ok){
-    return;
-  }
-
 
   const {
     error
@@ -1101,23 +1517,9 @@ async function removeFromMyList(
 }
 
 
-/* =========================================
-   LOGOUT
-========================================= */
-
-async function logout(){
-
-  await supabaseClient.auth.signOut();
-
-  window.location.href =
-    "index.html";
-
-}
-
-
-/* =========================================
+/* =========================
    ESCAPE HTML
-========================================= */
+========================= */
 
 function escapeHtml(
   value
@@ -1163,9 +1565,66 @@ function escapeHtml(
 }
 
 
-/* =========================================
-   RUN
-========================================= */
+/* =========================
+   ESCAPE JS
+========================= */
+
+function escapeJs(
+  value
+){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+
+    return "";
+
+  }
+
+
+  return String(value)
+    .replace(
+      /\\/g,
+      "\\\\"
+    )
+    .replace(
+      /'/g,
+      "\\'"
+    )
+    .replace(
+      /"/g,
+      '\\"'
+    )
+    .replace(
+      /\n/g,
+      "\\n"
+    )
+    .replace(
+      /\r/g,
+      "\\r"
+    );
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+/* =========================
+   START
+========================= */
 
 start();
 
